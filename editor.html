@@ -15556,12 +15556,7 @@
 
         function expandEditor() { const panel = document.querySelector('.editor-panel'); panel.classList.remove('collapsed'); document.getElementById('expandBtn').classList.remove('visible'); }
 
-        function viewGraph() { 
-            collapseEditor();
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            }
-        }
+        function viewGraph() { collapseEditor(); }
         function initGraph() {
 
 
