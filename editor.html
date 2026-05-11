@@ -6,7 +6,23 @@
 
 
 
+
+
+
+
+
+
+
+
 <html lang="zh-CN">
+
+
+
+
+
+
+
+
 
 
 
@@ -22,7 +38,23 @@
 
 
 
+
+
+
+
+
+
+
+
     <meta charset="UTF-8">
+
+
+
+
+
+
+
+
 
 
 
@@ -38,7 +70,23 @@
 
 
 
+
+
+
+
+
+
+
+
     <title>网罗众生--人物关系图谱编辑器</title>
+
+
+
+
+
+
+
+
 
 
 
@@ -54,7 +102,23 @@
 
 
 
+
+
+
+
+
+
+
+
     <style>
+
+
+
+
+
+
+
+
 
 
 
@@ -70,7 +134,23 @@
 
 
 
+
+
+
+
+
+
+
+
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); min-height: 100vh; color: #fff; }
+
+
+
+
+
+
+
+
 
 
 
@@ -86,8 +166,25 @@
 
 
 
+
+
+
+
+
+
+
+
         .editor-panel { width: 420px; background: rgba(15, 25, 45, 0.95); border-right: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; height: 100vh; transition: width 0.35s ease, opacity 0.35s ease; overflow: hidden; }
+
         .editor-panel.collapsed { width: 0; opacity: 0; pointer-events: none; }
+
+
+
+
+
+
+
+
 
 
 
@@ -103,7 +200,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .editor-footer { padding: 15px 20px; background: rgba(15, 25, 45, 0.98); border-top: 1px solid rgba(255,255,255,0.1); }
+
+
+
+
+
+
+
+
 
 
 
@@ -119,7 +232,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .editor-footer-sync { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #888; }
+
+
+
+
+
+
+
+
 
 
 
@@ -135,7 +264,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .sync-status:hover { color: #fff; }
+
+
+
+
+
+
+
+
 
 
 
@@ -151,7 +296,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .panel-title-btn { font-size: 14px; background: none; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+
+
+
+
+
+
+
+
 
 
 
@@ -167,7 +328,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .graph-name-input { width: 100%; padding: 10px 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(0,0,0,0.3); color: #fff; font-size: 15px; outline: none; margin-bottom: 12px; text-align: center; }
+
+
+
+
+
+
+
+
 
 
 
@@ -183,7 +360,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .section { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -199,7 +392,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .form-group { margin-bottom: 10px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -215,7 +424,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .form-group input { width: 100%; padding: 8px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff; font-size: 13px; outline: none; }
+
+
+
+
+
+
+
+
 
 
 
@@ -231,7 +456,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .form-group select { width: 100%; padding: 8px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: #1a1a2e; color: #fff; font-size: 13px; outline: none; cursor: pointer; }
+
+
+
+
+
+
+
+
 
 
 
@@ -247,7 +488,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .btn { width: 100%; padding: 10px; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.2s; margin-top: 6px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -263,7 +520,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 3px 15px rgba(102, 126, 234, 0.4); }
+
+
+
+
+
+
+
+
 
 
 
@@ -279,7 +552,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .btn-success { background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%); color: #fff; }
+
+
+
+
+
+
+
+
 
 
 
@@ -295,7 +584,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .btn-sm { padding: 5px 10px; font-size: 12px; width: auto; margin: 2px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -311,7 +616,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .btn-icon:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+
+
+
+
+
+
+
 
 
 
@@ -327,7 +648,23 @@
 
 
 
+
+
+
+
+
+
+
+
         #graph { width: 100%; height: 100%; }
+
+
+
+
+
+
+
+
 
 
 
@@ -343,7 +680,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .node:hover circle { stroke-width: 4px; stroke: #ffd700; }
+
+
+
+
+
+
+
+
 
 
 
@@ -359,7 +712,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .link { stroke-opacity: 0.7; cursor: pointer; }
+
+
+
+
+
+
+
+
 
 
 
@@ -375,11 +744,31 @@
 
 
 
+
+
+
+
+
+
+
+
         .link-label { font-size: 10px; fill: #fff; text-shadow: 0 0 4px rgba(0,0,0,0.8); pointer-events: none; }
 
 
 
+
+
+
+
         .node-label { fill: rgba(255,255,255,0.85); font-size: 10px; font-family: sans-serif; pointer-events: none; text-anchor: start; }
+
+
+
+
+
+
+
+
 
 
 
@@ -395,7 +784,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .list-item-info { flex: 1; min-width: 0; }
+
+
+
+
+
+
+
+
 
 
 
@@ -411,7 +816,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .list-item-desc { font-size: 10px; color: #666; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+
+
+
+
+
+
+
 
 
 
@@ -427,7 +848,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .relation-info { flex: 1; min-width: 0; }
+
+
+
+
+
+
+
+
 
 
 
@@ -443,7 +880,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .relation-type { font-size: 10px; color: #666; margin-top: 2px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -459,7 +912,23 @@
 
 
 
+
+
+
+
+
+
+
+
         #tooltip { position: fixed; padding: 12px 16px; background: rgba(15, 25, 45, 0.98); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 10px; color: #fff; font-size: 13px; pointer-events: none; opacity: 0; transition: opacity 0.15s; max-width: 280px; z-index: 10000; box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
+
+
+
+
+
+
+
+
 
 
 
@@ -475,7 +944,23 @@
 
 
 
+
+
+
+
+
+
+
+
         #tooltip h3 { font-size: 16px; margin-bottom: 6px; color: #ffd700; }
+
+
+
+
+
+
+
+
 
 
 
@@ -491,7 +976,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .tooltip-relation { display: inline-block; padding: 3px 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; font-size: 11px; margin: 2px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -507,7 +1008,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .stats-bar span { color: #ffd700; font-weight: bold; }
+
+
+
+
+
+
+
+
 
 
 
@@ -523,15 +1040,7 @@
 
 
 
-        
 
-
-
-
-
-
-
-        
 
 
 
@@ -547,7 +1056,55 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
 
 
 
@@ -563,7 +1120,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .group-checkbox-item { display: flex; align-items: center; gap: 4px; padding: 5px 10px; background: rgba(255,255,255,0.05); border-radius: 15px; cursor: pointer; transition: all 0.2s; font-size: 12px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -579,7 +1152,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .group-checkbox-item.selected { background: rgba(102, 126, 234, 0.3); border: 1px solid #667eea; }
+
+
+
+
+
+
+
+
 
 
 
@@ -595,7 +1184,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .group-tag { display: inline-flex; align-items: center; gap: 3px; padding: 2px 8px; background: rgba(255,255,255,0.08); border-radius: 12px; font-size: 10px; margin: 1px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -611,7 +1216,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .collapsible-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 4px 0; user-select: none; }
+
+
+
+
+
+
+
+
 
 
 
@@ -627,7 +1248,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .collapsible-header.collapsed .arrow { transform: rotate(-90deg); }
+
+
+
+
+
+
+
+
 
 
 
@@ -643,7 +1280,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .collapsible-content.hidden { display: none; }
+
+
+
+
+
+
+
+
 
 
 
@@ -659,7 +1312,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .pagination button { padding: 4px 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; background: rgba(255,255,255,0.05); color: #fff; cursor: pointer; font-size: 11px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -675,7 +1344,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .pagination button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+
+
+
+
+
+
+
 
 
 
@@ -691,7 +1376,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -707,7 +1408,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: all 0.2s; }
+
+
+
+
+
+
+
+
 
 
 
@@ -723,7 +1440,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .modal { background: #1a1a2e; border-radius: 12px; padding: 20px; min-width: 360px; max-width: 90vw; max-height: 80vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+
+
+
+
+
+
+
+
 
 
 
@@ -739,7 +1472,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .modal-footer { display: flex; gap: 10px; margin-top: 15px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -755,7 +1504,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -771,7 +1536,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .graph-list { max-height: 300px; overflow-y: auto; }
+
+
+
+
+
+
+
+
 
 
 
@@ -787,7 +1568,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .graph-list-item:hover { background: rgba(255,255,255,0.08); }
+
+
+
+
+
+
+
+
 
 
 
@@ -803,7 +1600,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .graph-list-item-info { flex: 1; }
+
+
+
+
+
+
+
+
 
 
 
@@ -819,7 +1632,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .graph-list-item-meta { font-size: 11px; color: #666; margin-top: 2px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -835,6 +1664,14 @@
 
 
 
+
+
+
+
+
+
+
+
         .graph-list-empty { text-align: center; padding: 30px; color: #666; font-size: 13px; }
 
 
@@ -843,7 +1680,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -859,7 +1712,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .context-menu { position: fixed; background: rgba(20, 30, 50, 0.98); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 0; min-width: 150px; z-index: 10001; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; }
+
+
+
+
+
+
+
+
 
 
 
@@ -875,7 +1744,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .context-menu-item { padding: 8px 15px; cursor: pointer; font-size: 13px; color: #fff; display: flex; align-items: center; gap: 8px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -891,7 +1776,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .context-menu-item.danger { color: #ff6b6b; }
+
+
+
+
+
+
+
+
 
 
 
@@ -907,7 +1808,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -923,7 +1840,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .drop-zone { border: 2px dashed rgba(255,255,255,0.3); border-radius: 10px; padding: 20px; text-align: center; color: #666; font-size: 13px; transition: all 0.2s; }
+
+
+
+
+
+
+
+
 
 
 
@@ -939,7 +1872,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -955,7 +1904,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .sync-icon { font-size: 14px; }
+
+
+
+
+
+
+
+
 
 
 
@@ -971,6 +1936,14 @@
 
 
 
+
+
+
+
+
+
+
+
         .sync-icon.syncing { color: #f7dc6f; }
 
 
@@ -979,7 +1952,23 @@
 
 
 
+
+
+
+
+
+
+
+
         .sync-icon.offline { color: #888; }
+
+
+
+
+
+
+
+
 
 
 
@@ -996,10 +1985,30 @@
 
 
 
+
+
+
+
+
+
+
+
+
         .expand-btn { position: fixed; left: 0; top: 50%; transform: translateY(-50%); z-index: 9999; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border: none; padding: 12px 10px; border-radius: 0 8px 8px 0; cursor: pointer; font-size: 18px; opacity: 0; pointer-events: none; transition: opacity 0.3s; box-shadow: 2px 0 10px rgba(0,0,0,0.3); }
+
         .expand-btn.visible { opacity: 1; pointer-events: auto; }
+
         .expand-btn:hover { background: linear-gradient(135deg, #7a8ff0 0%, #8a5cb8 100%); }
+
     </style>
+
+
+
+
+
+
+
+
 
 
 
@@ -1015,7 +2024,23 @@
 
 
 
+
+
+
+
+
+
+
+
 <body>
+
+
+
+
+
+
+
+
 
 
 
@@ -1031,7 +2056,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="editor-panel">
+
+
+
+
+
+
+
+
 
 
 
@@ -1047,7 +2088,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="panel-title">
+
+
+
+
+
+
+
+
 
 
 
@@ -1063,6 +2120,14 @@
 
 
 
+
+
+
+
+
+
+
+
                     <button class="panel-title-btn" onclick="showGraphList()">📚 我的图谱</button>
 
 
@@ -1071,7 +2136,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1087,6 +2168,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 
 
 
@@ -1095,7 +2184,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="section">
+
+
+
+
+
+
+
+
 
 
 
@@ -1111,7 +2216,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <button class="btn btn-warning" onclick="confirmCreateNew()">➕ 创建空白图谱</button>
+
+
+
+
+
+
+
+
 
 
 
@@ -1127,15 +2248,7 @@
 
 
 
-                
 
-
-
-
-
-
-
-                
 
 
 
@@ -1144,6 +2257,46 @@
 
 
                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+
+
+
+
+
+
+
 
 
 
@@ -1152,6 +2305,14 @@
 
 
                 <div class="section">
+
+
+
+
+
+
+
+
 
 
 
@@ -1167,7 +2328,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div class="form-group">
+
+
+
+
+
+
+
+
 
 
 
@@ -1183,7 +2360,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <input type="text" id="charName" placeholder="如：宋江">
+
+
+
+
+
+
+
+
 
 
 
@@ -1199,7 +2392,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div class="form-group">
+
+
+
+
+
+
+
+
 
 
 
@@ -1215,6 +2424,14 @@
 
 
 
+
+
+
+
+
+
+
+
                         <div id="groupCheckboxes" class="group-checkboxes"></div>
 
 
@@ -1223,7 +2440,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1239,7 +2472,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <label>新建分组</label>
+
+
+
+
+
+
+
+
 
 
 
@@ -1255,7 +2504,23 @@
 
 
 
+
+
+
+
+
+
+
+
                             <input type="text" id="newGroupName" placeholder="分组名称" style="flex:1;">
+
+
+
+
+
+
+
+
 
 
 
@@ -1271,7 +2536,23 @@
 
 
 
+
+
+
+
+
+
+
+
                             <button class="btn btn-sm btn-primary" onclick="addGroup()" style="width:auto;margin:0;">➕</button>
+
+
+
+
+
+
+
+
 
 
 
@@ -1287,6 +2568,14 @@
 
 
 
+
+
+
+
+
+
+
+
                     </div>
 
 
@@ -1295,7 +2584,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div class="form-group">
+
+
+
+
+
+
+
+
 
 
 
@@ -1311,6 +2616,14 @@
 
 
 
+
+
+
+
+
+
+
+
                         <input type="text" id="charInfo" placeholder="简单描述一下这个人...">
 
 
@@ -1319,7 +2632,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1335,7 +2664,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1351,7 +2696,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="section">
+
+
+
+
+
+
+
+
 
 
 
@@ -1367,7 +2728,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div class="form-group">
+
+
+
+
+
+
+
+
 
 
 
@@ -1383,7 +2760,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <select id="relSource"><option value="">-- 先添加人物 --</option></select>
+
+
+
+
+
+
+
+
 
 
 
@@ -1399,7 +2792,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div class="form-group">
+
+
+
+
+
+
+
+
 
 
 
@@ -1415,7 +2824,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <select id="relTarget"><option value="">-- 先添加人物 --</option></select>
+
+
+
+
+
+
+
+
 
 
 
@@ -1431,7 +2856,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div class="form-group">
+
+
+
+
+
+
+
+
 
 
 
@@ -1447,7 +2888,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <select id="relType">
+
+
+
+
+
+
+
+
 
 
 
@@ -1463,7 +2920,23 @@
 
 
 
+
+
+
+
+
+
+
+
                             <option value="teacher">师徒</option>
+
+
+
+
+
+
+
+
 
 
 
@@ -1479,7 +2952,23 @@
 
 
 
+
+
+
+
+
+
+
+
                             <option value="friend">朋友</option>
+
+
+
+
+
+
+
+
 
 
 
@@ -1495,7 +2984,23 @@
 
 
 
+
+
+
+
+
+
+
+
                             <option value="family">亲人</option>
+
+
+
+
+
+
+
+
 
 
 
@@ -1511,7 +3016,23 @@
 
 
 
+
+
+
+
+
+
+
+
                             <option value="rival">竞争</option>
+
+
+
+
+
+
+
+
 
 
 
@@ -1527,7 +3048,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1543,7 +3080,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <label>关系描述</label>
+
+
+
+
+
+
+
+
 
 
 
@@ -1559,7 +3112,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1575,7 +3144,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1591,7 +3176,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="section">
+
+
+
+
+
+
+
+
 
 
 
@@ -1607,7 +3208,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <span>👥 人物列表 (<span id="charCount">0</span>)</span>
+
+
+
+
+
+
+
+
 
 
 
@@ -1623,7 +3240,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1639,7 +3272,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div id="charPagination" class="pagination"></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1655,6 +3304,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 
 
 
@@ -1663,7 +3320,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="section">
+
+
+
+
+
+
+
+
 
 
 
@@ -1679,7 +3352,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <span>🔗 关系列表 (<span id="relCount">0</span>)</span>
+
+
+
+
+
+
+
+
 
 
 
@@ -1695,7 +3384,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1711,6 +3416,14 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div id="relPagination" class="pagination"></div>
 
 
@@ -1719,7 +3432,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1735,7 +3464,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="section">
+
+
+
+
+
+
+
+
 
 
 
@@ -1751,7 +3496,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <div class="drop-zone" id="dropZone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+
+
+
+
+
+
+
+
 
 
 
@@ -1767,7 +3528,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1783,6 +3560,14 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
 
 
@@ -1791,7 +3576,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -1807,7 +3608,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div class="editor-footer-top">
+
+
+
+
+
+
+
+
 
 
 
@@ -1823,6 +3640,14 @@
 
 
 
+
+
+
+
+
+
+
+
                     <button class="btn btn-primary" onclick="viewGraph()">👁️ 全屏预览</button>
 
 
@@ -1831,7 +3656,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1847,7 +3688,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <span class="sync-status" onclick="manualSync()" title="点击同步">
+
+
+
+
+
+
+
+
 
 
 
@@ -1863,7 +3720,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <span id="syncText">已同步</span>
+
+
+
+
+
+
+
+
 
 
 
@@ -1879,7 +3752,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <span id="lastSaveTime">最后保存: --:--</span>
+
+
+
+
+
+
+
+
 
 
 
@@ -1895,6 +3784,14 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
 
 
@@ -1903,7 +3800,23 @@
 
 
 
+
+
+
+
+
+
+
+
         </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -1919,7 +3832,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="preview-panel">
+
+
+
+
+
+
+
+
 
 
 
@@ -1935,7 +3864,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <svg id="graph">
+
+
+
+
+
+
+
+
 
 
 
@@ -1951,7 +3896,23 @@
 
 
 
+
+
+
+
+
+
+
+
     <marker id="arrowhead" viewBox="0 -5 10 10" markerWidth="12" markerHeight="12" refX="10" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+
+
+
+
+
+
+
+
 
 
 
@@ -1967,7 +3928,23 @@
 
 
 
+
+
+
+
+
+
+
+
     </marker>
+
+
+
+
+
+
+
+
 
 
 
@@ -1983,7 +3960,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div id="tooltip">
+
+
+
+
+
+
+
+
 
 
 
@@ -1999,7 +3992,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <p id="tooltip-info"></p>
+
+
+
+
+
+
+
+
 
 
 
@@ -2015,7 +4024,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2031,7 +4056,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="zoom-bar">🔍 <span id="zoomPercent">100%</span></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2047,6 +4088,14 @@
 
 
 
+
+
+
+
+
+
+
+
     </div>
 
 
@@ -2055,7 +4104,23 @@
 
 
 
+
+
+
+
+
+
+
+
     
+
+
+
+
+
+
+
+
 
 
 
@@ -2071,6 +4136,14 @@
 
 
 
+
+
+
+
+
+
+
+
     <div class="modal-overlay" id="confirmModal">
 
 
@@ -2079,7 +4152,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="modal">
+
+
+
+
+
+
+
+
 
 
 
@@ -2095,6 +4184,14 @@
 
 
 
+
+
+
+
+
+
+
+
             <p id="confirmMessage" style="color:#ccc;font-size:14px;margin-bottom:15px;"></p>
 
 
@@ -2103,7 +4200,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="modal-footer">
+
+
+
+
+
+
+
+
 
 
 
@@ -2119,7 +4232,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <button class="btn btn-sm btn-primary" id="confirmBtn" onclick="confirmAction()">确定</button>
+
+
+
+
+
+
+
+
 
 
 
@@ -2135,7 +4264,23 @@
 
 
 
+
+
+
+
+
+
+
+
         </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2151,7 +4296,23 @@
 
 
 
+
+
+
+
+
+
+
+
     
+
+
+
+
+
+
+
+
 
 
 
@@ -2167,7 +4328,23 @@
 
 
 
+
+
+
+
+
+
+
+
     <div class="modal-overlay" id="graphListModal">
+
+
+
+
+
+
+
+
 
 
 
@@ -2183,7 +4360,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <h2>📚 我的图谱</h2>
+
+
+
+
+
+
+
+
 
 
 
@@ -2199,7 +4392,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="drop-zone" style="margin-bottom:15px;padding:15px;" ondrop="handleDropImport(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+
+
+
+
+
+
+
+
 
 
 
@@ -2215,7 +4424,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2231,7 +4456,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="modal-footer">
+
+
+
+
+
+
+
+
 
 
 
@@ -2247,7 +4488,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2263,6 +4520,14 @@
 
 
 
+
+
+
+
+
+
+
+
     </div>
 
 
@@ -2271,7 +4536,23 @@
 
 
 
+
+
+
+
+
+
+
+
     
+
+
+
+
+
+
+
+
 
 
 
@@ -2287,6 +4568,14 @@
 
 
 
+
+
+
+
+
+
+
+
     <div class="modal-overlay" id="editCharModal">
 
 
@@ -2295,7 +4584,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="modal">
+
+
+
+
+
+
+
+
 
 
 
@@ -2311,6 +4616,14 @@
 
 
 
+
+
+
+
+
+
+
+
             <input type="hidden" id="editCharIdx">
 
 
@@ -2319,7 +4632,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="form-group">
+
+
+
+
+
+
+
+
 
 
 
@@ -2335,7 +4664,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <input type="text" id="editCharName">
+
+
+
+
+
+
+
+
 
 
 
@@ -2351,7 +4696,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="form-group">
+
+
+
+
+
+
+
+
 
 
 
@@ -2367,7 +4728,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <div id="editCharGroups" class="group-checkboxes"></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2383,7 +4760,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="form-group">
+
+
+
+
+
+
+
+
 
 
 
@@ -2399,7 +4792,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <input type="text" id="editCharInfo">
+
+
+
+
+
+
+
+
 
 
 
@@ -2415,7 +4824,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="modal-footer">
+
+
+
+
+
+
+
+
 
 
 
@@ -2431,7 +4856,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <button class="btn btn-sm btn-primary" onclick="saveCharacter()">保存</button>
+
+
+
+
+
+
+
+
 
 
 
@@ -2447,7 +4888,23 @@
 
 
 
+
+
+
+
+
+
+
+
         </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2463,7 +4920,23 @@
 
 
 
+
+
+
+
+
+
+
+
     
+
+
+
+
+
+
+
+
 
 
 
@@ -2479,6 +4952,14 @@
 
 
 
+
+
+
+
+
+
+
+
     <div class="modal-overlay" id="editRelModal">
 
 
@@ -2487,7 +4968,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="modal">
+
+
+
+
+
+
+
+
 
 
 
@@ -2503,6 +5000,14 @@
 
 
 
+
+
+
+
+
+
+
+
             <input type="hidden" id="editRelIdx">
 
 
@@ -2511,7 +5016,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="form-group">
+
+
+
+
+
+
+
+
 
 
 
@@ -2527,7 +5048,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <select id="editRelSource"></select>
+
+
+
+
+
+
+
+
 
 
 
@@ -2543,7 +5080,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="form-group">
+
+
+
+
+
+
+
+
 
 
 
@@ -2559,7 +5112,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <select id="editRelTarget"></select>
+
+
+
+
+
+
+
+
 
 
 
@@ -2575,7 +5144,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="form-group">
+
+
+
+
+
+
+
+
 
 
 
@@ -2591,7 +5176,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <select id="editRelType">
+
+
+
+
+
+
+
+
 
 
 
@@ -2607,7 +5208,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <option value="teacher">师徒</option>
+
+
+
+
+
+
+
+
 
 
 
@@ -2623,7 +5240,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <option value="friend">朋友</option>
+
+
+
+
+
+
+
+
 
 
 
@@ -2639,7 +5272,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <option value="family">亲人</option>
+
+
+
+
+
+
+
+
 
 
 
@@ -2655,7 +5304,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     <option value="rival">竞争</option>
+
+
+
+
+
+
+
+
 
 
 
@@ -2671,7 +5336,23 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2687,7 +5368,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <label>关系描述</label>
+
+
+
+
+
+
+
+
 
 
 
@@ -2703,6 +5400,14 @@
 
 
 
+
+
+
+
+
+
+
+
             </div>
 
 
@@ -2711,7 +5416,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="modal-footer">
+
+
+
+
+
+
+
+
 
 
 
@@ -2727,7 +5448,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <button class="btn btn-sm btn-primary" onclick="saveRelation()">保存</button>
+
+
+
+
+
+
+
+
 
 
 
@@ -2743,7 +5480,23 @@
 
 
 
+
+
+
+
+
+
+
+
         </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2759,7 +5512,23 @@
 
 
 
+
+
+
+
+
+
+
+
     
+
+
+
+
+
+
+
+
 
 
 
@@ -2775,7 +5544,23 @@
 
 
 
+
+
+
+
+
+
+
+
     <div class="modal-overlay" id="importPreviewModal">
+
+
+
+
+
+
+
+
 
 
 
@@ -2791,7 +5576,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <h2>📥 导入预览</h2>
+
+
+
+
+
+
+
+
 
 
 
@@ -2807,7 +5608,23 @@
 
 
 
+
+
+
+
+
+
+
+
             <div class="modal-footer">
+
+
+
+
+
+
+
+
 
 
 
@@ -2823,7 +5640,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 <button class="btn btn-sm btn-primary" onclick="confirmImport()">确认导入</button>
+
+
+
+
+
+
+
+
 
 
 
@@ -2839,6 +5672,14 @@
 
 
 
+
+
+
+
+
+
+
+
         </div>
 
 
@@ -2847,7 +5688,23 @@
 
 
 
+
+
+
+
+
+
+
+
     </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2863,7 +5720,23 @@
 
 
 
+
+
+
+
+
+
+
+
     <!-- 右键菜单 -->
+
+
+
+
+
+
+
+
 
 
 
@@ -2879,7 +5752,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="context-menu-item" onclick="ctxEditChar()">✏️ 编辑</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2895,7 +5784,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="context-menu-separator"></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2911,7 +5816,23 @@
 
 
 
+
+
+
+
+
+
+
+
         <div class="context-menu-separator"></div>
+
+
+
+
+
+
+
+
 
 
 
@@ -2927,7 +5848,31 @@
 
 
 
+
+
+
+
+
+
+
+
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2951,7 +5896,23 @@
 
 
 
+
+
+
+
+
+
+
+
         // ============== 全局状态 ==============
+
+
+
+
+
+
+
+
 
 
 
@@ -2967,7 +5928,23 @@
 
 
 
+
+
+
+
+
+
+
+
             graphId: null,
+
+
+
+
+
+
+
+
 
 
 
@@ -2983,7 +5960,23 @@
 
 
 
+
+
+
+
+
+
+
+
             nodes: [],
+
+
+
+
+
+
+
+
 
 
 
@@ -2999,7 +5992,23 @@
 
 
 
+
+
+
+
+
+
+
+
             groups: { 1: { name: '男主角', color: '#ff6b6b' }, 2: { name: '女主角', color: '#ffd700' }, 3: { name: '大反派', color: '#9b59b6' } },
+
+
+
+
+
+
+
+
 
 
 
@@ -3015,6 +6024,14 @@
 
 
 
+
+
+
+
+
+
+
+
         };
 
 
@@ -3023,7 +6040,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -3039,7 +6072,23 @@
 
 
 
+
+
+
+
+
+
+
+
         let charPage = 0, relPage = 0, charCollapsed = false, relCollapsed = false;
+
+
+
+
+
+
+
+
 
 
 
@@ -3055,7 +6104,23 @@
 
 
 
+
+
+
+
+
+
+
+
         let syncStatus = 'synced';
+
+
+
+
+
+
+
+
 
 
 
@@ -3071,7 +6136,23 @@
 
 
 
+
+
+
+
+
+
+
+
         let pendingConfirmAction = null;
+
+
+
+
+
+
+
+
 
 
 
@@ -3087,7 +6168,23 @@
 
 
 
+
+
+
+
+
+
+
+
         let contextMenuTarget = null;
+
+
+
+
+
+
+
+
 
 
 
@@ -3103,6 +6200,14 @@
 
 
 
+
+
+
+
+
+
+
+
         let zoomLevel = 1;
 
 
@@ -3111,7 +6216,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -3127,6 +6248,14 @@
 
 
 
+
+
+
+
+
+
+
+
         const relationNames = { 'brother': '结义兄弟', 'teacher': '师徒', 'master': '主仆', 'friend': '朋友', 'enemy': '敌对', 'family': '亲人', 'lover': '恋人', 'rival': '竞争' };
 
 
@@ -3135,7 +6264,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -3151,7 +6296,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -3167,7 +6328,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -3183,7 +6360,23 @@
 
 
 
+
+
+
+
+
+
+
+
         window.onload = async function() {
+
+
+
+
+
+
+
+
 
 
 
@@ -3199,7 +6392,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const saved = localStorage.getItem('characterNetworkData');
+
+
+
+
+
+
+
+
 
 
 
@@ -3215,7 +6424,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 try {
+
+
+
+
+
+
+
+
 
 
 
@@ -3231,7 +6456,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     currentGraphId = parsed.graphId;
+
+
+
+
+
+
+
+
 
 
 
@@ -3247,6 +6488,14 @@
 
 
 
+
+
+
+
+
+
+
+
                         data = parsed.data;
 
 
@@ -3255,7 +6504,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     }
+
+
+
+
+
+
+
+
 
 
 
@@ -3271,7 +6536,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 } catch (e) {}
+
+
+
+
+
+
+
+
 
 
 
@@ -3287,7 +6568,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -3303,6 +6600,14 @@
 
 
 
+
+
+
+
+
+
+
+
             initGraph();
 
 
@@ -3311,7 +6616,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -3327,6 +6648,14 @@
 
 
 
+
+
+
+
+
+
+
+
             await loadFromCloud();
 
 
@@ -3335,6 +6664,14 @@
 
 
 
+
+
+
+
+
+
+
+
             
 
 
@@ -3343,7 +6680,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -3359,7 +6712,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const urlParams = new URLSearchParams(window.location.search);
+
+
+
+
+
+
+
+
 
 
 
@@ -3375,7 +6744,23 @@
 
 
 
+
+
+
+
+
+
+
+
             if (urlGraphId) {
+
+
+
+
+
+
+
+
 
 
 
@@ -3391,6 +6776,14 @@
 
 
 
+
+
+
+
+
+
+
+
             } else {
 
 
@@ -3399,7 +6792,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 updateGraphTitle();
+
+
+
+
+
+
+
+
 
 
 
@@ -3415,7 +6824,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateGroupCheckboxes();
+
+
+
+
+
+
+
+
 
 
 
@@ -3431,7 +6856,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateCharList();
+
+
+
+
+
+
+
+
 
 
 
@@ -3447,7 +6888,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateGraph();
+
+
+
+
+
+
+
+
 
 
 
@@ -3463,6 +6920,14 @@
 
 
 
+
+
+
+
+
+
+
+
         };
 
 
@@ -3471,7 +6936,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -3487,7 +6968,23 @@
 
 
 
+
+
+
+
+
+
+
+
             if (!currentGraphId) {
+
+
+
+
+
+
+
+
 
 
 
@@ -3503,7 +7000,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 try {
+
+
+
+
+
+
+
+
 
 
 
@@ -3519,7 +7032,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     const result = await res.json();
+
+
+
+
+
+
+
+
 
 
 
@@ -3535,7 +7064,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         await switchGraph(result.graphs[0].id);
+
+
+
+
+
+
+
+
 
 
 
@@ -3551,7 +7096,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         // 创建默认图谱
+
+
+
+
+
+
+
+
 
 
 
@@ -3567,7 +7128,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     }
+
+
+
+
+
+
+
+
 
 
 
@@ -3583,7 +7160,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     console.log('云端不可用，使用本地数据');
+
+
+
+
+
+
+
+
 
 
 
@@ -3599,6 +7192,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 }
 
 
@@ -3607,7 +7208,23 @@
 
 
 
+
+
+
+
+
+
+
+
             } else {
+
+
+
+
+
+
+
+
 
 
 
@@ -3623,7 +7240,23 @@
 
 
 
+
+
+
+
+
+
+
+
             }
+
+
+
+
+
+
+
+
 
 
 
@@ -3639,7 +7272,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -3655,7 +7304,23 @@
 
 
 
+
+
+
+
+
+
+
+
             try {
+
+
+
+
+
+
+
+
 
 
 
@@ -3671,6 +7336,14 @@
 
 
 
+
+
+
+
+
+
+
+
                     method: 'POST',
 
 
@@ -3679,7 +7352,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     headers: { 'Content-Type': 'application/json' },
+
+
+
+
+
+
+
+
 
 
 
@@ -3695,7 +7384,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 });
+
+
+
+
+
+
+
+
 
 
 
@@ -3711,7 +7416,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 currentGraphId = result.id;
+
+
+
+
+
+
+
+
 
 
 
@@ -3727,7 +7448,23 @@
 
 
 
+
+
+
+
+
+
+
+
             } catch (e) {
+
+
+
+
+
+
+
+
 
 
 
@@ -3743,7 +7480,23 @@
 
 
 
+
+
+
+
+
+
+
+
             }
+
+
+
+
+
+
+
+
 
 
 
@@ -3759,7 +7512,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -3775,6 +7544,14 @@
 
 
 
+
+
+
+
+
+
+
+
             try {
 
 
@@ -3783,7 +7560,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 setSyncStatus('syncing');
+
+
+
+
+
+
+
+
 
 
 
@@ -3799,7 +7592,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 const result = await res.json();
+
+
+
+
+
+
+
+
 
 
 
@@ -3815,7 +7624,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 data = result.data;
+
+
+
+
+
+
+
+
 
 
 
@@ -3831,7 +7656,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 data.graphId = graphId;
+
+
+
+
+
+
+
+
 
 
 
@@ -3847,7 +7688,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 charPage = 0; relPage = 0;
+
+
+
+
+
+
+
+
 
 
 
@@ -3863,7 +7720,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 updateCharSelect();
+
+
+
+
+
+
+
+
 
 
 
@@ -3879,7 +7752,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 updateRelList();
+
+
+
+
+
+
+
+
 
 
 
@@ -3895,7 +7784,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 saveToLocal();
+
+
+
+
+
+
+
+
 
 
 
@@ -3911,7 +7816,23 @@
 
 
 
+
+
+
+
+
+
+
+
             } catch (e) {
+
+
+
+
+
+
+
+
 
 
 
@@ -3927,7 +7848,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 setSyncStatus('error');
+
+
+
+
+
+
+
+
 
 
 
@@ -3943,6 +7880,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -3951,7 +7896,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -3967,7 +7928,23 @@
 
 
 
+
+
+
+
+
+
+
+
         function setSyncStatus(status) {
+
+
+
+
+
+
+
+
 
 
 
@@ -3983,7 +7960,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const icon = document.getElementById('syncIcon');
+
+
+
+
+
+
+
+
 
 
 
@@ -3999,7 +7992,23 @@
 
 
 
+
+
+
+
+
+
+
+
             icon.className = 'sync-icon ' + status;
+
+
+
+
+
+
+
+
 
 
 
@@ -4015,7 +8024,23 @@
 
 
 
+
+
+
+
+
+
+
+
             else if (status === 'syncing') { icon.textContent = '🟡'; text.textContent = '同步中...'; }
+
+
+
+
+
+
+
+
 
 
 
@@ -4031,7 +8056,23 @@
 
 
 
+
+
+
+
+
+
+
+
             else if (status === 'error') { icon.textContent = '❌'; text.textContent = '同步失败'; }
+
+
+
+
+
+
+
+
 
 
 
@@ -4047,7 +8088,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -4063,7 +8120,23 @@
 
 
 
+
+
+
+
+
+
+
+
             clearTimeout(saveTimer);
+
+
+
+
+
+
+
+
 
 
 
@@ -4079,7 +8152,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 saveToCloud();
+
+
+
+
+
+
+
+
 
 
 
@@ -4095,6 +8184,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -4103,7 +8200,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -4119,7 +8232,23 @@
 
 
 
+
+
+
+
+
+
+
+
             try {
+
+
+
+
+
+
+
+
 
 
 
@@ -4135,7 +8264,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 if (!currentGraphId) {
+
+
+
+
+
+
+
+
 
 
 
@@ -4151,7 +8296,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     const res = await fetch(`${API_BASE}/graphs`, {
+
+
+
+
+
+
+
+
 
 
 
@@ -4167,7 +8328,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         headers: { 'Content-Type': 'application/json' },
+
+
+
+
+
+
+
+
 
 
 
@@ -4183,7 +8360,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     });
+
+
+
+
+
+
+
+
 
 
 
@@ -4199,7 +8392,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     currentGraphId = result.id;
+
+
+
+
+
+
+
+
 
 
 
@@ -4215,7 +8424,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 } else {
+
+
+
+
+
+
+
+
 
 
 
@@ -4231,7 +8456,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     await fetch(`${API_BASE}/graphs/${currentGraphId}`, {
+
+
+
+
+
+
+
+
 
 
 
@@ -4247,7 +8488,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         headers: { 'Content-Type': 'application/json' },
+
+
+
+
+
+
+
+
 
 
 
@@ -4263,6 +8520,14 @@
 
 
 
+
+
+
+
+
+
+
+
                     });
 
 
@@ -4271,7 +8536,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 }
+
+
+
+
+
+
+
+
 
 
 
@@ -4287,7 +8568,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 setSyncStatus('synced');
+
+
+
+
+
+
+
+
 
 
 
@@ -4303,6 +8600,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 document.getElementById('lastSaveTime').textContent = `最后保存: ${new Date().toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'})}`;
 
 
@@ -4311,7 +8616,23 @@
 
 
 
+
+
+
+
+
+
+
+
             } catch (e) {
+
+
+
+
+
+
+
+
 
 
 
@@ -4327,7 +8648,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 setSyncStatus('error');
+
+
+
+
+
+
+
+
 
 
 
@@ -4343,7 +8680,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     syncRetryCount++;
+
+
+
+
+
+
+
+
 
 
 
@@ -4359,7 +8712,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 }
+
+
+
+
+
+
+
+
 
 
 
@@ -4375,6 +8744,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -4383,7 +8760,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -4399,7 +8792,23 @@
 
 
 
+
+
+
+
+
+
+
+
             syncRetryCount = 0;
+
+
+
+
+
+
+
+
 
 
 
@@ -4415,6 +8824,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -4423,7 +8840,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -4439,7 +8872,23 @@
 
 
 
+
+
+
+
+
+
+
+
             localStorage.setItem('characterNetworkData', JSON.stringify({
+
+
+
+
+
+
+
+
 
 
 
@@ -4455,7 +8904,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 graphName: data.graphName,
+
+
+
+
+
+
+
+
 
 
 
@@ -4471,7 +8936,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 updatedAt: new Date().toISOString()
+
+
+
+
+
+
+
+
 
 
 
@@ -4487,6 +8968,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -4495,7 +8984,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -4511,7 +9016,23 @@
 
 
 
+
+
+
+
+
+
+
+
         function updateGraphTitle() {
+
+
+
+
+
+
+
+
 
 
 
@@ -4527,7 +9048,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document
+
+
+
+
+
+
+
+
 
 
 
@@ -4543,7 +9080,23 @@
 
 
 
+
+
+
+
+
+
+
+
             debounceSave();
+
+
+
+
+
+
+
+
 
 
 
@@ -4559,7 +9112,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -4575,7 +9144,23 @@
 
 
 
+
+
+
+
+
+
+
+
         function confirmCreateNew() {
+
+
+
+
+
+
+
+
 
 
 
@@ -4591,6 +9176,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 const newData = { graphId: null, graphName: '', nodes: [], links: [], groups: { 1: { name: '男主角', color: '#ff6b6b' }, 2: { name: '女主角', color: '#ffd700' }, 3: { name: '大反派', color: '#9b59b6' } }, nextGroupId: 4 };
 
 
@@ -4599,7 +9192,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 try {
+
+
+
+
+
+
+
+
 
 
 
@@ -4615,7 +9224,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         method: 'POST',
+
+
+
+
+
+
+
+
 
 
 
@@ -4631,7 +9256,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         body: JSON.stringify({ name: '未命名图谱', data: newData })
+
+
+
+
+
+
+
+
 
 
 
@@ -4647,7 +9288,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     const result = await res.json();
+
+
+
+
+
+
+
+
 
 
 
@@ -4663,7 +9320,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     newData.graphId = result.id;
+
+
+
+
+
+
+
+
 
 
 
@@ -4679,6 +9352,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 data = newData;
 
 
@@ -4687,7 +9368,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 charPage = 0; relPage = 0;
+
+
+
+
+
+
+
+
 
 
 
@@ -4703,7 +9400,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 
+
+
+
+
+
+
+
+
 
 
 
@@ -4719,7 +9432,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 updateCharSelect();
+
+
+
+
+
+
+
+
 
 
 
@@ -4735,6 +9464,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 updateRelList();
 
 
@@ -4743,7 +9480,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 updateGraph();
+
+
+
+
+
+
+
+
 
 
 
@@ -4759,7 +9512,23 @@
 
 
 
+
+
+
+
+
+
+
+
             });
+
+
+
+
+
+
+
+
 
 
 
@@ -4775,15 +9544,7 @@
 
 
 
-        
 
-
-
-
-
-
-
-        
 
 
 
@@ -4792,6 +9553,46 @@
 
 
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
 
 
 
@@ -4807,7 +9608,23 @@
 
 
 
+
+
+
+
+
+
+
+
         function updateGroupCheckboxes(containerId, selectedGroups) {
+
+
+
+
+
+
+
+
 
 
 
@@ -4823,7 +9640,23 @@
 
 
 
+
+
+
+
+
+
+
+
             let html = '';
+
+
+
+
+
+
+
+
 
 
 
@@ -4839,7 +9672,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 const isSelected = selectedGroups ? selectedGroups.includes(parseInt(id)) : false;
+
+
+
+
+
+
+
+
 
 
 
@@ -4855,7 +9704,23 @@
 
 
 
+
+
+
+
+
+
+
+
             }
+
+
+
+
+
+
+
+
 
 
 
@@ -4871,6 +9736,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -4879,7 +9752,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -4895,7 +9784,23 @@
 
 
 
+
+
+
+
+
+
+
+
             el.classList.toggle('selected');
+
+
+
+
+
+
+
+
 
 
 
@@ -4911,7 +9816,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -4927,7 +9848,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const selected = [];
+
+
+
+
+
+
+
+
 
 
 
@@ -4943,7 +9880,23 @@
 
 
 
+
+
+
+
+
+
+
+
             return selected;
+
+
+
+
+
+
+
+
 
 
 
@@ -4959,7 +9912,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -4975,7 +9944,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const nameInput = document.getElementById('newGroupName');
+
+
+
+
+
+
+
+
 
 
 
@@ -4991,7 +9976,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const name = nameInput.value.trim();
+
+
+
+
+
+
+
+
 
 
 
@@ -5007,7 +10008,23 @@
 
 
 
+
+
+
+
+
+
+
+
             if (!name) { alert('请输入分组名称'); return; }
+
+
+
+
+
+
+
+
 
 
 
@@ -5023,7 +10040,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const id = data.nextGroupId++;
+
+
+
+
+
+
+
+
 
 
 
@@ -5039,7 +10072,23 @@
 
 
 
+
+
+
+
+
+
+
+
             nameInput.value = '';
+
+
+
+
+
+
+
+
 
 
 
@@ -5055,7 +10104,23 @@
 
 
 
+
+
+
+
+
+
+
+
             debounceSave();
+
+
+
+
+
+
+
+
 
 
 
@@ -5071,6 +10136,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -5079,7 +10152,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -5095,7 +10184,23 @@
 
 
 
+
+
+
+
+
+
+
+
         function updateCharSelect() {
+
+
+
+
+
+
+
+
 
 
 
@@ -5111,7 +10216,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.getElementById('relSource').innerHTML = opts;
+
+
+
+
+
+
+
+
 
 
 
@@ -5127,6 +10248,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -5135,7 +10264,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -5151,7 +10296,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const name = document.getElementById('charName').value.trim();
+
+
+
+
+
+
+
+
 
 
 
@@ -5167,7 +10328,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const info = document.getElementById('charInfo').value.trim();
+
+
+
+
+
+
+
+
 
 
 
@@ -5183,7 +10360,23 @@
 
 
 
+
+
+
+
+
+
+
+
             if (data.nodes.find(n => n.id === name)) { alert('该人物已存在'); return; }
+
+
+
+
+
+
+
+
 
 
 
@@ -5199,7 +10392,23 @@
 
 
 
+
+
+
+
+
+
+
+
             data.nodes.push({ id: name, groups, info, size: 12 });
+
+
+
+
+
+
+
+
 
 
 
@@ -5215,7 +10424,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.getElementById('charInfo').value = '';
+
+
+
+
+
+
+
+
 
 
 
@@ -5231,7 +10456,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateCharList();
+
+
+
+
+
+
+
+
 
 
 
@@ -5247,7 +10488,23 @@
 
 
 
+
+
+
+
+
+
+
+
             debounceSave();
+
+
+
+
+
+
+
+
 
 
 
@@ -5263,7 +10520,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -5279,7 +10552,23 @@
 
 
 
+
+
+
+
+
+
+
+
             data.nodes = data.nodes.filter(n => n.id !== name);
+
+
+
+
+
+
+
+
 
 
 
@@ -5295,7 +10584,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateCharSelect();
+
+
+
+
+
+
+
+
 
 
 
@@ -5311,7 +10616,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateRelList();
+
+
+
+
+
+
+
+
 
 
 
@@ -5327,7 +10648,23 @@
 
 
 
+
+
+
+
+
+
+
+
             debounceSave();
+
+
+
+
+
+
+
+
 
 
 
@@ -5343,7 +10680,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -5359,7 +10712,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const n = data.nodes[idx];
+
+
+
+
+
+
+
+
 
 
 
@@ -5375,7 +10744,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.getElementById('editCharName').value = n.id;
+
+
+
+
+
+
+
+
 
 
 
@@ -5391,7 +10776,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateGroupCheckboxes('editCharGroups', n.groups);
+
+
+
+
+
+
+
+
 
 
 
@@ -5407,6 +10808,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -5415,7 +10824,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -5431,7 +10856,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const idx = parseInt(document.getElementById('editCharIdx').value);
+
+
+
+
+
+
+
+
 
 
 
@@ -5447,7 +10888,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const info = document.getElementById('editCharInfo').value.trim();
+
+
+
+
+
+
+
+
 
 
 
@@ -5463,6 +10920,14 @@
 
 
 
+
+
+
+
+
+
+
+
             document.querySelectorAll('#editCharGroups .group-checkbox-item.selected').forEach(item => { selectedGroups.push(parseInt(item.dataset.group)); });
 
 
@@ -5471,7 +10936,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -5487,6 +10968,14 @@
 
 
 
+
+
+
+
+
+
+
+
             if (selectedGroups.length === 0) { alert('请至少选择一个分组'); return; }
 
 
@@ -5495,7 +10984,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -5511,7 +11016,23 @@
 
 
 
+
+
+
+
+
+
+
+
             if (name !== data.nodes[idx].id && data.nodes.find(n => n.id === name)) {
+
+
+
+
+
+
+
+
 
 
 
@@ -5527,6 +11048,14 @@
 
 
 
+
+
+
+
+
+
+
+
             }
 
 
@@ -5535,7 +11064,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -5551,7 +11096,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -5567,7 +11128,23 @@
 
 
 
+
+
+
+
+
+
+
+
             data.links.forEach(l => {
+
+
+
+
+
+
+
+
 
 
 
@@ -5583,6 +11160,14 @@
 
 
 
+
+
+
+
+
+
+
+
                     l.source = name;
 
 
@@ -5591,7 +11176,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 }
+
+
+
+
+
+
+
+
 
 
 
@@ -5607,7 +11208,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     l.target = name;
+
+
+
+
+
+
+
+
 
 
 
@@ -5623,6 +11240,14 @@
 
 
 
+
+
+
+
+
+
+
+
             });
 
 
@@ -5631,7 +11256,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -5647,7 +11288,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateCharSelect();
+
+
+
+
+
+
+
+
 
 
 
@@ -5663,7 +11320,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateRelList();
+
+
+
+
+
+
+
+
 
 
 
@@ -5679,7 +11352,23 @@
 
 
 
+
+
+
+
+
+
+
+
             debounceSave();
+
+
+
+
+
+
+
+
 
 
 
@@ -5695,7 +11384,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -5711,7 +11416,23 @@
 
 
 
+
+
+
+
+
+
+
+
         function addRelation() {
+
+
+
+
+
+
+
+
 
 
 
@@ -5727,7 +11448,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const target = document.getElementById('relTarget').value;
+
+
+
+
+
+
+
+
 
 
 
@@ -5743,7 +11480,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const relation = document.getElementById('relDesc').value.trim();
+
+
+
+
+
+
+
+
 
 
 
@@ -5759,7 +11512,23 @@
 
 
 
+
+
+
+
+
+
+
+
             if (source === target) { alert('请选择不同的人物'); return; }
+
+
+
+
+
+
+
+
 
 
 
@@ -5775,7 +11544,23 @@
 
 
 
+
+
+
+
+
+
+
+
             data.links.push({ source, target, type, relation });
+
+
+
+
+
+
+
+
 
 
 
@@ -5791,7 +11576,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateRelList();
+
+
+
+
+
+
+
+
 
 
 
@@ -5807,7 +11608,23 @@
 
 
 
+
+
+
+
+
+
+
+
             debounceSave();
+
+
+
+
+
+
+
+
 
 
 
@@ -5823,7 +11640,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -5839,7 +11672,23 @@
 
 
 
+
+
+
+
+
+
+
+
             data.links.splice(idx, 1);
+
+
+
+
+
+
+
+
 
 
 
@@ -5855,7 +11704,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateGraph();
+
+
+
+
+
+
+
+
 
 
 
@@ -5871,6 +11736,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -5879,7 +11752,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -5895,7 +11784,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const l = data.links[idx];
+
+
+
+
+
+
+
+
 
 
 
@@ -5911,7 +11816,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateEditRelSelect(l.source, l.target);
+
+
+
+
+
+
+
+
 
 
 
@@ -5927,7 +11848,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.getElementById('editRelDesc').value = l.relation || '';
+
+
+
+
+
+
+
+
 
 
 
@@ -5943,6 +11880,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -5951,7 +11896,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -5967,7 +11928,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const opts = data.nodes.map(n => `<option value="${n.id}">${n.id}</option>`).join('');
+
+
+
+
+
+
+
+
 
 
 
@@ -5983,7 +11960,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.getElementById('editRelTarget').innerHTML = opts;
+
+
+
+
+
+
+
+
 
 
 
@@ -5999,7 +11992,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.getElementById('editRelTarget').value = target.id || target;
+
+
+
+
+
+
+
+
 
 
 
@@ -6015,7 +12024,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -6031,7 +12056,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const idx = parseInt(document.getElementById('editRelIdx').value);
+
+
+
+
+
+
+
+
 
 
 
@@ -6047,7 +12088,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const target = document.getElementById('editRelTarget').value;
+
+
+
+
+
+
+
+
 
 
 
@@ -6063,6 +12120,14 @@
 
 
 
+
+
+
+
+
+
+
+
             const relation = document.getElementById('editRelDesc').value.trim();
 
 
@@ -6071,7 +12136,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -6087,7 +12168,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -6103,7 +12200,23 @@
 
 
 
+
+
+
+
+
+
+
+
             if (data.links.find((l, i) => i !== idx && (l.source.id || l.source) === source && (l.target.id || l.target) === target)) {
+
+
+
+
+
+
+
+
 
 
 
@@ -6119,6 +12232,14 @@
 
 
 
+
+
+
+
+
+
+
+
             }
 
 
@@ -6127,7 +12248,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -6143,7 +12280,23 @@
 
 
 
+
+
+
+
+
+
+
+
             closeModal('editRelModal');
+
+
+
+
+
+
+
+
 
 
 
@@ -6159,7 +12312,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateGraph();
+
+
+
+
+
+
+
+
 
 
 
@@ -6175,6 +12344,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -6183,7 +12360,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -6199,7 +12392,23 @@
 
 
 
+
+
+
+
+
+
+
+
         function updateCharList() {
+
+
+
+
+
+
+
+
 
 
 
@@ -6215,7 +12424,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const totalPages = Math.ceil(data.nodes.length / PAGE_SIZE) || 1;
+
+
+
+
+
+
+
+
 
 
 
@@ -6231,7 +12456,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const start = charPage * PAGE_SIZE, end = Math.min(start + PAGE_SIZE, data.nodes.length);
+
+
+
+
+
+
+
+
 
 
 
@@ -6247,7 +12488,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -6263,6 +12520,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 list.innerHTML = '<div style="color:#666;font-size:12px;text-align:center;padding:15px;">暂无人物，请添加或加载模板</div>';
 
 
@@ -6271,7 +12536,23 @@
 
 
 
+
+
+
+
+
+
+
+
             } else {
+
+
+
+
+
+
+
+
 
 
 
@@ -6287,7 +12568,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     const realIdx = start + idx;
+
+
+
+
+
+
+
+
 
 
 
@@ -6303,6 +12600,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 }).join('');
 
 
@@ -6311,7 +12616,23 @@
 
 
 
+
+
+
+
+
+
+
+
             }
+
+
+
+
+
+
+
+
 
 
 
@@ -6327,7 +12648,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const pagination = document.getElementById('charPagination');
+
+
+
+
+
+
+
+
 
 
 
@@ -6343,7 +12680,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 pagination.innerHTML = `<button onclick="goToCharPage(${charPage - 1})" ${charPage === 0 ? 'disabled' : ''}>上一页</button><span class="page-info">${charPage + 1}/${totalPages}</span><button onclick="goToCharPage(${charPage + 1})" ${charPage >= totalPages - 1 ? 'disabled' : ''}>下一页</button>`;
+
+
+
+
+
+
+
+
 
 
 
@@ -6359,6 +12712,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -6367,7 +12728,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -6383,7 +12760,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const list = document.getElementById('relList');
+
+
+
+
+
+
+
+
 
 
 
@@ -6399,7 +12792,23 @@
 
 
 
+
+
+
+
+
+
+
+
             if (relPage >= totalPages) relPage = Math.max(0, totalPages - 1);
+
+
+
+
+
+
+
+
 
 
 
@@ -6415,6 +12824,14 @@
 
 
 
+
+
+
+
+
+
+
+
             const pageLinks = data.links.slice(start, end);
 
 
@@ -6423,7 +12840,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -6439,7 +12872,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 list.innerHTML = '<div style="color:#666;font-size:12px;text-align:center;padding:15px;">暂无关系，请添加</div>';
+
+
+
+
+
+
+
+
 
 
 
@@ -6455,7 +12904,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 list.innerHTML = pageLinks.map((l, idx) => {
+
+
+
+
+
+
+
+
 
 
 
@@ -6471,7 +12936,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     const sn = l.source.id || l.source;
+
+
+
+
+
+
+
+
 
 
 
@@ -6487,7 +12968,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     const color = relationColors[l.type] || relationColors.default;
+
+
+
+
+
+
+
+
 
 
 
@@ -6503,6 +13000,14 @@
 
 
 
+
+
+
+
+
+
+
+
                 }).join('');
 
 
@@ -6511,7 +13016,23 @@
 
 
 
+
+
+
+
+
+
+
+
             }
+
+
+
+
+
+
+
+
 
 
 
@@ -6527,7 +13048,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const pagination = document.getElementById('relPagination');
+
+
+
+
+
+
+
+
 
 
 
@@ -6543,7 +13080,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 pagination.innerHTML = `<button onclick="goToRelPage(${relPage - 1})" ${relPage === 0 ? 'disabled' : ''}>上一页</button><span class="page-info">${relPage + 1}/${totalPages}</span><button onclick="goToRelPage(${relPage + 1})" ${relPage >= totalPages - 1 ? 'disabled' : ''}>下一页</button>`;
+
+
+
+
+
+
+
+
 
 
 
@@ -6559,6 +13112,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -6567,7 +13128,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -6583,7 +13160,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const content = type === 'char' ? document.getElementById('charList') : document.getElementById('relList');
+
+
+
+
+
+
+
+
 
 
 
@@ -6599,7 +13192,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const pagination = type === 'char' ? document.getElementById('charPagination') : document.getElementById('relPagination');
+
+
+
+
+
+
+
+
 
 
 
@@ -6615,7 +13224,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const collapsed = type === 'char' ? charCollapsed : relCollapsed;
+
+
+
+
+
+
+
+
 
 
 
@@ -6631,7 +13256,23 @@
 
 
 
+
+
+
+
+
+
+
+
             else { content.classList.remove('hidden'); if (pagination) pagination.style.display = 'flex'; arrow.classList.remove('collapsed'); }
+
+
+
+
+
+
+
+
 
 
 
@@ -6647,7 +13288,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -6663,6 +13320,14 @@
 
 
 
+
+
+
+
+
+
+
+
         function goToRelPage(page) { const totalPages = Math.ceil(data.links.length / PAGE_SIZE) || 1; if (page < 0 || page >= totalPages) return; relPage = page; updateRelList(); }
 
 
@@ -6671,7 +13336,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -6687,6 +13368,14 @@
 
 
 
+
+
+
+
+
+
+
+
         async function showGraphList() {
 
 
@@ -6695,7 +13384,23 @@
 
 
 
+
+
+
+
+
+
+
+
             try {
+
+
+
+
+
+
+
+
 
 
 
@@ -6711,7 +13416,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 const result = await res.json();
+
+
+
+
+
+
+
+
 
 
 
@@ -6727,7 +13448,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 if (!result.graphs || result.graphs.length === 0) {
+
+
+
+
+
+
+
+
 
 
 
@@ -6743,7 +13480,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 } else {
+
+
+
+
+
+
+
+
 
 
 
@@ -6759,7 +13512,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <div class="graph-list-item ${g.id === currentGraphId ? 'active' : ''}" onclick="switchGraph('${g.id}')">
+
+
+
+
+
+
+
+
 
 
 
@@ -6775,7 +13544,23 @@
 
 
 
+
+
+
+
+
+
+
+
                                 <div class="graph-list-item-name">${g.name}</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -6791,7 +13576,23 @@
 
 
 
+
+
+
+
+
+
+
+
                             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -6807,7 +13608,23 @@
 
 
 
+
+
+
+
+
+
+
+
                                 <button class="btn-icon" onclick="event.stopPropagation();renameGraph('${g.id}','${g.name}')" title="重命名">✏️</button>
+
+
+
+
+
+
+
+
 
 
 
@@ -6823,7 +13640,23 @@
 
 
 
+
+
+
+
+
+
+
+
                             </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -6839,6 +13672,14 @@
 
 
 
+
+
+
+
+
+
+
+
                     `).join('');
 
 
@@ -6847,7 +13688,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 }
+
+
+
+
+
+
+
+
 
 
 
@@ -6863,7 +13720,23 @@
 
 
 
+
+
+
+
+
+
+
+
             } catch (e) {
+
+
+
+
+
+
+
+
 
 
 
@@ -6879,7 +13752,23 @@
 
 
 
+
+
+
+
+
+
+
+
             }
+
+
+
+
+
+
+
+
 
 
 
@@ -6895,7 +13784,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -6911,7 +13816,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const name = prompt('请输入图谱名称：', '我的新图谱');
+
+
+
+
+
+
+
+
 
 
 
@@ -6927,6 +13848,14 @@
 
 
 
+
+
+
+
+
+
+
+
             if (name.length > 50) { alert('图谱名称不能超过50字符'); return; }
 
 
@@ -6935,7 +13864,23 @@
 
 
 
+
+
+
+
+
+
+
+
             try {
+
+
+
+
+
+
+
+
 
 
 
@@ -6951,7 +13896,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     method: 'POST',
+
+
+
+
+
+
+
+
 
 
 
@@ -6967,7 +13928,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     body: JSON.stringify({ name: name.trim(), data: { graphName: name.trim(), nodes: [], links: [], groups: { 1: { name: '男主角', color: '#ff6b6b' }, 2: { name: '女主角', color: '#ffd700' }, 3: { name: '大反派', color: '#9b59b6' } }, nextGroupId: 4 } })
+
+
+
+
+
+
+
+
 
 
 
@@ -6983,7 +13960,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 const result = await res.json();
+
+
+
+
+
+
+
+
 
 
 
@@ -6999,7 +13992,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 data = { graphId: result.id, graphName: name.trim(), nodes: [], links: [], groups: { 1: { name: '男主角', color: '#ff6b6b' }, 2: { name: '女主角', color: '#ffd700' }, 3: { name: '大反派', color: '#9b59b6' } }, nextGroupId: 4 };
+
+
+
+
+
+
+
+
 
 
 
@@ -7015,7 +14024,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 document.getElementById('graphName').value = data.graphName;
+
+
+
+
+
+
+
+
 
 
 
@@ -7031,7 +14056,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 updateGroupCheckboxes();
+
+
+
+
+
+
+
+
 
 
 
@@ -7047,7 +14088,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 updateCharList();
+
+
+
+
+
+
+
+
 
 
 
@@ -7063,7 +14120,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 updateGraph();
+
+
+
+
+
+
+
+
 
 
 
@@ -7079,7 +14152,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 closeModal('graphListModal');
+
+
+
+
+
+
+
+
 
 
 
@@ -7095,6 +14184,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -7103,7 +14200,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -7119,7 +14232,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const newName = prompt('请输入新名称：', oldName);
+
+
+
+
+
+
+
+
 
 
 
@@ -7135,6 +14264,14 @@
 
 
 
+
+
+
+
+
+
+
+
             if (newName.length > 50) { alert('图谱名称不能超过50字符'); return; }
 
 
@@ -7143,7 +14280,23 @@
 
 
 
+
+
+
+
+
+
+
+
             try {
+
+
+
+
+
+
+
+
 
 
 
@@ -7159,7 +14312,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 graph.name = newName.trim();
+
+
+
+
+
+
+
+
 
 
 
@@ -7175,7 +14344,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 await fetch(`${API_BASE}/graphs/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(graph) });
+
+
+
+
+
+
+
+
 
 
 
@@ -7191,7 +14376,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 showGraphList();
+
+
+
+
+
+
+
+
 
 
 
@@ -7207,6 +14408,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -7215,7 +14424,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -7231,7 +14456,23 @@
 
 
 
+
+
+
+
+
+
+
+
             if (!confirm(`确定删除【${name}】吗？此操作不可恢复。`)) return;
+
+
+
+
+
+
+
+
 
 
 
@@ -7247,7 +14488,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 await fetch(`${API_BASE}/graphs/${id}`, { method: 'DELETE' });
+
+
+
+
+
+
+
+
 
 
 
@@ -7263,7 +14520,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     localStorage.removeItem('characterNetworkData');
+
+
+
+
+
+
+
+
 
 
 
@@ -7279,7 +14552,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 } else {
+
+
+
+
+
+
+
+
 
 
 
@@ -7295,7 +14584,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 }
+
+
+
+
+
+
+
+
 
 
 
@@ -7311,6 +14616,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -7319,7 +14632,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -7335,7 +14664,23 @@
 
 
 
+
+
+
+
+
+
+
+
         function handleDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('dragover'); }
+
+
+
+
+
+
+
+
 
 
 
@@ -7351,7 +14696,23 @@
 
 
 
+
+
+
+
+
+
+
+
         function handleDrop(e) { e.preventDefault(); e.currentTarget.classList.remove('dragover'); const file = e.dataTransfer.files[0]; if (file) processImportFile(file); }
+
+
+
+
+
+
+
+
 
 
 
@@ -7367,6 +14728,14 @@
 
 
 
+
+
+
+
+
+
+
+
         function handleDropImport(e) { e.preventDefault(); e.currentTarget.classList.remove('dragover'); const file = e.dataTransfer.files[0]; if (file) { processImportFile(file, true); } }
 
 
@@ -7375,7 +14744,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -7391,7 +14776,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const reader = new FileReader();
+
+
+
+
+
+
+
+
 
 
 
@@ -7407,7 +14808,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 try {
+
+
+
+
+
+
+
+
 
 
 
@@ -7423,7 +14840,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     if (!json.nodes || !json.links || !json.groups) {
+
+
+
+
+
+
+
+
 
 
 
@@ -7439,7 +14872,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     }
+
+
+
+
+
+
+
+
 
 
 
@@ -7455,7 +14904,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     document.getElementById('importPreviewContent').innerHTML = `
+
+
+
+
+
+
+
+
 
 
 
@@ -7471,7 +14936,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <p>👥 人物数量：<strong>${json.nodes.length}</strong></p>
+
+
+
+
+
+
+
+
 
 
 
@@ -7487,7 +14968,23 @@
 
 
 
+
+
+
+
+
+
+
+
                         <p>🏷️ 分组数量：<strong>${Object.keys(json.groups).length}</strong></p>
+
+
+
+
+
+
+
+
 
 
 
@@ -7503,7 +15000,23 @@
 
 
 
+
+
+
+
+
+
+
+
                     document.getElementById('importPreviewModal').classList.add('visible');
+
+
+
+
+
+
+
+
 
 
 
@@ -7519,7 +15032,23 @@
 
 
 
+
+
+
+
+
+
+
+
             };
+
+
+
+
+
+
+
+
 
 
 
@@ -7535,6 +15064,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -7543,7 +15080,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -7559,7 +15112,23 @@
 
 
 
+
+
+
+
+
+
+
+
             if (!pendingImportData) return;
+
+
+
+
+
+
+
+
 
 
 
@@ -7575,7 +15144,23 @@
 
 
 
+
+
+
+
+
+
+
+
             data.graphId = null;
+
+
+
+
+
+
+
+
 
 
 
@@ -7591,7 +15176,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.getElementById('graphName').value = data.graphName || '';
+
+
+
+
+
+
+
+
 
 
 
@@ -7607,7 +15208,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateGroupCheckboxes();
+
+
+
+
+
+
+
+
 
 
 
@@ -7623,7 +15240,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateCharList();
+
+
+
+
+
+
+
+
 
 
 
@@ -7639,7 +15272,23 @@
 
 
 
+
+
+
+
+
+
+
+
             updateGraph();
+
+
+
+
+
+
+
+
 
 
 
@@ -7655,7 +15304,23 @@
 
 
 
+
+
+
+
+
+
+
+
             pendingImportData = null;
+
+
+
+
+
+
+
+
 
 
 
@@ -7671,6 +15336,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -7679,7 +15352,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -7695,7 +15384,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const date = new Date().toISOString().split('T')[0];
+
+
+
+
+
+
+
+
 
 
 
@@ -7711,7 +15416,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+
+
+
+
+
+
+
+
 
 
 
@@ -7727,7 +15448,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const a = document.createElement('a');
+
+
+
+
+
+
+
+
 
 
 
@@ -7743,7 +15480,23 @@
 
 
 
+
+
+
+
+
+
+
+
             URL.revokeObjectURL(url);
+
+
+
+
+
+
+
+
 
 
 
@@ -7759,7 +15512,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -7775,98 +15544,33 @@
 
 
 
+
+
+
+
+
+
+
+
         function collapseEditor() { const panel = document.querySelector('.editor-panel'); panel.classList.add('collapsed'); document.getElementById('expandBtn').classList.add('visible'); }
+
         function expandEditor() { const panel = document.querySelector('.editor-panel'); panel.classList.remove('collapsed'); document.getElementById('expandBtn').classList.remove('visible'); }
-        function viewGraph() { collapseEditor();
 
-
-
-
-
-
-
-            const nodesData = JSON.stringify(data.nodes);
-
-
-
-
-
-
-
-            const linksData = JSON.stringify(data.links.map(l => ({ ...l, source: l.source.id || l.source, target: l.target.id || l.target })));
-
-
-
-
-
-
-
-            const graphName = data.graphName || '人物关系图谱';
-
-
-
-
-
-
-
-            const groupColorsJson = JSON.stringify(Object.fromEntries(Object.entries(data.groups).map(([k,v])=>[k,v.color])));
-
-
-
-
-
-
-
-            const html = `<!DOCTYPE html><html><head><title>${graphName}</title><script src="https://d3js.org/d3.v7.min.js"><\/script><style>*{margin:0;padding:0;}body{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);}svg{width:100vw;height:100vh;}.node text{font-size:14px;fill:white;text-shadow:0 0 8px rgba(0,0,0,0.9);font-weight:500;}.node circle{stroke:white;stroke-width:2px;}.link{stroke-opacity:0.7;}.link-label{font-size:11px;fill:white;text-shadow:0 0 5px rgba(0,0,0,0.8);pointer-events:none;}.title{position:fixed;top:20px;left:50%;transform:translateX(-50%);font-size:28px;color:#ffd700;text-shadow:0 0 20px rgba(0,0,0,0.8);z-index:10;pointer-events:none;}.controls{position:fixed;bottom:20px;right:20px;background:rgba(15,25,45,0.9);padding:15px;border-radius:10px;display:flex;flex-direction:column;gap:8px;font-size:13px;}.controls button{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:8px 12px;border-radius:6px;cursor:pointer;}.controls button:hover{background:rgba(102,126,234,0.3);}.stats{position:fixed;bottom:20px;left:20px;background:rgba(15,25,45,0.9);padding:10px 15px;border-radius:8px;font-size:12px;color:#ffd700;}</style></head><body><div class="title">${graphName}</div><svg id="graph"></svg><div class="stats">👥 <span id="statChars">${data.nodes.length}</span> | 🔗 <span id="statRels">${data.links.length}</span></div><div class="controls"><span style="text-align:center;margin-bottom:5px;">🔍 <span id="zoomLevel">100%</span></span><button onclick="zoomIn()">➕ 放大</button><button onclick="zoomOut()">➖ 缩小</button><button onclick="resetZoom()">⟳ 重置</button></div><script>const gc=${groupColorsJson};const rc=${JSON.stringify(relationColors)};const rn=${JSON.stringify(relationNames)};const svg=d3.select('#graph');svg.attr('width',window.innerWidth).attr('height',window.innerHeight);const g=svg.append('g');let zoom=1;const z=d3.zoom().scaleExtent([0.1,4]).on('zoom',e=>{g.attr('transform',e.transform);zoom=e.transform.k;document.getElementById('zoomLevel').textContent=Math.round(zoom*100)+'%';});svg.call(z);function zoomIn(){svg.transition().duration(300).call(z.scaleBy,1.3);}function zoomOut(){svg.transition().duration(300).call(z.scaleBy,0.7);}function resetZoom(){svg.transition().duration(300).call(z.transform,d3.zoomIdentity);}const sim=d3.forceSimulation(JSON.parse('${nodesData}')).force('link',d3.forceLink(JSON.parse('${linksData}')).id(d=>d.id).distance(150)).force('charge',d3.forceManyBody().strength(-500)).force('center',d3.forceCenter(window.innerWidth/2,window.innerHeight/2))).force('collision',d3.forceCollide().radius(50));const links=g.append('g').selectAll('line').data(JSON.parse('${linksData}')).enter().append('line').attr('class','link').attr('stroke',d=>rc[d.type]||'#fff').attr('stroke-width',2.5);const linkLabels=g.append('g').selectAll('text').data(JSON.parse('${linksData}')).enter().append('text').attr('class','link-label').attr('text-anchor','middle').attr('dy',-5).style('opacity',0.8).text(d=>d.relation||rn[d.type]||'');const nodes=g.append('g').selectAll('g').data(JSON.parse('${nodesData}')).enter().append('g').attr('class','node').call(d3.drag().on('start',(e,d)=>{if(!e.active)sim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;}).on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y;}).on('end',(e,d)=>{if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}));nodes.append('circle').attr('r',d=>d.size||12).attr('fill',d=>{const gid=d.groups&&d.groups[0];return gid&&gc[gid]?gc[gid]:'#666';});nodes.append('text').attr('dx',18).attr('dy',5).text(d=>d.id);sim.on('tick',()=>{links.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);linkLabels.attr('x',d=>(d.source.x+d.target.x)/2).attr('y',d=>(d.source.y+d.target.y)/2-8);nodes.attr('transform',d=>'translate('+d.x+','+d.y+')');});<\/script>    <button class="expand-btn" id="expandBtn" onclick="expandEditor()">▶</button>
-</body></html>`;
-
-
-
-
-
-
-
-            const newWindow = window.open('', '_blank');
-
-
-
-
-
-
-
-            newWindow.document.write(html);
-
-
-
-
-
-
-
+        function viewGraph() { 
+            collapseEditor();
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            }
         }
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-        // ============== D3 图 ==============
-
-
-
-
-
-
-
         function initGraph() {
+
+
+
+
+
+
+
+
 
 
 
@@ -7882,7 +15586,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const container = document.querySelector('.preview-panel');
+
+
+
+
+
+
+
+
 
 
 
@@ -7898,7 +15618,23 @@
 
 
 
+
+
+
+
+
+
+
+
             g = svg.append('g');
+
+
+
+
+
+
+
+
 
 
 
@@ -7914,7 +15650,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 g.attr('transform', e.transform);
+
+
+
+
+
+
+
+
 
 
 
@@ -7930,7 +15682,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 document.getElementById('zoomPercent').textContent = Math.round(zoomLevel * 100) + '%';
+
+
+
+
+
+
+
+
 
 
 
@@ -7946,7 +15714,23 @@
 
 
 
+
+
+
+
+
+
+
+
             svg.call(currentZoom);
+
+
+
+
+
+
+
+
 
 
 
@@ -7962,7 +15746,31 @@
 
 
 
+
+
+
+
+
+
+
+
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7986,7 +15794,23 @@
 
 
 
+
+
+
+
+
+
+
+
             // 规范化 links
+
+
+
+
+
+
+
+
 
 
 
@@ -8002,7 +15826,23 @@
 
 
 
+
+
+
+
+
+
+
+
             data.nodes.forEach(n => nodeMap[n.id] = n);
+
+
+
+
+
+
+
+
 
 
 
@@ -8018,7 +15858,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 ...l,
+
+
+
+
+
+
+
+
 
 
 
@@ -8034,7 +15890,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 target: nodeMap[l.target.id || l.target] || l.target
+
+
+
+
+
+
+
+
 
 
 
@@ -8058,7 +15930,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             const links = g.selectAll('.link').data(normalizedLinks, d => `${d.source.id || d.source}-${d.target.id || d.target}`);
+
+
+
+
+
+
+
+
 
 
 
@@ -8074,7 +15970,23 @@
 
 
 
+
+
+
+
+
+
+
+
             links.enter().append('line').attr('class', 'link').attr('stroke', d => relationColors[d.type] || relationColors.default).attr('stroke-width', 2.5).attr('marker-end', 'url(#arrowhead)').on('mouseover', showLinkTooltip).on('mouseout', hideTooltip);
+
+
+
+
+
+
+
+
 
 
 
@@ -8090,7 +16002,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -8106,7 +16034,23 @@
 
 
 
+
+
+
+
+
+
+
+
             linkLabels.exit().remove();
+
+
+
+
+
+
+
+
 
 
 
@@ -8122,7 +16066,23 @@
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
+
+
+
+
 
 
 
@@ -8138,7 +16098,23 @@
 
 
 
+
+
+
+
+
+
+
+
             nodes.exit().remove();
+
+
+
+
+
+
+
+
 
 
 
@@ -8154,7 +16130,23 @@
 
 
 
+
+
+
+
+
+
+
+
             nodeEnter.append('circle').attr('r', d => d.size || 12).attr('fill', d => { const gid = d.groups && d.groups[0]; return gid && data.groups[gid] ? data.groups[gid].color : '#666'; });
+
+
+
+
+
+
+
+
 
 
 
@@ -8166,7 +16158,19 @@
 
 
 
+
+
+
+
             nodeEnter.append('text').attr('class', 'node-label').attr('dx', 16).attr('dy', 20).text(d => (d.groups || []).map(gid => { const g = data.groups[gid]; return g ? g.name : ''; }).filter(n => n).join('  '));
+
+
+
+
+
+
+
+
 
 
 
@@ -8182,7 +16186,23 @@
 
 
 
+
+
+
+
+
+
+
+
             simulation.nodes(data.nodes);
+
+
+
+
+
+
+
+
 
 
 
@@ -8198,7 +16218,23 @@
 
 
 
+
+
+
+
+
+
+
+
             simulation.alpha(0.8).restart();
+
+
+
+
+
+
+
+
 
 
 
@@ -8214,7 +16250,23 @@
 
 
 
+
+
+
+
+
+
+
+
                 const nodeRadius = d => d.size || 12; g.selectAll('.link').attr('x1', d => { const dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, dist = Math.sqrt(dx*dx+dy*dy) || 1; return d.source.x + dx/dist * nodeRadius(d.source); }).attr('y1', d => { const dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, dist = Math.sqrt(dx*dx+dy*dy) || 1; return d.source.y + dy/dist * nodeRadius(d.source); }).attr('x2', d => { const dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, dist = Math.sqrt(dx*dx+dy*dy) || 1; return d.target.x - dx/dist * nodeRadius(d.target); }).attr('y2', d => { const dx = d.target.x - d.source.x, dy = d.target.y - d.source.y, dist = Math.sqrt(dx*dx+dy*dy) || 1; return d.target.y - dy/dist * nodeRadius(d.target); });
+
+
+
+
+
+
+
+
 
 
 
@@ -8230,11 +16282,31 @@
 
 
 
+
+
+
+
+
+
+
+
                 g.selectAll('.node').attr('transform', d => `translate(${d.x},${d.y})`);
 
 
 
+
+
+
+
                 
+
+
+
+
+
+
+
+
 
 
 
@@ -8250,6 +16322,14 @@
 
 
 
+
+
+
+
+
+
+
+
             updateStats();
 
 
@@ -8258,7 +16338,31 @@
 
 
 
+
+
+
+
+
+
+
+
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -8282,7 +16386,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.getElementById('statChars').textContent = data.nodes.length;
+
+
+
+
+
+
+
+
 
 
 
@@ -8298,6 +16418,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -8306,7 +16434,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -8322,7 +16466,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const tooltip = document.getElementById('tooltip');
+
+
+
+
+
+
+
+
 
 
 
@@ -8338,7 +16498,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const groupsHtml = (d.groups || []).map(gid => { const g2 = data.groups[gid]; return g2 ? `<span class="tooltip-relation" style="background:${g2.color};margin-right:3px;">${g2.name}</span>` : ''; }).join('');
+
+
+
+
+
+
+
+
 
 
 
@@ -8354,7 +16530,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.getElementById('tooltip-info').innerHTML = groupsHtml + infoHtml;
+
+
+
+
+
+
+
+
 
 
 
@@ -8370,7 +16562,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const relHtml = relatedLinks.map(l => { const isSource = (l.source.id || l.source) === d.id; const other = isSource ? (l.target.id || l.target) : (l.source.id || l.source); const relName = (data.relationTypes && data.relationTypes[l.type]) ? data.relationTypes[l.type].name : (relationNames[l.type]||l.type); const extra = l.relation ? ':'+l.relation : ''; return isSource ? `<span class="tooltip-relation">${relName} → ${other}${extra}</span>` : `<span class="tooltip-relation">${other} → ${relName}${extra}</span>`; }).join(' ');
+
+
+
+
+
+
+
+
 
 
 
@@ -8386,7 +16594,23 @@
 
 
 
+
+
+
+
+
+
+
+
             tooltip.style.left = event.clientX + 15 + 'px';
+
+
+
+
+
+
+
+
 
 
 
@@ -8402,7 +16626,23 @@
 
 
 
+
+
+
+
+
+
+
+
             tooltip.classList.add('visible');
+
+
+
+
+
+
+
+
 
 
 
@@ -8418,6 +16658,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -8426,7 +16674,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -8442,7 +16706,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const tooltip = document.getElementById('tooltip');
+
+
+
+
+
+
+
+
 
 
 
@@ -8458,7 +16738,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.getElementById('tooltip-info').textContent = `${d.source.id || d.source} → ${d.target.id || d.target}`;
+
+
+
+
+
+
+
+
 
 
 
@@ -8474,7 +16770,23 @@
 
 
 
+
+
+
+
+
+
+
+
             tooltip.style.left = event.clientX + 15 + 'px';
+
+
+
+
+
+
+
+
 
 
 
@@ -8490,7 +16802,23 @@
 
 
 
+
+
+
+
+
+
+
+
             tooltip.classList.add('visible');
+
+
+
+
+
+
+
+
 
 
 
@@ -8506,7 +16834,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -8522,7 +16866,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -8538,7 +16898,23 @@
 
 
 
+
+
+
+
+
+
+
+
         function initContextMenu() {
+
+
+
+
+
+
+
+
 
 
 
@@ -8554,6 +16930,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -8562,7 +16946,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -8578,7 +16978,23 @@
 
 
 
+
+
+
+
+
+
+
+
             event.preventDefault();
+
+
+
+
+
+
+
+
 
 
 
@@ -8594,7 +17010,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const menu = document.getElementById('contextMenu');
+
+
+
+
+
+
+
+
 
 
 
@@ -8610,7 +17042,23 @@
 
 
 
+
+
+
+
+
+
+
+
             menu.style.top = event.clientY + 'px';
+
+
+
+
+
+
+
+
 
 
 
@@ -8626,6 +17074,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -8634,7 +17090,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -8650,7 +17122,23 @@
 
 
 
+
+
+
+
+
+
+
+
             event.preventDefault();
+
+
+
+
+
+
+
+
 
 
 
@@ -8666,7 +17154,23 @@
 
 
 
+
+
+
+
+
+
+
+
             const menu = document.getElementById('contextMenu');
+
+
+
+
+
+
+
+
 
 
 
@@ -8682,7 +17186,23 @@
 
 
 
+
+
+
+
+
+
+
+
             menu.style.top = event.clientY + 'px';
+
+
+
+
+
+
+
+
 
 
 
@@ -8698,6 +17218,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -8706,7 +17234,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -8722,7 +17266,23 @@
 
 
 
+
+
+
+
+
+
+
+
         function ctxViewRelations() { document.getElementById('contextMenu').classList.remove('visible'); if (contextMenuTarget) { const related = data.links.filter(l => (l.source.id || l.source) === contextMenuTarget.id || (l.target.id || l.target) === contextMenuTarget.id); alert(`【${contextMenuTarget.id}】的关系：\n${related.map(l => `${l.source.id||l.source} ${relationNames[l.type]||l.type} ${l.target.id||l.target}${l.relation?' ('+l.relation+')':''}`).join('\n') || '无'}`); } }
+
+
+
+
+
+
+
+
 
 
 
@@ -8738,6 +17298,14 @@
 
 
 
+
+
+
+
+
+
+
+
         function ctxDeleteChar() { document.getElementById('contextMenu').classList.remove('visible'); if (contextMenuTarget && confirm(`确定删除【${contextMenuTarget.id}】吗？`)) { deleteCharacter(contextMenuTarget.id); } }
 
 
@@ -8746,7 +17314,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -8762,7 +17346,23 @@
 
 
 
+
+
+
+
+
+
+
+
         function showConfirm(title, message, action) {
+
+
+
+
+
+
+
+
 
 
 
@@ -8778,7 +17378,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.getElementById('confirmMessage').textContent = message;
+
+
+
+
+
+
+
+
 
 
 
@@ -8794,7 +17410,23 @@
 
 
 
+
+
+
+
+
+
+
+
             document.getElementById('confirmModal').classList.add('visible');
+
+
+
+
+
+
+
+
 
 
 
@@ -8810,7 +17442,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -8826,7 +17474,23 @@
 
 
 
+
+
+
+
+
+
+
+
             if (pendingConfirmAction) pendingConfirmAction();
+
+
+
+
+
+
+
+
 
 
 
@@ -8842,6 +17506,14 @@
 
 
 
+
+
+
+
+
+
+
+
         }
 
 
@@ -8850,7 +17522,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -8866,7 +17554,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -8882,6 +17586,14 @@
 
 
 
+
+
+
+
+
+
+
+
         
 
 
@@ -8890,7 +17602,23 @@
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
+
+
+
+
 
 
 
@@ -8906,6 +17634,14 @@
 
 
 
+
+
+
+
+
+
+
+
     </script>
 
 
@@ -8914,7 +17650,16 @@
 
 
 
+
+
+
+
+
+
+
+
     <button class="expand-btn" id="expandBtn" onclick="expandEditor()">▶</button>
+
 </body>
 
 
@@ -8923,7 +17668,23 @@
 
 
 
+
+
+
+
+
+
+
+
 </html>
+
+
+
+
+
+
+
+
 
 
 
