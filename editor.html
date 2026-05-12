@@ -1334,6 +1334,7 @@
                     await switchGraph(urlGraphId);
                 } else {
                     updateGraphTitle();
+                    showGraphList();
                 }
                 updateGroupCheckboxes();
                 updateCharSelect();
@@ -1399,7 +1400,6 @@
                     updateGraph();
                     saveToLocal();
                     setSyncStatus('synced');
-                    showGraphList();
                 } catch (e) {
                     console.error('加载图谱失败:', e);
                     setSyncStatus('error');
