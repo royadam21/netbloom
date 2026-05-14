@@ -1,0 +1,2134 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>网罗众生--人物关系编辑器</title>
+
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); min-height: 100vh; color: #fff; }
+
+        
+
+        /* 顶部标题 */
+
+        .header { display: flex; align-items: center; justify-content: space-between; background: rgba(15, 25, 45, 0.98); padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 100; }
+
+        .header h1 { font-size: 18px; color: #ffd700; }
+
+        
+
+        /* 图谱选择 */
+
+        .graph-select-wrap { padding: 12px 15px; background: rgba(0,0,0,0.2); }
+
+        .graph-select-wrap label { display: block; font-size: 12px; color: #888; margin-bottom: 6px; }
+
+        .graph-select { width: 100%; padding: 12px 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; background: rgba(0,0,0,0.4); color: #fff; font-size: 15px; appearance: none; cursor: pointer; }
+
+        .graph-select option { background: #1a1a2e; }
+
+        
+
+        /* Tab 切换 */
+
+        .tabs { display: flex; background: rgba(0,0,0,0.3); padding: 0 10px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+        .tab { flex: 1; min-width: 80px; padding: 12px 8px; text-align: center; font-size: 13px; color: #888; border-bottom: 3px solid transparent; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
+
+        .tab.active { color: #ffd700; border-bottom-color: #ffd700; }
+
+        .tab:active { background: rgba(255,255,255,0.05); }
+
+        
+
+        /* 内容区域 */
+
+        .content { padding: 15px; }
+
+        .tab-content { display: none; }
+
+        .tab-content.active { display: block; }
+
+        
+
+        /* 通用卡片 */
+
+        .card { background: rgba(15, 25, 45, 0.95); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); }
+
+        .card-title { font-size: 14px; color: #ffd700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+
+        
+
+        /* 表单 */
+
+        .form-group { margin-bottom: 12px; }
+
+        .form-group label { display: block; font-size: 12px; color: #888; margin-bottom: 6px; }
+
+        .form-group input, .form-group select { width: 100%; padding: 12px 14px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; background: rgba(0,0,0,0.3); color: #fff; font-size: 15px; outline: none; }
+
+        .form-group input:focus, .form-group select:focus { border-color: #667eea; }
+
+        .form-group input::placeholder { color: #555; }
+
+        .form-group select option { background: #1a1a2e; }
+
+        
+
+        /* 颜色选择 */
+
+        .color-options { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .color-option { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; }
+
+        .color-option:hover, .color-option.selected { border-color: #fff; transform: scale(1.1); }
+
+        
+
+        /* 按钮 */
+
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
+
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+
+        .btn-primary:active { transform: scale(0.98); }
+
+        .btn-success { background: linear-gradient(135deg, #4ecdc4, #44a08d); color: #fff; }
+
+        .btn-danger { background: linear-gradient(135deg, #ff6b6b, #ee5a5a); color: #fff; }
+
+        .btn-sm { padding: 10px 14px; font-size: 13px; width: auto; }
+
+        .btn-group { display: flex; gap: 10px; }
+
+        .btn-group .btn { flex: 1; margin-top: 0; }
+
+        
+
+        /* 列表项 */
+
+        .item-list { max-height: 45vh; overflow-y: auto; margin-top: 12px; -webkit-overflow-scrolling: touch; }
+
+        .list-item { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+
+        .list-item-info { flex: 1; min-width: 0; }
+
+        .list-item-name { font-size: 14px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .list-item-desc { font-size: 12px; color: #666; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .list-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+        
+
+        /* 标签样式 */
+
+        .tag { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: rgba(102, 126, 234, 0.3); border-radius: 12px; font-size: 11px; margin: 2px; }
+
+        .tag-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        .tag-group { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+
+        
+
+        /* 关系颜色条 */
+
+        .relation-item { border-left: 4px solid; }
+
+        .relation-type { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 11px; margin-left: 6px; }
+
+        
+
+        /* 预览/消息 */
+
+        .msg-box { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); border-radius: 10px; padding: 14px 20px; text-align: center; z-index: 9999; display: none; }
+
+        .success-msg { background: rgba(78, 205, 196, 0.2); border: 1px solid #4ecdc4; color: #4ecdc4; }
+
+        .error-msg { background: rgba(255, 107, 107, 0.2); border: 1px solid #ff6b6b; color: #ff6b6b; }
+
+        
+
+        /* API 设置 */
+
+        
+
+        /* 空状态 */
+
+        .empty-state { text-align: center; padding: 30px; color: #666; font-size: 13px; }
+
+        
+
+        /* 选中项显示标签 */
+
+        .selected-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+        .selected-tag { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; background: rgba(102, 126, 234, 0.3); border-radius: 14px; font-size: 12px; cursor: pointer; border: 1px solid transparent; }
+
+        .selected-tag.selected { border-color: #667eea; background: rgba(102, 126, 234, 0.5); }
+
+        .selected-tag:active { transform: scale(0.95); }
+
+        
+
+        /* 加载状态 */
+
+        .loading { text-align: center; padding: 40px; color: #888; }
+
+        .loading::after { content: '...'; animation: dots 1.5s infinite; }
+
+        @keyframes dots { 0%{content:'.';} 33%{content:'..';} 66%{content:'...';} }
+
+
+
+        /* 编辑人物弹窗 */
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: center; justify-content: center; }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-box { background: rgba(15,25,45,0.98); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px; padding: 20px; padding-top: 40px; width: 90%; max-width: 480px; max-height: 90vh; overflow-y: auto; position: relative; }
+
+        .modal-box select { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 8px; padding: 10px 12px; width: 100%; font-size: 14px; }
+        .modal-box select option { background: #1a1a2e; color: #fff; }
+        .modal-box input, .modal-box textarea { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 8px; padding: 10px 12px; width: 100%; font-size: 14px; }
+
+        .modal-title { font-size: 16px; color: #ffd700; margin-bottom: 16px; text-align: center; }
+
+        .modal-close { position: absolute; top: 10px; right: 12px; background: none; border: none; color: #888; font-size: 22px; cursor: pointer; line-height: 1; }
+
+        .modal-row { margin-bottom: 16px; }
+
+        .modal-row label { display: block; margin-bottom: 6px; color: #c9d1d9; font-size: 13px; }
+
+        
+
+        .modal-row input, .modal-row select, .modal-row textarea { width: 100%; padding: 10px 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(0,0,0,0.3); color: #fff; font-size: 14px; }
+
+        .modal-row textarea { resize: vertical; min-height: 70px; }
+
+        .modal-actions { display: flex; gap: 10px; margin-top: 16px; }
+
+        .modal-actions .btn { margin-top: 0; }
+
+        .tag-toggle { display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s; user-select: none; }
+
+
+
+
+
+
+
+
+
+        #editCharTagWrap { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+
+        #editCharGroupWrap { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+
+
+
+        .tag-toggle.selected { border-color: #667eea; background: rgba(102,126,234,0.35); color: #fff; }
+
+        .tag-toggle:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.08); }
+
+
+
+        #previewBtn {
+
+            width: auto !important;
+
+            padding: 4px 10px !important;
+
+            font-size: 12px !important;
+
+            border-radius: 4px;
+
+            margin: 0 !important;
+
+            margin-left: auto !important;
+
+            flex-shrink: 0;
+
+        }
+
+</style>
+
+</head>
+
+<body>
+
+    <div class="header">
+
+        <h1>网罗众生--人物关系编辑器</h1>
+
+        <button class="btn btn-primary" id="previewBtn" onclick="openPreview()" style="display:none;margin-left:auto;margin-right:0;flex-shrink:0;">🔍 图谱预览</button>
+
+    </div>
+
+    
+
+    <!-- 图谱选择 -->
+
+    <div class="graph-select-wrap">
+
+        <label>📚 选择图谱</label>
+
+        <select class="graph-select" id="graphSelect" onchange="loadGraph()">
+
+            <option value="">加载中...</option>
+
+        </select>
+
+    </div>
+
+    
+
+    <!-- Tab 切换 -->
+
+    <div class="tabs">
+
+        <div class="tab active" data-tab="groups" onclick="switchTab('groups')">🏷️ 分组</div>
+
+        <div class="tab" data-tab="tags" onclick="switchTab('tags')">🏷️ 标签</div>
+
+        <div class="tab" data-tab="chars" onclick="switchTab('chars')">👤 人物</div>
+
+        <div class="tab" data-tab="rels" onclick="switchTab('rels')">🔗 关系</div>
+
+    </div>
+
+    
+
+    <div class="content">
+
+        <!-- ===== 分组 Tab ===== -->
+
+        <div class="tab-content active" id="tab-groups">
+
+            <div class="card">
+
+                <div class="card-title">➕ 添加分组</div>
+
+                <div class="form-group">
+
+                    <label>分组名称</label>
+
+                    <input type="text" id="groupName" placeholder="例如：男主角">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>分组颜色</label>
+
+                    <div class="color-options" id="groupColors"></div>
+
+                </div>
+
+                <button class="btn btn-primary" onclick="addGroup()">添加分组</button>
+
+            </div>
+
+            
+
+            <div class="card">
+
+                <div class="card-title">📋 分组列表</div>
+
+                <div class="item-list" id="groupList">
+
+                    <div class="empty-state">暂无分组</div>
+
+                </div>
+
+                <button class="btn btn-success" onclick="saveGroups()">💾 保存分组</button>
+
+            </div>
+
+        </div>
+
+        
+
+        <!-- ===== 标签 Tab ===== -->
+
+        <div class="tab-content" id="tab-tags">
+
+            <div class="card">
+
+                <div class="card-title">➕ 添加标签</div>
+
+                <div class="form-group">
+
+                    <label>标签名称</label>
+
+                    <input type="text" id="tagName" placeholder="例如：主角">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>标签颜色</label>
+
+                    <div class="color-options" id="tagColors"></div>
+
+                </div>
+
+                <button class="btn btn-primary" onclick="addTag()">添加标签</button>
+
+            </div>
+
+            
+
+            <div class="card">
+
+                <div class="card-title">📋 标签列表</div>
+
+                <div class="item-list" id="tagList">
+
+                    <div class="empty-state">暂无标签</div>
+
+                </div>
+
+                <button class="btn btn-success" onclick="saveTags()">💾 保存标签</button>
+
+            </div>
+
+        </div>
+
+        
+
+        <!-- ===== 人物 Tab ===== -->
+
+        <div class="tab-content" id="tab-chars">
+
+            <div class="card">
+
+                <div class="card-title">➕ 添加人物</div>
+
+                <div class="form-group">
+
+                    <label>人物名称 *</label>
+
+                    <input type="text" id="charName" placeholder="例如：韩立">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>所属分组</label>
+
+                    <select id="charGroup">
+
+                        <option value="">选择分组</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>人物标签</label>
+
+                    <div class="selected-tags" id="charTagSelect"></div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>简介（可选）</label>
+
+                    <input type="text" id="charInfo" placeholder="人物简介">
+
+                </div>
+
+                <button class="btn btn-primary" onclick="addCharacter()">添加人物</button>
+
+            </div>
+
+            
+
+            <div class="card">
+
+                <div class="card-title">📋 人物列表</div>
+
+                <div class="item-list" id="charList">
+
+                    <div class="empty-state">暂无人物</div>
+
+                </div>
+
+                <button class="btn btn-success" onclick="saveCharacters()">💾 保存人物</button>
+
+            </div>
+
+        </div>
+
+        
+
+        <!-- ===== 关系 Tab ===== -->
+
+        <div class="tab-content" id="tab-rels">
+
+            <div class="card">
+
+                <div class="card-title">🏷️ 关系类型管理</div>
+
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;" id="relTypeTags"></div>
+
+                <button class="btn btn-primary btn-sm" onclick="openEditRelTypeColorModal()" style="width:auto;padding:6px 12px;margin-bottom:10px;">🎨 改色</button>
+
+                <div style="display:flex;gap:8px;align-items:center;margin-top:8px;" id="addRelTypeForm">
+
+                    <input type="text" id="newRelTypeName" placeholder="新类型名称" style="flex:1;padding:8px 10px;border:1px solid rgba(255,255,255,0.2);border-radius:8px;background:rgba(0,0,0,0.3);color:#fff;font-size:13px;">
+
+                    <div style="display:flex;gap:6px;">
+
+                        <div class="color-option selected" data-color="#ff6b6b" style="background:#ff6b6b;width:28px;height:28px;" onclick="selectRelTypeColor('#ff6b6b')"></div>
+
+                        <div class="color-option" data-color="#4ecdc4" style="background:#4ecdc4;width:28px;height:28px;" onclick="selectRelTypeColor('#4ecdc4')"></div>
+
+                        <div class="color-option" data-color="#ffd700" style="background:#ffd700;width:28px;height:28px;" onclick="selectRelTypeColor('#ffd700')"></div>
+
+                        <div class="color-option" data-color="#bb8fce" style="background:#bb8fce;width:28px;height:28px;" onclick="selectRelTypeColor('#bb8fce')"></div>
+
+                    </div>
+
+                    <button class="btn btn-primary btn-sm" onclick="addRelType()" style="width:auto;padding:8px 12px;">添加</button>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <div class="card-title">➕ 添加关系</div>
+
+                <div class="form-group">
+
+                    <label>人物 A</label>
+
+                    <select id="relA">
+
+                        <option value="">选择人物</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>人物 B</label>
+
+                    <select id="relB">
+
+                        <option value="">选择人物</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>关系类型</label>
+
+                    <select id="relType">
+
+                        <option value="">请先添加关系类型</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>关系描述</label>
+
+                    <input type="text" id="relDesc" placeholder="例如：义结金兰">
+
+                </div>
+
+                <button class="btn btn-primary" onclick="addRelation()">添加关系</button>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <div class="card-title">📋 关系列表</div>
+
+                <div class="item-list" id="relList">
+
+                    <div class="empty-state">暂无关系</div>
+
+                </div>
+
+                <button class="btn btn-success" onclick="saveRelations()">💾 保存关系</button>
+
+            </div>
+
+        </div>
+
+        
+
+        <!-- 消息提示 -->
+
+        <div class="msg-box success-msg" id="successMsg"></div>
+
+        <div class="msg-box error-msg" id="errorMsg"></div>
+
+    </div>
+
+    
+
+    
+
+    <script>
+
+        // ========== 变量 ==========
+
+        let currentGraphId = null;
+        let editRelIdx = null;
+
+        let currentData = null;
+
+        let groups = {};
+
+        let tags = {};
+
+        let characters = [];
+
+        let relations = [];
+
+        let nextGroupId = 1;
+
+        let nextTagId = 1;
+
+        let relationTypes = {};
+
+        let nextRelTypeId = 1;
+
+        let selectedGroupColor = '#ff6b6b';
+
+        let selectedTagColor = '#4ecdc4';
+
+        let selectedCharTags = [];
+
+        let selectedRelTypeColor = '#ff6b6b';
+
+        
+
+        // 预设颜色
+
+        const colors = ['#ff6b6b', '#ffd700', '#9b59b6', '#4ecdc4', '#45b7d1', '#ff9ff3', '#f7dc6f', '#bb8fce', '#ff8c00', '#00CED1'];
+
+        
+
+        // 默认关系类型（用于初始化）
+
+        const defaultRelationTypes = {
+
+            'friend': { name: '朋友', color: '#45b7d1' },
+
+            'brother': { name: '结义兄弟', color: '#ff6b6b' },
+
+            'family': { name: '亲人', color: '#ff6b6b' },
+
+            'lover': { name: '恋人', color: '#ffd700' },
+
+            'teacher': { name: '师徒', color: '#f7dc6f' },
+
+            'master': { name: '主仆', color: '#4ecdc4' },
+
+            'enemy': { name: '敌对', color: '#dda0dd' },
+
+            'rival': { name: '竞争', color: '#bb8fce' }
+
+        };
+
+        
+
+        // ========== 初始化 ==========
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            initColorPickers();
+
+            loadGraphList();
+
+        });
+
+        
+
+        function initColorPickers() {
+
+            const groupColors = document.getElementById('groupColors');
+
+            const tagColors = document.getElementById('tagColors');
+
+            
+
+            groupColors.innerHTML = colors.map(c => `<div class="color-option${c === selectedGroupColor ? ' selected' : ''}" data-color="${c}" style="background:${c};" onclick="selectGroupColor('${c}')"></div>`).join('');
+
+            tagColors.innerHTML = colors.map(c => `<div class="color-option${c === selectedTagColor ? ' selected' : ''}" data-color="${c}" style="background:${c};" onclick="selectTagColor('${c}')"></div>`).join('');
+
+        }
+
+        
+
+        function selectGroupColor(color) {
+
+            selectedGroupColor = color;
+
+            document.querySelectorAll('#groupColors .color-option').forEach(e => e.classList.remove('selected'));
+
+            document.querySelector(`#groupColors [data-color="${color}"]`).classList.add('selected');
+
+        }
+
+        
+
+        function selectTagColor(color) {
+
+            selectedTagColor = color;
+
+            document.querySelectorAll('#tagColors .color-option').forEach(e => e.classList.remove('selected'));
+
+            document.querySelector(`#tagColors [data-color="${color}"]`).classList.add('selected');
+
+        }
+
+        
+
+        // ========== Tab 切换 ==========
+
+        function switchTab(tab) {
+
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
+
+            document.getElementById(`tab-${tab}`).classList.add('active');
+
+        }
+
+
+
+        function showError(msg) {
+
+            const errDiv = document.getElementById('errorMsg'); if (!errDiv) return;
+
+            errDiv.textContent = msg;
+
+            errDiv.style.display = 'block';
+
+            setTimeout(() => { errDiv.style.display = 'none'; }, 3000);
+
+        }
+
+        function openPreview() {
+
+            const graphId = document.getElementById('graphSelect').value;
+
+            if (!graphId) { showError('请先选择一个图谱'); return; }
+
+            window.location.href = 'graph.html?graphId=' + encodeURIComponent(graphId);
+
+        }
+
+
+
+        // ========== 加载图谱列表 ==========
+
+        function loadGraphList() {
+
+            const apiBase = (window.location.protocol === 'file:' || !window.location.hostname.includes('.')) ? 'https://netbloom.1tik.top' : window.location.origin;
+
+            fetch(`${apiBase}/api/graphs`)
+
+                .then(r => r.json())
+
+                .then(result => {
+
+                    const select = document.getElementById('graphSelect');
+
+                    if (!result.graphs || result.graphs.length === 0) {
+
+                        select.innerHTML = '<option value="">暂无可用图谱</option>';
+
+                        return;
+
+                    }
+
+                    // 按名称排序，查找"凡人修仙传"
+
+                    const sorted = result.graphs.sort((a, b) => a.name.localeCompare(b.name));
+
+                    let defaultSelected = sorted[0].id;
+
+                    sorted.forEach(g => {
+
+                        if (g.name.includes('凡人修仙传')) defaultSelected = g.id;
+
+                    });
+
+                    
+
+                    select.innerHTML = sorted.map(g => `<option value="${g.id}">${g.name} (${g.node_count}人/${g.link_count}条)</option>`).join('');
+
+                    select.value = defaultSelected;
+
+                    
+
+                    if (defaultSelected) loadGraph();
+
+                })
+
+                .catch(err => {
+
+                    document.getElementById('graphSelect').innerHTML = '<option value="">加载失败</option>';
+
+                    showError('加载图谱列表失败: ' + err.message);
+
+                });
+
+        }
+
+        
+
+        // ========== 加载图谱数据 ==========
+
+        function loadGraph() {
+
+            const graphId = document.getElementById('graphSelect').value;
+
+            if (!graphId) return;
+
+            
+
+            const apiBase = (window.location.protocol === 'file:' || !window.location.hostname.includes('.')) ? 'https://netbloom.1tik.top' : window.location.origin;
+
+            currentGraphId = graphId;
+
+            
+
+            const loadingHtml = '<div class="loading">加载中</div>';
+
+            document.getElementById('groupList').innerHTML = loadingHtml;
+
+            document.getElementById('tagList').innerHTML = loadingHtml;
+
+            document.getElementById('charList').innerHTML = loadingHtml;
+
+            document.getElementById('relList').innerHTML = loadingHtml;
+
+            
+
+            fetch(`${apiBase}/api/graphs/${graphId}`)
+
+                .then(r => r.json())
+
+                .then(result => {
+
+                    currentData = result.data || result;
+
+                    
+
+                    // 初始化数据结构
+
+                    groups = currentData.groups || {};
+
+                    tags = currentData.tags || {};
+
+                    characters = currentData.nodes || [];
+
+                    relations = currentData.links || [];
+
+                    relationTypes = currentData.relationTypes || JSON.parse(JSON.stringify(defaultRelationTypes));
+
+                    nextGroupId = currentData.nextGroupId || Object.keys(groups).length + 1;
+
+                    nextTagId = currentData.nextTagId || Object.keys(tags).length + 1;
+
+                    nextRelTypeId = currentData.nextRelTypeId || Object.keys(relationTypes).length + 1;
+
+                    
+
+                    updateAllLists();
+
+                    updateGroupSelect();
+
+                    updateTagSelect();
+
+                    updateRelSelects();
+
+                    updateRelTypeSelect();
+
+                    updateRelTypeTags();
+
+                    _pageReady = true;
+
+            document.getElementById('previewBtn').style.display = 'inline-block';
+
+                })
+
+                .catch(err => {
+
+                    showError('加载图谱数据失败: ' + err.message);
+
+                });
+
+        }
+
+        
+
+        // ========== 更新所有列表 ==========
+
+        function updateAllLists() {
+
+            updateGroupList();
+
+            updateTagList();
+
+            updateCharList();
+
+            updateRelList();
+
+        }
+
+        
+
+        // ========== 分组操作 ==========
+
+        function addGroup() {
+
+            const name = document.getElementById('groupName').value.trim();
+
+            if (!name) { showError('请输入分组名称'); return; }
+
+            if (Object.values(groups).some(g => g.name === name)) { showError('分组已存在'); return; }
+
+            
+
+            groups[nextGroupId] = { name, color: selectedGroupColor };
+
+            nextGroupId++;
+
+            document.getElementById('groupName').value = '';
+
+            updateGroupList();
+
+            updateGroupSelect();
+
+        }
+
+        
+
+        function deleteGroup(id) {
+
+            if (!confirm('确定要删除分组 "' + groups[id].name + '" 吗？删除后，该分组将从所有人物中移除。')) return;
+
+            delete groups[id];
+
+            // 同步删除人物中该分组的引用
+
+            characters.forEach(c => { c.groups = c.groups.filter(gid => gid != id); });
+
+            updateGroupList();
+
+            updateCharList();
+
+        }
+
+        
+
+        function updateGroupList() {
+
+            const list = document.getElementById('groupList');
+
+            const arr = Object.entries(groups);
+
+            if (arr.length === 0) {
+
+                list.innerHTML = '<div class="empty-state">暂无分组</div>';
+
+                return;
+
+            }
+
+            list.innerHTML = arr.map(([id, g]) => `
+
+                <div class="list-item">
+
+                    <div class="list-item-info">
+
+                        <div class="list-item-name">
+
+                            <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${g.color};margin-right:8px;"></span>
+
+                            ${g.name}
+
+                        </div>
+
+                    </div>
+
+                    <div class="list-item-actions">
+
+                        <button class="btn btn-primary btn-sm" onclick="openEditGroupColor(${id})">改色</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteGroup(${id})">删除</button>
+
+                    </div>
+
+                </div>
+
+            `).join('');
+
+        }
+
+        
+
+        function updateGroupSelect() {
+
+            const select = document.getElementById('charGroup');
+
+            const arr = Object.entries(groups);
+
+            select.innerHTML = '<option value="">选择分组</option>' + arr.map(([id, g]) => `<option value="${id}">${g.name}</option>`).join('');
+
+        }
+
+        
+
+        function saveGroups() {
+
+            if (!currentGraphId) { showError('请先选择图谱'); return; }
+
+            currentData.groups = groups;
+
+            currentData.nextGroupId = nextGroupId;
+
+            saveToServer();
+
+        }
+
+        
+
+        // ========== 标签操作 ==========
+
+        function addTag() {
+
+            const name = document.getElementById('tagName').value.trim();
+
+            if (!name) { showError('请输入标签名称'); return; }
+
+            if (Object.values(tags).some(t => t.name === name)) { showError('标签已存在'); return; }
+
+            
+
+            tags[nextTagId] = { name, color: selectedTagColor };
+
+            nextTagId++;
+
+            document.getElementById('tagName').value = '';
+
+            updateTagList();
+
+            updateTagSelect();
+
+        }
+
+        
+
+        function deleteTag(id) {
+
+            if (!confirm('确定要删除标签 "' + tags[id].name + '" 吗？删除后，该标签将从所有人物中移除。')) return;
+
+            delete tags[id];
+
+            // 同步删除人物中该标签的引用
+
+            characters.forEach(c => { c.tags = (c.tags || []).filter(tid => tid != id); });
+
+            updateTagList();
+
+            updateTagSelect();
+
+            updateCharList();
+
+        }
+
+        
+
+        function updateTagList() {
+
+            const list = document.getElementById('tagList');
+
+            const arr = Object.entries(tags);
+
+            if (arr.length === 0) {
+
+                list.innerHTML = '<div class="empty-state">暂无标签</div>';
+
+                return;
+
+            }
+
+            list.innerHTML = arr.map(([id, t]) => `
+
+                <div class="list-item">
+
+                    <div class="list-item-info">
+
+                        <div class="list-item-name">
+
+                            <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${t.color};margin-right:8px;"></span>
+
+                            ${t.name}
+
+                        </div>
+
+                    </div>
+
+                    <div class="list-item-actions">
+
+                        <button class="btn btn-primary btn-sm" onclick="openEditTagColor(${id})">改色</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteTag(${id})">删除</button>
+
+                    </div>
+
+                </div>
+
+            `).join('');
+
+        }
+
+        
+
+        function updateTagSelect() {
+
+            const container = document.getElementById('charTagSelect');
+
+            const arr = Object.entries(tags);
+
+            if (arr.length === 0) {
+
+                container.innerHTML = '<div style="color:#666;font-size:12px;">暂无标签，请先添加</div>';
+
+                return;
+
+            }
+
+            container.innerHTML = arr.map(([id, t]) => `
+
+                <div class="selected-tag ${selectedCharTags.includes(parseInt(id)) ? 'selected' : ''}" data-id="${id}" onclick="toggleCharTag(${id})">
+
+                    <span style="width:8px;height:8px;border-radius:50%;background:${t.color};display:inline-block;"></span>
+
+                    ${t.name}
+
+                </div>
+
+            `).join('');
+
+        }
+
+        
+
+        function toggleCharTag(tagId) {
+
+            const idx = selectedCharTags.indexOf(tagId);
+
+            if (idx >= 0) {
+
+                selectedCharTags.splice(idx, 1);
+
+            } else {
+
+                selectedCharTags.push(tagId);
+
+            }
+
+            updateTagSelect();
+
+        }
+
+        
+
+        function saveTags() {
+
+            if (!currentGraphId) { showError('请先选择图谱'); return; }
+
+            currentData.tags = tags;
+
+            currentData.nextTagId = nextTagId;
+
+            saveToServer();
+
+        }
+
+        
+
+        // ========== 人物操作 ==========
+
+        function addCharacter() {
+
+            const name = document.getElementById('charName').value.trim();
+
+            const groupId = parseInt(document.getElementById('charGroup').value) || null;
+
+            const info = document.getElementById('charInfo').value.trim();
+
+            
+
+            if (!name) { showError('请输入人物名称'); return; }
+
+            if (characters.some(c => c.id === name)) { showError('该人物已存在'); return; }
+
+            
+
+            const char = { 
+
+                id: name, 
+
+                groups: groupId ? [groupId] : [], 
+
+                tags: [...selectedCharTags],
+
+                info, 
+
+                size: 12 
+
+            };
+
+            characters.push(char);
+
+            
+
+            document.getElementById('charName').value = '';
+
+            document.getElementById('charInfo').value = '';
+
+            selectedCharTags = [];
+
+            updateCharList();
+
+            updateRelSelects();
+
+            updateTagSelect(); // 刷新标签选择状态
+
+        }
+
+        
+
+        function deleteCharacter(name) {
+
+            if (!confirm('确定要删除人物 "' + name + '" 吗？该人物的所有关系也将一并删除。')) return;
+
+            characters = characters.filter(c => c.id !== name);
+
+            relations = relations.filter(r => r.source !== name && r.target !== name);
+
+            updateCharList();
+
+            updateRelList();
+
+            updateRelSelects();
+
+        }
+
+        
+
+        function updateCharList() {
+
+            const list = document.getElementById('charList');
+
+            if (characters.length === 0) {
+
+                list.innerHTML = '<div class="empty-state">暂无人物</div>';
+
+                return;
+
+            }
+
+            list.innerHTML = characters.map(c => {
+
+                const groupNames = c.groups.map(gid => groups[gid] && groups[gid].name || '').filter(Boolean).join(', ');
+
+                const tagHtml = (c.tags || []).map(tid => {
+
+                    const t = tags[tid];
+
+                    return t ? `<span class="tag" style="background:${t.color}40;"><span class="tag-dot" style="background:${t.color};"></span>${t.name}</span>` : '';
+
+                }).join('');
+
+                return `
+
+                    <div class="list-item">
+
+                        <div class="list-item-info">
+
+                            <div class="list-item-name">${c.id}</div>
+
+                            ${tagHtml ? `<div class="tag-group">${tagHtml}</div>` : ''}
+
+                        </div>
+
+                        <div class="list-item-actions">
+
+                            <button class="btn btn-primary btn-sm" onclick="openEditCharModal('${c.id}')" style="width:auto;padding:8px 10px;">编辑</button>
+
+                            <button class="btn btn-danger btn-sm" onclick="deleteCharacter('${c.id}')">删除</button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join('');
+
+        }
+
+        
+
+        function updateRelSelects() {
+
+            const selectA = document.getElementById('relA');
+
+            const selectB = document.getElementById('relB');
+
+            const opts = '<option value="">选择人物</option>' + characters.filter(c => c.id !== undefined && c.id !== null && c.id !== 'undefined' && c.id !== '').map(c => `<option value="${c.id}">${c.id}</option>`).join('');
+
+            selectA.innerHTML = opts;
+
+            selectB.innerHTML = opts;
+
+        }
+
+        
+
+        function saveCharacters() {
+
+            if (!currentGraphId) { showError('请先选择图谱'); return; }
+
+            currentData.nodes = characters;
+
+            saveToServer();
+
+        }
+
+        
+
+        // ========== 关系操作 ==========
+
+        function selectRelTypeColor(color) {
+
+            selectedRelTypeColor = color;
+
+            document.querySelectorAll('#addRelTypeForm .color-option').forEach(e => e.classList.remove('selected'));
+
+            document.querySelector(`#addRelTypeForm [data-color="${color}"]`).classList.add('selected');
+
+        }
+
+        
+
+        // ========== 关系类型操作 ==========
+        function saveRelTypes() {
+            if (!currentGraphId) { showError('请先选择图谱'); return; }
+            currentData.relationTypes = relationTypes;
+            currentData.nextRelTypeId = nextRelTypeId;
+            saveToServer();
+        }
+
+
+        function addRelType() {
+
+            const name = document.getElementById('newRelTypeName').value.trim();
+
+            if (!name) { showError('请输入类型名称'); return; }
+
+            if (Object.values(relationTypes).some(t => t.name === name)) { showError('类型已存在'); return; }
+
+            
+
+            // 生成短ID
+
+            const id = 'rt_' + nextRelTypeId;
+
+            relationTypes[id] = { name, color: selectedRelTypeColor };
+
+            nextRelTypeId++;
+
+            document.getElementById('newRelTypeName').value = '';
+
+            updateRelTypeTags();
+
+            updateRelTypeSelect();
+
+        }
+
+        
+
+        function deleteRelType(id) {
+
+            if (!confirm('确定要删除关系类型 "' + relationTypes[id].name + '" 吗？删除后，所有该类型的关系也将被移除。')) return;
+
+            delete relationTypes[id];
+
+            // 同步删除关系中该类型
+
+            relations = relations.filter(r => r.type !== id);
+
+            updateRelTypeTags();
+
+            updateRelTypeSelect();
+
+            updateRelList();
+
+        }
+
+        
+
+        function updateRelTypeTags() {
+
+            const container = document.getElementById('relTypeTags');
+
+            const arr = Object.entries(relationTypes);
+
+            if (arr.length === 0) {
+
+                container.innerHTML = '<div style="color:#666;font-size:12px;">暂无关系类型</div>';
+
+                return;
+
+            }
+
+            container.innerHTML = arr.map(([id, t]) => `
+
+                <span class="tag" style="background:${t.color}40;cursor:pointer;" onclick="deleteRelType('${id}')" title="点击删除">
+
+                    <span class="tag-dot" style="background:${t.color};"></span>
+
+                    ${t.name} ×
+
+                </span>
+
+            `).join('');
+
+        }
+
+        
+
+        function updateRelTypeSelect() {
+
+            const select = document.getElementById('relType');
+
+            const arr = Object.entries(relationTypes);
+
+            if (arr.length === 0) {
+
+                select.innerHTML = '<option value="">请先添加关系类型</option>';
+
+                return;
+
+            }
+
+            select.innerHTML = '<option value="">选择关系类型</option>' + arr.map(([id, t]) => `<option value="${id}">${t.name}</option>`).join('');
+
+        }
+
+        
+
+        function addRelation() {
+
+            const source = document.getElementById('relA').value;
+
+            const target = document.getElementById('relB').value;
+
+            const type = document.getElementById('relType').value;
+
+            const relation = document.getElementById('relDesc').value.trim();
+
+            
+
+            if (!source) { showError('请选择人物 A'); return; }
+
+            if (!target) { showError('请选择人物 B'); return; }
+
+            if (!type) { showError('请选择关系类型'); return; }
+
+            if (source === target) { showError('请选择不同的人物'); return; }
+
+            // 允许两人多条不同类型的关系，但同类型不能重复
+            if (relations.some(r => {
+                const s = typeof r.source === 'object' ? r.source.id || r.source.name : r.source;
+                const t = typeof r.target === 'object' ? r.target.id || r.target.name : r.target;
+                const samePair = (s === source && t === target) || (s === target && t === source);
+                return samePair && r.type === type;
+            })) {
+                const rtName = (relationTypes[type] || {}).name || type;
+                showError(rtName + ' 关系已存在（两人同类型只能有一条）'); return;
+            }
+
+            
+
+            relations.push({ source, target, type, relation });
+
+            document.getElementById('relDesc').value = '';
+
+            updateRelList();
+
+        }
+
+        
+
+        function deleteRelation(idx) {
+
+            if (!confirm('确定要删除这条关系吗？')) return;
+
+            relations.splice(idx, 1);
+
+            updateRelList();
+
+        }
+
+        
+
+        function updateRelList() {
+
+            const list = document.getElementById('relList');
+
+            if (relations.length === 0) {
+
+                list.innerHTML = '<div class="empty-state">暂无关系</div>';
+
+                return;
+
+            }
+
+            list.innerHTML = relations.map((r, idx) => {
+
+                const rt = relationTypes[r.type] || { name: r.type, color: '#fff' };
+
+                return `
+
+                    <div class="list-item relation-item" style="border-color:${rt.color};">
+
+                        <div class="list-item-info">
+
+                            <div class="list-item-name">${typeof r.source === "object" ? (r.source.name || r.source.id) : r.source} → <span class="relation-type" style="background:${rt.color}40;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">${rt.name}</span>${r.relation ? "<span style='color:#aaa;font-size:11px;margin-left:8px;'>【" + r.relation + "】</span>" : ""} → ${typeof r.target === "object" ? (r.target.name || r.target.id) : r.target}</div>
+
+                        </div>
+
+                        <div class="list-item-actions">
+
+                            <button class="btn btn-primary btn-sm" onclick="openEditRelationModal(${idx})">编辑</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteRelation(${idx})">删除</button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join('');
+
+        }
+
+        
+
+        function saveRelations() {
+
+            if (!currentGraphId) { showError('请先选择图谱'); return; }
+
+            currentData.links = relations;
+
+            currentData.relationTypes = relationTypes;
+
+            currentData.nextRelTypeId = nextRelTypeId;
+
+            saveToServer();
+
+        }
+
+        
+
+        // ========== 保存到服务器 ==========
+
+        function saveToServer() {
+
+            const apiBase = (window.location.protocol === 'file:' || !window.location.hostname.includes('.')) ? 'https://netbloom.1tik.top' : window.location.origin;
+
+            
+
+            fetch(`${apiBase}/api/graphs/${currentGraphId}`, {
+
+                method: 'PUT',
+
+                headers: { 'Content-Type': 'application/json' },
+
+                body: JSON.stringify({
+
+                    name: currentData.graphName || document.getElementById('graphSelect').selectedOptions[0].text.split(' (')[0],
+
+                    data: currentData
+
+                })
+
+            })
+
+            .then(r => r.json())
+
+            .then(result => {
+
+                showSuccess('✅ 保存成功！');
+
+            })
+
+            .catch(err => {
+
+                showError('保存失败: ' + err.message);
+
+            });
+
+        }
+
+        
+
+        // ========== 消息提示 ==========
+
+        function showSuccess(msg) {
+
+            const el = document.getElementById('successMsg'); if (!el) return;
+
+            el.textContent = msg;
+
+            el.style.display = 'block';
+
+            const errEl = document.getElementById('errorMsg');
+
+            if (errEl) errEl.style.display = 'none';
+
+            setTimeout(() => { el.style.display = 'none'; }, 3000);
+
+        }
+
+        
+
+        // ========== 编辑人物弹窗 ==========
+
+        let editCharOriginalId = null;
+
+        let _pageReady = false;
+
+
+
+        function openEditCharModal(name) {
+
+            if (!_pageReady) return;
+
+            const ch = characters.find(x => x.id === name);
+
+            if (!ch) return;
+
+            editCharOriginalId = name;
+
+            document.getElementById('editCharName').value = ch.id;
+
+            document.getElementById('editCharInfo').value = ch.info || '';
+
+            
+
+            // 标签
+
+            const tagWrap = document.getElementById('editCharTagWrap');
+
+            tagWrap.innerHTML = Object.entries(tags).map(([tid, t]) => {
+
+                const isSelected = (ch.tags || []).findIndex(tid2 => tid2 == tid) >= 0;
+
+                return '<div class="tag-toggle' + (isSelected ? ' selected' : '') + '" data-tid="' + tid + '" onclick="this.classList.toggle(\'selected\')">' +
+
+                    '<span class="tag-dot" style="background:' + t.color + ';"></span>' + t.name +
+
+                    '</div>';
+
+            }).join('');
+
+            
+
+            // 分组
+
+            const groupWrap = document.getElementById('editCharGroupWrap');
+
+            groupWrap.innerHTML = Object.entries(groups).map(([gid, g]) => {
+
+                const isSelected = (ch.groups || []).findIndex(gid2 => gid2 == gid) >= 0;
+
+                return '<div class="tag-toggle' + (isSelected ? ' selected' : '') + '" data-gid="' + gid + '" onclick="this.classList.toggle(\'selected\')">' +
+
+                    '<span class="tag-dot" style="background:' + g.color + ';"></span>' + g.name +
+
+                    '</div>';
+
+            }).join('');
+
+            
+
+            document.getElementById('editCharModal').classList.add('active');
+
+        }
+
+
+
+        function closeEditCharModal() {
+
+            document.getElementById('editCharModal').classList.remove('active');
+
+            editCharOriginalId = null;
+
+        }
+
+        // 分组下拉展开/收起
+
+        
+
+
+
+        // 更新分组下拉选项
+
+        
+
+
+
+        // 复选框变化时同步显示文字
+
+        
+
+
+
+        // 更新显示文字
+
+        
+
+
+
+
+
+
+        function openEditRelationModal(idx) {
+            const r = relations[idx];
+            if (!r) return;
+            editRelIdx = idx;
+            // Populate source/target selects with all character names
+            const names = characters.map(c => c.id).filter(n => n !== undefined && n !== null && n !== "undefined" && n !== "");
+            const sourceSel = document.getElementById('editRelSource');
+            const targetSel = document.getElementById('editRelTarget');
+            const typeSel = document.getElementById('editRelType');
+            sourceSel.innerHTML = '<option value="">选择人物</option>' + names.map(n => `<option value="${n}" ${n === r.source ? 'selected' : ''}>${n}</option>`).join('');
+            targetSel.innerHTML = '<option value="">选择人物</option>' + names.map(n => `<option value="${n}" ${n === r.target ? 'selected' : ''}>${n}</option>`).join('');
+            // Relation types
+            typeSel.innerHTML = Object.keys(relationTypes).map(t => {
+                const rt = relationTypes[t];
+                return `<option value="${t}" ${t === r.type ? 'selected' : ''}>${rt.name || t}</option>`;
+            }).join('');
+            document.getElementById('editRelDesc').value = r.relation || '';
+            document.getElementById('editRelModal').style.display = 'flex';
+        }
+
+        function closeEditRelationModal() {
+            document.getElementById('editRelModal').style.display = 'none';
+            editRelIdx = null;
+        }
+
+        function saveEditRelation() {
+            if (editRelIdx === null) return;
+            const source = document.getElementById('editRelSource').value;
+            const target = document.getElementById('editRelTarget').value;
+            const type = document.getElementById('editRelType').value;
+            const relation = document.getElementById('editRelDesc').value.trim();
+            if (!source || !target || !type) { showError('请填写完整'); return; }
+            if (source === target) { showError('请选择不同的人物'); return; }
+            // Check duplicate (excluding self)
+            if (relations.some((r, i) => {
+                if (i === editRelIdx) return false;
+                const s = typeof r.source === 'object' ? r.source.id || r.source.name : r.source;
+                const t = typeof r.target === 'object' ? r.target.id || r.target.name : r.target;
+                const samePair = (s === source && t === target) || (s === target && t === source);
+                return samePair && r.type === type;
+            })) {
+                const rtName = (relationTypes[type] || {}).name || type;
+                showError(rtName + ' 关系已存在'); return;
+            }
+            relations[editRelIdx] = { source, target, type, relation };
+            closeEditRelationModal();
+            updateRelList();
+            saveRelations();
+        }
+
+
+        function saveEditChar() {
+
+            const newName = document.getElementById('editCharName').value.trim();
+
+            const newInfo = document.getElementById('editCharInfo').value.trim();
+
+            const newTags = [...document.querySelectorAll('#editCharTagWrap .tag-toggle.selected')].map(t => t.getAttribute('data-tid'));
+
+            const newGroups = [...document.querySelectorAll('#editCharGroupWrap .tag-toggle.selected')].map(t => t.getAttribute('data-gid'));
+
+
+
+            if (!newName) { showError('请输入人物名称'); return; }
+
+            if (newName !== editCharOriginalId && characters.some(c => c.id === newName)) { showError('该人物已存在'); return; }
+
+
+
+            const c = characters.find(x => x.id === editCharOriginalId);
+
+            if (!c) return;
+
+
+
+            // 如果改了名字，同步关系表里的source/target
+
+            if (newName !== editCharOriginalId) {
+
+                relations.forEach(r => {
+
+                    if (r.source === editCharOriginalId) r.source = newName;
+
+                    if (r.target === editCharOriginalId) r.target = newName;
+
+                });
+
+            }
+
+
+
+            c.id = newName;
+
+            c.info = newInfo;
+
+            c.tags = newTags;
+
+            c.groups = newGroups;
+
+            closeEditCharModal();
+
+            updateCharList();
+
+            updateRelList();
+
+            updateRelSelects();
+
+            showSuccess('人物已更新');
+
+        }
+
+
+        // ========== 改颜色 ==========
+        let editingColorTarget = null; // { type: 'tag'|'group', id }
+        const colorPresetPalette = ['#ff6b6b','#ff9f43','#ffd700','#a8e6cf','#4ecdc4','#45b7d1','#667eea','#764ba2','#e056fd','#f8b739','#6b5b95','#88d8b0','#ff69b4','#00ced1','#ffa07a','#98d8c8'];
+
+        function openEditTagColor(tagId) {
+            editingColorTarget = { type: 'tag', id: tagId };
+            document.getElementById('editColorTitle').textContent = '更改标签颜色';
+            const t = tags[tagId];
+            const color = t ? t.color : '#ff6b6b';
+            document.getElementById('colorPicker').value = color;
+            document.getElementById('colorPreview').style.background = color;
+            renderColorPresets(color);
+            document.getElementById('editColorModal').style.display = 'flex';
+        }
+
+        function openEditGroupColor(groupId) {
+            editingColorTarget = { type: 'group', id: groupId };
+            document.getElementById('editColorTitle').textContent = '更改分组颜色';
+            const g = groups[groupId];
+            const color = g ? g.color : '#ff6b6b';
+            document.getElementById('colorPicker').value = color;
+            document.getElementById('colorPreview').style.background = color;
+            renderColorPresets(color);
+            document.getElementById('editColorModal').style.display = 'flex';
+        }
+
+        function renderColorPresets(selected) {
+            const el = document.getElementById('colorPresets');
+            el.innerHTML = colorPresetPalette.map(c => `<button onclick="selectPresetColor('${c}')" style="width:32px;height:32px;border-radius:50%;background:${c};border:${c===selected?'3px solid #fff':'2px solid rgba(255,255,255,0.3)'};cursor:pointer;margin:4px;"></button>`).join('');
+        }
+
+        function selectPresetColor(color) {
+            document.getElementById('colorPicker').value = color;
+            document.getElementById('colorPreview').style.background = color;
+            renderColorPresets(color);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const cp = document.getElementById('colorPicker');
+            if (cp) cp.addEventListener('input', function() {
+                document.getElementById('colorPreview').style.background = this.value;
+                renderColorPresets(this.value);
+            });
+        });
+
+        function closeEditColorModal() {
+            document.getElementById('editColorModal').style.display = 'none';
+            editingColorTarget = null;
+        }
+
+        function saveColorChange() {
+            if (!editingColorTarget) return;
+            const color = document.getElementById('colorPicker').value;
+            if (editingColorTarget.type === 'tag') {
+                if (tags[editingColorTarget.id]) tags[editingColorTarget.id].color = color;
+                updateTagList();
+                saveTags();
+            } else {
+                if (groups[editingColorTarget.id]) groups[editingColorTarget.id].color = color;
+                updateGroupList();
+                saveGroups();
+            }
+            closeEditColorModal();
+        }
+
+
+        // ========== 关系类型改色 ==========
+        const relTypeColorPresetPalette = ['#ff6b6b','#ff9f43','#ffd700','#a8e6cf','#4ecdc4','#45b7d1','#667eea','#764ba2','#e056fd','#f8b739','#6b5b95','#88d8b0','#ff69b4','#00ced1','#ffa07a','#98d8c8'];
+        let relTypeColorDrafts = {}; // id -> color
+
+        function openEditRelTypeColorModal() {
+            relTypeColorDrafts = {};
+            Object.keys(relationTypes).forEach(id => { relTypeColorDrafts[id] = relationTypes[id].color; });
+            renderRelTypeColorList();
+            document.getElementById('editRelTypeColorModal').style.display = 'flex';
+        }
+
+        function closeEditRelTypeColorModal() {
+            document.getElementById('editRelTypeColorModal').style.display = 'none';
+            relTypeColorDrafts = {};
+        }
+
+        function renderRelTypeColorList() {
+            const container = document.getElementById('relTypeColorList');
+            const arr = Object.entries(relationTypes);
+            if (arr.length === 0) {
+                container.innerHTML = '<div style="color:#666;text-align:center;padding:20px;">暂无关系类型</div>';
+                return;
+            }
+            container.innerHTML = arr.map(([id, t]) => `
+                <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);">
+                    <span style="display:inline-block;width:16px;height:16px;border-radius:50%;background:${relTypeColorDrafts[id] || t.color};flex-shrink:0;"></span>
+                    <span style="flex:1;color:#fff;font-size:14px;">${t.name}</span>
+                    <input type="color" id="relTypeColor_${id}" value="${relTypeColorDrafts[id] || t.color}"
+                        oninput="relTypeColorDrafts['${id}'] = this.value; document.querySelector('#relTypeColorRow_${id} .color-dot').style.background = this.value;"
+                        style="width:36px;height:28px;border:none;cursor:pointer;background:transparent;" />
+                    <div style="display:flex;gap:4px;flex-wrap:wrap;max-width:180px;" id="relTypeColorRow_${id}">
+                        ${relTypeColorPresetPalette.map(c => `<button onclick="setRelTypePreset('${id}','${c}')" style="width:22px;height:22px;border-radius:50%;background:${c};border:2px solid ${(relTypeColorDrafts[id] || t.color) === c ? '#fff' : 'transparent'};cursor:pointer;padding:0;"></button>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setRelTypePreset(id, color) {
+            relTypeColorDrafts[id] = color;
+            document.getElementById('relTypeColor_' + id).value = color;
+            renderRelTypeColorList();
+        }
+
+        function saveRelTypeColorChanges() {
+            Object.keys(relTypeColorDrafts).forEach(id => {
+                if (relationTypes[id]) relationTypes[id].color = relTypeColorDrafts[id];
+            });
+            updateRelTypeTags();
+            updateRelTypeSelect();
+            saveRelTypes();
+            closeEditRelTypeColorModal();
+        }
+
+
+
+
+
+
+     </script>
+
+    <div id="editCharModal" class="modal-overlay" onclick="if(event.target===this)closeEditCharModal()">
+
+        <div class="modal-box">
+
+            <div class="modal-title">编辑人物</div>
+
+            <button class="modal-close" onclick="closeEditCharModal()">&times;</button>
+
+            <div class="modal-row">
+
+                <label>人物名称</label>
+
+                <input id="editCharName" type="text" placeholder="输入人物名称" />
+
+            </div>
+
+            <div class="modal-row">
+
+                <label>简介</label>
+
+                <textarea id="editCharInfo" placeholder="输入人物简介"></textarea>
+
+            </div>
+
+            <div class="modal-row">
+
+                <label>标签</label>
+
+                <div id="editCharTagWrap" onclick="event.stopPropagation()"></div>
+
+            </div>
+
+                        <div class="modal-row">
+
+                <label>分组</label>
+
+                <div id="editCharGroupWrap" onclick="event.stopPropagation()"></div>
+
+            </div><div class="modal-actions">
+
+                <button class="btn btn-primary" onclick="saveEditChar()">保存</button>
+
+                <button class="btn" style="background:rgba(255,255,255,0.1);color:#fff;" onclick="closeEditCharModal()">取消</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+        <div id="editRelModal" class="modal-overlay" onclick="if(event.target===this)closeEditRelationModal()">
+
+            <div class="modal-box">
+
+                <div class="modal-title">编辑关系</div>
+
+                <button class="modal-close" onclick="closeEditRelationModal()">&times;</button>
+
+                <div class="modal-row">
+
+                    <label>人物 A</label>
+
+                    <select id="editRelSource"></select>
+
+                </div>
+
+                <div class="modal-row">
+
+                    <label>人物 B</label>
+
+                    <select id="editRelTarget"></select>
+
+                </div>
+
+                <div class="modal-row">
+
+                    <label>关系类型</label>
+
+                    <select id="editRelType"></select>
+
+                </div>
+
+                <div class="modal-row">
+
+                    <label>关系描述</label>
+
+                    <input id="editRelDesc" type="text" placeholder="输入关系描述（可选）" />
+
+                </div>
+
+                <div class="modal-actions">
+
+                    <button class="btn btn-success" onclick="saveEditRelation()">保存</button>
+
+                    <button class="btn" style="background:rgba(255,255,255,0.1);color:#fff;" onclick="closeEditRelationModal()">取消</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+
+        <div id="editColorModal" class="modal-overlay" onclick="if(event.target===this)closeEditColorModal()">
+
+            <div class="modal-box">
+
+                <div class="modal-title" id="editColorTitle">更改颜色</div>
+
+                <button class="modal-close" onclick="closeEditColorModal()">&times;</button>
+
+                <div class="modal-row" style="text-align:center;">
+
+                    <input type="color" id="colorPicker" value="#ff6b6b" style="width:80px;height:40px;border:none;cursor:pointer;" />
+
+                    <div id="colorPreview" style="display:inline-block;width:24px;height:24px;border-radius:50%;background:#ff6b6b;margin-left:15px;vertical-align:middle;"></div>
+
+                </div>
+
+                <div class="modal-row" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;" id="colorPresets"></div>
+
+                <div class="modal-actions">
+
+                    <button class="btn btn-success" onclick="saveColorChange()">保存</button>
+
+                    <button class="btn" style="background:rgba(255,255,255,0.1);color:#fff;" onclick="closeEditColorModal()">取消</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="editRelTypeColorModal" class="modal-overlay" onclick="if(event.target===this)closeEditRelTypeColorModal()">
+
+            <div class="modal-box" style="max-width:520px;">
+
+                <div class="modal-title">🎨 更改关系类型颜色</div>
+
+                <button class="modal-close" onclick="closeEditRelTypeColorModal()">&times;</button>
+
+                <div id="relTypeColorList" style="max-height:400px;overflow-y:auto;margin:15px 0;"></div>
+
+                <div class="modal-actions">
+
+                    <button class="btn btn-success" onclick="saveRelTypeColorChanges()">保存</button>
+
+                    <button class="btn" style="background:rgba(255,255,255,0.1);color:#fff;" onclick="closeEditRelTypeColorModal()">取消</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+</body>
+
+</html>
