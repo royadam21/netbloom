@@ -11,256 +11,688 @@
     <title>网罗众生--人物关系编辑器</title>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            min-height: 100vh;
+            color: #fff;
+        }
 
-        body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); min-height: 100vh; color: #fff; }
 
-        
 
         /* 顶部标题 */
 
-        .header { display: flex; align-items: center; justify-content: space-between; background: rgba(15, 25, 45, 0.98); padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 100; }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(15, 25, 45, 0.98);
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-        .header h1 { font-size: 18px; color: #ffd700; }
+        .header-btns {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
 
-        
+        .header-btn {
+            width: auto !important;
+            margin-top: 0 !important;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            color: #ffd700;
+        }
+
+
 
         /* 图谱选择 */
 
-        .graph-select-wrap { padding: 12px 15px; background: rgba(0,0,0,0.2); }
+        .graph-select-wrap {
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.2);
+        }
 
-        .graph-select-wrap label { display: block; font-size: 12px; color: #888; margin-bottom: 6px; }
+        .graph-select-wrap label {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 6px;
+        }
 
-        .graph-select { width: 100%; padding: 12px 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; background: rgba(0,0,0,0.4); color: #fff; font-size: 15px; appearance: none; cursor: pointer; }
+        .graph-select-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
 
-        .graph-select option { background: #1a1a2e; }
+        .graph-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            font-size: 15px;
+            appearance: none;
+            cursor: pointer;
+            flex: 1;
+        }
 
-        
+        .graph-select option {
+            background: #1a1a2e;
+        }
+
+        /* ========== 全局滚动条样式 ========== */
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+
 
         /* Tab 切换 */
 
-        .tabs { display: flex; background: rgba(0,0,0,0.3); padding: 0 10px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0 10px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
 
-        .tab { flex: 1; min-width: 80px; padding: 12px 8px; text-align: center; font-size: 13px; color: #888; border-bottom: 3px solid transparent; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
+        .tab {
+            flex: 1;
+            min-width: 80px;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 13px;
+            color: #888;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
 
-        .tab.active { color: #ffd700; border-bottom-color: #ffd700; }
+        .tab.active {
+            color: #ffd700;
+            border-bottom-color: #ffd700;
+        }
 
-        .tab:active { background: rgba(255,255,255,0.05); }
+        .tab:active {
+            background: rgba(255, 255, 255, 0.05);
+        }
 
-        
+
 
         /* 内容区域 */
 
-        .content { padding: 15px; }
+        .content {
+            padding: 15px;
+        }
 
-        .tab-content { display: none; }
+        .tab-content {
+            display: none;
+        }
 
-        .tab-content.active { display: block; }
+        .tab-content.active {
+            display: block;
+            overflow-y: auto;
+            max-height: calc(100vh - 160px);
+        }
 
-        
+
 
         /* 通用卡片 */
 
-        .card { background: rgba(15, 25, 45, 0.95); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        .card {
+            background: rgba(15, 25, 45, 0.95);
+            border-radius: 12px;
+            padding: 15px;
+            padding-bottom: 65px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
 
-        .card-title { font-size: 14px; color: #ffd700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        .card-title {
+            font-size: 14px;
+            color: #ffd700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-        
+
 
         /* 表单 */
 
-        .form-group { margin-bottom: 12px; }
+        .form-group {
+            margin-bottom: 12px;
+        }
 
-        .form-group label { display: block; font-size: 12px; color: #888; margin-bottom: 6px; }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 6px;
+        }
 
-        .form-group input, .form-group select { width: 100%; padding: 12px 14px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; background: rgba(0,0,0,0.3); color: #fff; font-size: 15px; outline: none; }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+        }
 
-        .form-group input:focus, .form-group select:focus { border-color: #667eea; }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #667eea;
+        }
 
-        .form-group input::placeholder { color: #555; }
+        .form-group input::placeholder {
+            color: #555;
+        }
 
-        .form-group select option { background: #1a1a2e; }
-
-        
+        .form-group select option {
+            background: #1a1a2e;
+        }
 
         /* 颜色选择 */
 
-        .color-options { display: flex; gap: 10px; flex-wrap: wrap; }
+        .color-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-        .color-option { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; }
+        .color-dropdown-btn {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: border-color 0.2s;
+        }
 
-        .color-option:hover, .color-option.selected { border-color: #fff; transform: scale(1.1); }
+        .color-dropdown-btn:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+        }
 
-        
+        .color-dropdown-panel {
+            min-width: 160px;
+            z-index: 99999;
+        }
+
+
+        .color-option {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .color-option:hover,
+        .color-option.selected {
+            border-color: #fff;
+            transform: scale(1.1);
+        }
+
+
 
         /* 按钮 */
 
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
 
-        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+        }
 
-        .btn-primary:active { transform: scale(0.98); }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
 
-        .btn-success { background: linear-gradient(135deg, #4ecdc4, #44a08d); color: #fff; }
+        .btn-success {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: #fff;
+        }
 
-        .btn-danger { background: linear-gradient(135deg, #ff6b6b, #ee5a5a); color: #fff; }
+        .sticky-save-btn {
+            position: absolute;
+            bottom: 12px;
+            left: 15px;
+            right: 15px;
+            width: auto;
+            transform: none;
+            z-index: 10;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+        }
 
-        .btn-sm { padding: 10px 14px; font-size: 13px; width: auto; }
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            color: #fff;
+        }
 
-        .btn-group { display: flex; gap: 10px; }
+        .btn-sm {
+            padding: 10px 14px;
+            font-size: 13px;
+            width: auto;
+        }
 
-        .btn-group .btn { flex: 1; margin-top: 0; }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
 
-        
+        .btn-group .btn {
+            flex: 1;
+            margin-top: 0;
+        }
+
+
 
         /* 列表项 */
 
-        .item-list { max-height: 45vh; overflow-y: auto; margin-top: 12px; -webkit-overflow-scrolling: touch; }
+        .item-list {
+            max-height: 45vh;
+            overflow-y: auto;
+            margin-top: 12px;
+            -webkit-overflow-scrolling: touch;
+        }
 
-        .list-item { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .list-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-        .list-item-info { flex: 1; min-width: 0; }
+        .list-item-info {
+            flex: 1;
+            min-width: 0;
+        }
 
-        .list-item-name { font-size: 14px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .list-item-name {
+            font-size: 14px;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-        .list-item-desc { font-size: 12px; color: #666; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .list-item-desc {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-        .list-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .list-item-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
 
-        
+
 
         /* 标签样式 */
 
-        .tag { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: rgba(102, 126, 234, 0.3); border-radius: 12px; font-size: 11px; margin: 2px; }
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            font-size: 11px;
+            margin: 2px;
+        }
 
-        .tag-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .tag-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
 
-        .tag-group { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+        .tag-group {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 6px;
+        }
 
-        
+
 
         /* 关系颜色条 */
 
-        .relation-item { border-left: 4px solid; }
+        .relation-item {
+            border-left: 4px solid;
+        }
 
-        .relation-type { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 11px; margin-left: 6px; }
+        .relation-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            margin-left: 6px;
+        }
 
-        
+
 
         /* 预览/消息 */
 
-        .msg-box { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); border-radius: 10px; padding: 14px 20px; text-align: center; z-index: 9999; display: none; }
+        .msg-box {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 10px;
+            padding: 14px 20px;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+        }
 
-        .success-msg { background: rgba(78, 205, 196, 0.2); border: 1px solid #4ecdc4; color: #4ecdc4; }
+        .success-msg {
+            background: rgba(78, 205, 196, 0.2);
+            border: 1px solid #4ecdc4;
+            color: #4ecdc4;
+        }
 
-        .error-msg { background: rgba(255, 107, 107, 0.2); border: 1px solid #ff6b6b; color: #ff6b6b; }
+        .error-msg {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid #ff6b6b;
+            color: #ff6b6b;
+        }
 
-        
+
 
         /* API 设置 */
 
-        
+
 
         /* 空状态 */
 
-        .empty-state { text-align: center; padding: 30px; color: #666; font-size: 13px; }
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 13px;
+        }
 
-        
+
 
         /* 选中项显示标签 */
 
-        .selected-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
 
-        .selected-tag { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; background: rgba(102, 126, 234, 0.3); border-radius: 14px; font-size: 12px; cursor: pointer; border: 1px solid transparent; }
+        .selected-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 10px;
+            background: rgba(102, 126, 234, 0.3);
+            border-radius: 14px;
+            font-size: 12px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
 
-        .selected-tag.selected { border-color: #667eea; background: rgba(102, 126, 234, 0.5); }
+        .selected-tag.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.5);
+        }
 
-        .selected-tag:active { transform: scale(0.95); }
+        .selected-tag:active {
+            transform: scale(0.95);
+        }
 
-        
+
 
         /* 加载状态 */
 
-        .loading { text-align: center; padding: 40px; color: #888; }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
 
-        .loading::after { content: '...'; animation: dots 1.5s infinite; }
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
 
-        @keyframes dots { 0%{content:'.';} 33%{content:'..';} 66%{content:'...';} }
+        @keyframes dots {
+            0% {
+                content: '.';
+            }
+
+            33% {
+                content: '..';
+            }
+
+            66% {
+                content: '...';
+            }
+        }
 
 
 
         /* 编辑人物弹窗 */
 
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: center; justify-content: center; }
-
-        .modal-overlay.active { display: flex; }
-
-        .modal-box { background: rgba(15,25,45,0.98); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px; padding: 20px; padding-top: 40px; width: 90%; max-width: 480px; max-height: 90vh; overflow-y: auto; position: relative; }
-
-        .modal-box select { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 8px; padding: 10px 12px; width: 100%; font-size: 14px; }
-        .modal-box select option { background: #1a1a2e; color: #fff; }
-        .modal-box input, .modal-box textarea { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 8px; padding: 10px 12px; width: 100%; font-size: 14px; }
-
-        .modal-title { font-size: 16px; color: #ffd700; margin-bottom: 16px; text-align: center; }
-
-        .modal-close { position: absolute; top: 10px; right: 12px; background: none; border: none; color: #888; font-size: 22px; cursor: pointer; line-height: 1; }
-
-        .modal-row { margin-bottom: 16px; }
-
-        .modal-row label { display: block; margin-bottom: 6px; color: #c9d1d9; font-size: 13px; }
-
-        
-
-        .modal-row input, .modal-row select, .modal-row textarea { width: 100%; padding: 10px 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(0,0,0,0.3); color: #fff; font-size: 14px; }
-
-        .modal-row textarea { resize: vertical; min-height: 70px; }
-
-        .modal-actions { display: flex; gap: 10px; margin-top: 16px; }
-
-        .modal-actions .btn { margin-top: 0; }
-
-        .tag-toggle { display: inline-flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s; user-select: none; }
-
-
-
-
-
-
-
-
-
-        #editCharTagWrap { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
-
-        #editCharGroupWrap { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
-
-
-
-        .tag-toggle.selected { border-color: #667eea; background: rgba(102,126,234,0.35); color: #fff; }
-
-        .tag-toggle:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.08); }
-
-
-
-        #previewBtn {
-
-            width: auto !important;
-
-            padding: 4px 10px !important;
-
-            font-size: 12px !important;
-
-            border-radius: 4px;
-
-            margin: 0 !important;
-
-            margin-left: auto !important;
-
-            flex-shrink: 0;
-
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
         }
 
-</style>
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: rgba(15, 25, 45, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            padding: 20px;
+            padding-top: 40px;
+            width: 90%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-box select {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 8px;
+            padding: 10px 12px;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .modal-box select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .modal-box input,
+        .modal-box textarea {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 8px;
+            padding: 10px 12px;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            color: #ffd700;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 22px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-row {
+            margin-bottom: 16px;
+        }
+
+        .modal-row label {
+            display: block;
+            margin-bottom: 6px;
+            color: #c9d1d9;
+            font-size: 13px;
+        }
+
+
+
+        .modal-row input,
+        .modal-row select,
+        .modal-row textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .modal-row textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .modal-actions .btn {
+            margin-top: 0;
+        }
+
+        .tag-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+
+
+
+
+
+
+
+
+        #editCharTagWrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        #editCharGroupWrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+
+
+        .tag-toggle.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.35);
+            color: #fff;
+        }
+
+        .tag-toggle:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+        }
+    </style>
 
 </head>
 
@@ -270,11 +702,15 @@
 
         <h1>网罗众生--人物关系编辑器</h1>
 
-        <button class="btn btn-primary" id="previewBtn" onclick="openPreview()" style="display:none;margin-left:auto;margin-right:0;flex-shrink:0;">🔍 图谱预览</button>
+        <div class="header-btns">
+            <button class="btn btn-primary header-btn" onclick="openCreateGraphModal()">📚 创建新图谱</button>
+            <button class="btn btn-primary header-btn" id="previewBtn" onclick="openPreview()" style="display:none;">🔍
+                查看图谱</button>
+        </div>
 
     </div>
 
-    
+
 
     <!-- 图谱选择 -->
 
@@ -282,15 +718,16 @@
 
         <label>📚 选择图谱</label>
 
-        <select class="graph-select" id="graphSelect" onchange="loadGraph()">
+        <div style="display:flex;gap:8px;align-items:center;">
 
-            <option value="">加载中...</option>
+            <select class="graph-select" id="graphSelect" onchange="loadGraph()">
 
-        </select>
+                <option value="">加载中...</option>
 
+            </select>
+        </div>
     </div>
 
-    
 
     <!-- Tab 切换 -->
 
@@ -306,7 +743,7 @@
 
     </div>
 
-    
+
 
     <div class="content">
 
@@ -314,35 +751,15 @@
 
         <div class="tab-content active" id="tab-groups">
 
-            <div class="card">
-
-                <div class="card-title">➕ 添加分组</div>
-
-                <div class="form-group">
-
-                    <label>分组名称</label>
-
-                    <input type="text" id="groupName" placeholder="例如：男主角">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>分组颜色</label>
-
-                    <div class="color-options" id="groupColors"></div>
-
-                </div>
-
-                <button class="btn btn-primary" onclick="addGroup()">添加分组</button>
-
-            </div>
-
-            
 
             <div class="card">
 
-                <div class="card-title">📋 分组列表</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                    <div class="card-title">📋 分组列表</div>
+                    <button onclick="openAddGroupModal()"
+                        style="padding:6px 14px;border-radius:8px;border:none;background:rgba(100,100,200,0.4);color:#fff;font-size:12px;cursor:pointer;">➕
+                        添加分组</button>
+                </div>
 
                 <div class="item-list" id="groupList">
 
@@ -350,13 +767,13 @@
 
                 </div>
 
-                <button class="btn btn-success" onclick="saveGroups()">💾 保存分组</button>
+                <button class="btn btn-success sticky-save-btn" onclick="saveGroups()">💾 保存分组</button>
 
             </div>
 
         </div>
 
-        
+
 
         <!-- ===== 标签 Tab ===== -->
 
@@ -364,33 +781,10 @@
 
             <div class="card">
 
-                <div class="card-title">➕ 添加标签</div>
-
-                <div class="form-group">
-
-                    <label>标签名称</label>
-
-                    <input type="text" id="tagName" placeholder="例如：主角">
-
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <div class="card-title">📋 标签列表</div>
+                    <button onclick="openAddTagModal()" style="padding:6px 14px;border-radius:8px;border:none;background:rgba(100,100,200,0.4);color:#fff;font-size:12px;cursor:pointer;">➕ 添加标签</button>
                 </div>
-
-                <div class="form-group">
-
-                    <label>标签颜色</label>
-
-                    <div class="color-options" id="tagColors"></div>
-
-                </div>
-
-                <button class="btn btn-primary" onclick="addTag()">添加标签</button>
-
-            </div>
-
-            
-
-            <div class="card">
-
-                <div class="card-title">📋 标签列表</div>
 
                 <div class="item-list" id="tagList">
 
@@ -398,13 +792,13 @@
 
                 </div>
 
-                <button class="btn btn-success" onclick="saveTags()">💾 保存标签</button>
+                <button class="btn btn-success sticky-save-btn" onclick="saveTags()">💾 保存标签</button>
 
             </div>
 
         </div>
 
-        
+
 
         <!-- ===== 人物 Tab ===== -->
 
@@ -454,7 +848,7 @@
 
             </div>
 
-            
+
 
             <div class="card">
 
@@ -466,13 +860,13 @@
 
                 </div>
 
-                <button class="btn btn-success" onclick="saveCharacters()">💾 保存人物</button>
+                <button class="btn btn-success sticky-save-btn" onclick="saveCharacters()">💾 保存人物</button>
 
             </div>
 
         </div>
 
-        
+
 
         <!-- ===== 关系 Tab ===== -->
 
@@ -484,25 +878,83 @@
 
                 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;" id="relTypeTags"></div>
 
-                <button class="btn btn-primary btn-sm" onclick="openEditRelTypeColorModal()" style="width:auto;padding:6px 12px;margin-bottom:10px;">🎨 改色</button>
+                <button class="btn btn-primary btn-sm" onclick="openEditRelTypeColorModal()"
+                    style="width:auto;padding:6px 12px;margin-bottom:10px;">🎨 改色</button>
 
                 <div style="display:flex;gap:8px;align-items:center;margin-top:8px;" id="addRelTypeForm">
 
-                    <input type="text" id="newRelTypeName" placeholder="新类型名称" style="flex:1;padding:8px 10px;border:1px solid rgba(255,255,255,0.2);border-radius:8px;background:rgba(0,0,0,0.3);color:#fff;font-size:13px;">
+                    <input type="text" id="newRelTypeName" placeholder="新类型名称"
+                        style="flex:1;padding:8px 10px;border:1px solid rgba(255,255,255,0.2);border-radius:8px;background:rgba(0,0,0,0.3);color:#fff;font-size:13px;">
 
-                    <div style="display:flex;gap:6px;">
-
-                        <div class="color-option selected" data-color="#ff6b6b" style="background:#ff6b6b;width:28px;height:28px;" onclick="selectRelTypeColor('#ff6b6b')"></div>
-
-                        <div class="color-option" data-color="#4ecdc4" style="background:#4ecdc4;width:28px;height:28px;" onclick="selectRelTypeColor('#4ecdc4')"></div>
-
-                        <div class="color-option" data-color="#ffd700" style="background:#ffd700;width:28px;height:28px;" onclick="selectRelTypeColor('#ffd700')"></div>
-
-                        <div class="color-option" data-color="#bb8fce" style="background:#bb8fce;width:28px;height:28px;" onclick="selectRelTypeColor('#bb8fce')"></div>
-
+                    <div style="position:relative;display:flex;align-items:center;">
+                        <button class="color-dropdown-btn" id="relTypeColorBtn" data-dropdown="relTypeColorDropdown"
+                            style="background:#ff6b6b;width:32px;height:32px;border-radius:6px;border:none;cursor:pointer;"
+                            onclick="toggleColorDropdown('relTypeColorDropdown', 'relTypeColorBtn')"></button>
+                        <div class="color-dropdown-panel" id="relTypeColorDropdown"
+                            style="display:none;position:absolute;left:0;top:40px;background:rgba(20,20,40,0.98);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+                            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:152px;">
+                                <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                                    <div onclick='selectColor("relTypeColorDropdown","#ff6b6b","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#ff6b6b;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                    <div onclick='selectColor("relTypeColorDropdown","#ff9f43","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#ff9f43;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                    <div onclick='selectColor("relTypeColorDropdown","#ffd700","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#ffd700;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                    <div onclick='selectColor("relTypeColorDropdown","#a8e6cf","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#a8e6cf;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                </div>
+                                <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                                    <div onclick='selectColor("relTypeColorDropdown","#4ecdc4","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#4ecdc4;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                    <div onclick='selectColor("relTypeColorDropdown","#45b7d1","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#45b7d1;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                    <div onclick='selectColor("relTypeColorDropdown","#667eea","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#667eea;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                    <div onclick='selectColor("relTypeColorDropdown","#764ba2","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#764ba2;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                </div>
+                                <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                                    <div onclick='selectColor("relTypeColorDropdown","#e056fd","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#e056fd;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                    <div onclick='selectColor("relTypeColorDropdown","#f8b739","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#f8b739;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                    <div onclick='selectColor("relTypeColorDropdown","#6b5b95","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#6b5b95;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                    <div onclick='selectColor("relTypeColorDropdown","#88d8b0","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#88d8b0;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                </div>
+                                <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                                    <div onclick='selectColor("relTypeColorDropdown","#ff69b4","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#ff69b4;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                    <div onclick='selectColor("relTypeColorDropdown","#00ced1","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#00ced1;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                    <div onclick='selectColor("relTypeColorDropdown","#ffa07a","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#ffa07a;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                    <div onclick='selectColor("relTypeColorDropdown","#98d8c8","relTypeColorValue","relTypeColorBtn")'
+                                        style='width:32px;height:32px;border-radius:6px;background:#98d8c8;cursor:pointer;border:2px solid transparent;'>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <button class="btn btn-primary btn-sm" onclick="addRelType()" style="width:auto;padding:8px 12px;">添加</button>
+                    <button class="btn btn-primary btn-sm" onclick="addRelType()"
+                        style="width:auto;padding:8px 12px;">添加</button>
 
                 </div>
 
@@ -574,13 +1026,13 @@
 
                 </div>
 
-                <button class="btn btn-success" onclick="saveRelations()">💾 保存关系</button>
+                <button class="btn btn-success sticky-save-btn" onclick="saveRelations()">💾 保存关系</button>
 
             </div>
 
         </div>
 
-        
+
 
         <!-- 消息提示 -->
 
@@ -590,9 +1042,345 @@
 
     </div>
 
-    
+    <div id="editCharModal" class="modal-overlay" onclick="if(event.target===this)closeEditCharModal()">
 
-    
+        <div class="modal-box">
+
+            <div class="modal-title">编辑人物</div>
+
+            <button class="modal-close" onclick="closeEditCharModal()">&times;</button>
+
+            <div class="modal-row">
+
+                <label>人物名称</label>
+
+                <input id="editCharName" type="text" placeholder="输入人物名称" />
+
+            </div>
+
+            <div class="modal-row">
+
+                <label>简介</label>
+
+                <textarea id="editCharInfo" placeholder="输入人物简介"></textarea>
+
+            </div>
+
+            <div class="modal-row">
+
+                <label>标签</label>
+
+                <div id="editCharTagWrap" onclick="event.stopPropagation()"></div>
+
+            </div>
+
+            <div class="modal-row">
+
+                <label>分组</label>
+
+                <div id="editCharGroupWrap" onclick="event.stopPropagation()"></div>
+
+            </div>
+            <div class="modal-actions">
+
+                <button class="btn btn-primary" onclick="saveEditChar()">保存</button>
+
+                <button class="btn" style="background:rgba(255,255,255,0.1);color:#fff;"
+                    onclick="closeEditCharModal()">取消</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="editRelModal" class="modal-overlay" onclick="if(event.target===this)closeEditRelationModal()">
+
+        <div class="modal-box">
+
+            <div class="modal-title">编辑关系</div>
+
+            <button class="modal-close" onclick="closeEditRelationModal()">&times;</button>
+
+            <div class="modal-row">
+
+                <label>人物 A</label>
+
+                <select id="editRelSource"></select>
+
+            </div>
+
+            <div class="modal-row">
+
+                <label>人物 B</label>
+
+                <select id="editRelTarget"></select>
+
+            </div>
+
+            <div class="modal-row">
+
+                <label>关系类型</label>
+
+                <select id="editRelType"></select>
+
+            </div>
+
+            <div class="modal-row">
+
+                <label>关系描述</label>
+
+                <input id="editRelDesc" type="text" placeholder="输入关系描述（可选）" />
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button class="btn btn-success" onclick="saveEditRelation()">保存</button>
+
+                <button class="btn" style="background:rgba(255,255,255,0.1);color:#fff;"
+                    onclick="closeEditRelationModal()">取消</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <div id="editColorModal" class="modal-overlay" onclick="if(event.target===this)closeEditColorModal()">
+
+        <div class="modal-box">
+
+            <div class="modal-title" id="editColorTitle">更改颜色</div>
+
+            <button class="modal-close" onclick="closeEditColorModal()">&times;</button>
+
+            <div class="modal-row" style="display:flex;align-items:center;gap:12px;position:relative;">
+                <button id="editColorBtn" data-dropdown="editColorDropdown"
+                    style="background:#ff6b6b;width:48px;height:40px;border-radius:8px;border:none;cursor:pointer;"
+                    onclick="toggleColorDropdown('editColorDropdown', 'editColorBtn')"></button>
+                <input type="text" id="colorPicker" value="#ff6b6b" placeholder="#rrggbb"
+                    style="flex:1;padding:10px 12px;border:1px solid rgba(255,255,255,0.2);border-radius:8px;background:rgba(0,0,0,0.4);color:#fff;font-size:14px;"
+                    oninput="document.getElementById('editColorBtn').style.background=this.value;renderColorPresets(this.value);" />
+                <div id="colorPreview"
+                    style="display:inline-block;width:24px;height:24px;border-radius:50%;background:#ff6b6b;vertical-align:middle;">
+                </div>
+                <div class="color-dropdown-panel" id="editColorDropdown"
+                    style="display:none;position:absolute;background:rgba(20,20,40,0.98);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:152px;">
+                        <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                            <div onclick='selectColor("editColorDropdown","#ff6b6b","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#ff6b6b;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                            <div onclick='selectColor("editColorDropdown","#ff9f43","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#ff9f43;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                            <div onclick='selectColor("editColorDropdown","#ffd700","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#ffd700;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                            <div onclick='selectColor("editColorDropdown","#a8e6cf","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#a8e6cf;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                        </div>
+                        <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                            <div onclick='selectColor("editColorDropdown","#4ecdc4","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#4ecdc4;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                            <div onclick='selectColor("editColorDropdown","#45b7d1","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#45b7d1;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                            <div onclick='selectColor("editColorDropdown","#667eea","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#667eea;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                            <div onclick='selectColor("editColorDropdown","#764ba2","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#764ba2;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                        </div>
+                        <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                            <div onclick='selectColor("editColorDropdown","#e056fd","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#e056fd;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                            <div onclick='selectColor("editColorDropdown","#f8b739","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#f8b739;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                            <div onclick='selectColor("editColorDropdown","#6b5b95","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#6b5b95;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                            <div onclick='selectColor("editColorDropdown","#88d8b0","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#88d8b0;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                        </div>
+                        <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                            <div onclick='selectColor("editColorDropdown","#ff69b4","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#ff69b4;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                            <div onclick='selectColor("editColorDropdown","#00ced1","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#00ced1;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                            <div onclick='selectColor("editColorDropdown","#ffa07a","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#ffa07a;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                            <div onclick='selectColor("editColorDropdown","#98d8c8","editColorValue","editColorBtn")'
+                                style='width:32px;height:32px;border-radius:6px;background:#98d8c8;cursor:pointer;border:2px solid transparent;'>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-row" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:8px;"
+                id="colorPresets"></div>
+
+            <div class="modal-actions">
+
+                <button class="btn btn-success" onclick="saveColorChange()">保存</button>
+
+                <button class="btn" style="background:rgba(255,255,255,0.1);color:#fff;"
+                    onclick="closeEditColorModal()">取消</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div id="editRelTypeColorModal" class="modal-overlay" onclick="if(event.target===this)closeEditRelTypeColorModal()">
+
+        <div class="modal-box" style="max-width:520px;">
+
+            <div class="modal-title">🎨 更改关系类型颜色</div>
+
+            <button class="modal-close" onclick="closeEditRelTypeColorModal()">&times;</button>
+
+            <div id="relTypeColorList" style="max-height:400px;overflow-y:auto;margin:15px 0;"></div>
+
+            <div class="modal-actions">
+
+                <button class="btn btn-success" onclick="saveRelTypeColorChanges()">保存</button>
+
+                <button class="btn" style="background:rgba(255,255,255,0.1);color:#fff;"
+                    onclick="closeEditRelTypeColorModal()">取消</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="createGraphModal" class="modal-overlay" onclick="if(event.target===this)closeCreateGraphModal()">
+        <div class="modal-box">
+            <div class="modal-title">📚 创建新图谱</div>
+            <button class="modal-close" onclick="closeCreateGraphModal()">&times;</button>
+            <div class="modal-row">
+                <label>图谱名称</label>
+                <input id="newGraphName" type="text" placeholder="输入图谱名称"
+                    style="width:100%;padding:12px 15px;border:1px solid rgba(255,255,255,0.2);border-radius:10px;background:rgba(0,0,0,0.4);color:#fff;font-size:15px;box-sizing:border-box;" />
+            </div>
+            <div style="display:flex;gap:10px;margin-top:15px;">
+                <button class="btn btn-primary" onclick="createNewGraph()" style="flex:1;">创建</button>
+                <button class="btn btn-danger" onclick="closeCreateGraphModal()"
+                    style="flex:1;background:rgba(255,255,255,0.1);">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加分组弹窗 -->
+    <div id="addGroupModal"
+        style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:10000;align-items:center;justify-content:center;">
+        <div
+            style="background:rgba(15,25,45,0.98);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:24px;width:90%;max-width:420px;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+            <div style="font-size:16px;font-weight:600;color:#fff;margin-bottom:20px;">➕ 添加分组</div>
+            <div style="display:flex;flex-direction:column;gap:16px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <label style="color:#ccc;font-size:13px;white-space:nowrap;width:60px;">分组名称</label>
+                    <input type="text" id="modalGroupName" placeholder="请输入分组名称"
+                        style="flex:1;padding:9px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(0,0,0,0.4);color:#fff;font-size:13px;">
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;position:relative;">
+                    <label style="color:#ccc;font-size:13px;white-space:nowrap;width:60px;">颜色</label>
+                    <button class="color-dropdown-btn" id="modalGroupColorBtn" data-dropdown="modalGroupColorDropdown"
+                        style="background:#ff6b6b;width:36px;height:36px;border-radius:8px;border:none;cursor:pointer;"
+                        onclick="toggleColorDropdown('modalGroupColorDropdown', 'modalGroupColorBtn')"></button>
+                    <span id="modalGroupColorText" style="color:#ffffff;font-size:13px;">#ff6b6b</span>
+                    <div class="color-dropdown-panel" id="modalGroupColorDropdown"
+                        style="display:none;position:fixed;left:0;top:0;background:rgba(20,20,40,0.98);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+                        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:152px;">
+                            <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                                <div onclick='selectColor("modalGroupColorDropdown","#ff6b6b","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#ff6b6b;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                                <div onclick='selectColor("modalGroupColorDropdown","#ff9f43","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#ff9f43;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                                <div onclick='selectColor("modalGroupColorDropdown","#ffd700","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#ffd700;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                                <div onclick='selectColor("modalGroupColorDropdown","#a8e6cf","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#a8e6cf;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                            </div>
+                            <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                                <div onclick='selectColor("modalGroupColorDropdown","#4ecdc4","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#4ecdc4;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                                <div onclick='selectColor("modalGroupColorDropdown","#45b7d1","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#45b7d1;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                                <div onclick='selectColor("modalGroupColorDropdown","#667eea","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#667eea;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                                <div onclick='selectColor("modalGroupColorDropdown","#764ba2","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#764ba2;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                            </div>
+                            <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                                <div onclick='selectColor("modalGroupColorDropdown","#e056fd","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#e056fd;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                                <div onclick='selectColor("modalGroupColorDropdown","#f8b739","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#f8b739;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                                <div onclick='selectColor("modalGroupColorDropdown","#6b5b95","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#6b5b95;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                                <div onclick='selectColor("modalGroupColorDropdown","#88d8b0","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#88d8b0;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                            </div>
+                            <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                                <div onclick='selectColor("modalGroupColorDropdown","#ff69b4","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#ff69b4;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                                <div onclick='selectColor("modalGroupColorDropdown","#00ced1","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#00ced1;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                                <div onclick='selectColor("modalGroupColorDropdown","#ffa07a","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#ffa07a;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                                <div onclick='selectColor("modalGroupColorDropdown","#98d8c8","","modalGroupColorBtn")'
+                                    style='width:32px;height:32px;border-radius:6px;background:#98d8c8;cursor:pointer;border:2px solid transparent;'>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end;">
+                <button onclick="closeAddGroupModal()"
+                    style="padding:9px 18px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:#ccc;font-size:13px;cursor:pointer;">取消</button>
+                <button onclick="confirmAddGroup()"
+                    style="padding:9px 18px;border-radius:8px;border:none;background:rgba(100,100,200,0.4);color:#fff;font-size:13px;cursor:pointer;">添加</button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
 
@@ -619,6 +1407,9 @@
 
         let nextRelTypeId = 1;
 
+        // ========== 统一16色色板 ==========
+        const COLOR_PALETTE = ['#ff6b6b', '#ff9f43', '#ffd700', '#a8e6cf', '#4ecdc4', '#45b7d1', '#667eea', '#764ba2', '#e056fd', '#f8b739', '#6b5b95', '#88d8b0', '#ff69b4', '#00ced1', '#ffa07a', '#98d8c8'];
+
         let selectedGroupColor = '#ff6b6b';
 
         let selectedTagColor = '#4ecdc4';
@@ -627,13 +1418,13 @@
 
         let selectedRelTypeColor = '#ff6b6b';
 
-        
+
 
         // 预设颜色
 
-        const colors = ['#ff6b6b', '#ffd700', '#9b59b6', '#4ecdc4', '#45b7d1', '#ff9ff3', '#f7dc6f', '#bb8fce', '#ff8c00', '#00CED1'];
+        const colors = COLOR_PALETTE;
 
-        
+
 
         // 默认关系类型（用于初始化）
 
@@ -657,7 +1448,7 @@
 
         };
 
-        
+
 
         // ========== 初始化 ==========
 
@@ -669,7 +1460,126 @@
 
         });
 
-        
+
+
+        // 打开颜色下拉
+        function openColorDropdown(btn, dropdownId) {
+            // 关闭其他下拉
+            document.querySelectorAll('.color-dropdown-panel').forEach(p => p.style.display = 'none');
+            const panel = document.getElementById(dropdownId);
+            // 跟随按钮定位
+            const rect = btn.getBoundingClientRect();
+            panel.style.display = 'block';
+            panel.style.left = rect.left + 'px';
+            panel.style.top = (rect.bottom + 4) + 'px';
+        }
+
+        // 关闭颜色下拉
+        function closeColorDropdown(dropdownId) {
+            document.getElementById(dropdownId).style.display = 'none';
+        }
+
+        // 选中颜色
+        function selectColor(dropdownId, color, inputId, btnId) {
+            // Handle editColorModal special case
+            if (dropdownId === 'editColorDropdown') {
+                document.getElementById('colorPicker').value = color;
+                document.getElementById('colorPreview').style.background = color;
+                document.getElementById('editColorBtn').style.background = color;
+                renderColorPresets(color);
+            } else if (dropdownId === 'modalGroupColorDropdown') {
+                const btn = document.getElementById(btnId);
+                if (btn) btn.style.background = color;
+                const textEl = document.getElementById('modalGroupColorText');
+                if (textEl) { textEl.textContent = color; textEl.style.color = '#fff'; }
+                selectedGroupColor = color;
+            } else if (dropdownId === 'modalTagColorDropdown') {
+                const btn = document.getElementById(btnId);
+                if (btn) btn.style.background = color;
+                const textEl = document.getElementById('modalTagColorText');
+                if (textEl) { textEl.textContent = color; textEl.style.color = '#fff'; }
+                selectedTagColor = color;
+            } else {
+                // group/tag/relType dropdowns - just update the button color
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    btn.style.background = color;
+                    // Also update the text label if it exists
+                    const textEl = document.getElementById(dropdownId.replace('Dropdown', 'Text'));
+                    if (textEl) {
+                        textEl.textContent = color;
+                        textEl.style.color = '#fff';
+                    }
+                }
+                // Trigger the color selection function for the respective category
+                if (dropdownId === 'groupColorDropdown') {
+                    selectGroupColor(color);
+                } else if (dropdownId === 'tagColorDropdown') {
+                    selectTagColor(color);
+                } else if (dropdownId === 'relTypeColorDropdown') {
+                    selectRelTypeColor(color);
+                }
+            }
+            closeColorDropdown(dropdownId);
+        }
+
+        function toggleColorDropdown(dropdownId, btnId) {
+            const panel = document.getElementById(dropdownId);
+            const btn = document.getElementById(btnId);
+            if (!panel || !btn) return;
+            if (panel.style.display === 'block') {
+                panel.style.display = 'none';
+            } else {
+                // Position panel fixed, directly below the button
+                const rect = btn.getBoundingClientRect();
+                panel.style.position = 'fixed';
+                panel.style.left = rect.left + 'px';
+                panel.style.top = (rect.bottom + 6) + 'px';
+                panel.style.display = 'block';
+            }
+        }
+
+        function closeAllColorDropdowns() {
+            const dropdowns = ['editColorDropdown', 'modalGroupColorDropdown', 'relTypeColorDropdown', 'tagColorDropdown'];
+            dropdowns.forEach(function(id) {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+        }
+        // ── 添加标签弹窗 ──
+        function openAddTagModal() {
+            const modal = document.getElementById('addTagModal');
+            modal.style.display = 'flex';
+            document.getElementById('modalTagName').value = '';
+            document.getElementById('modalTagColorBtn').style.background = '#ff6b6b';
+            document.getElementById('modalTagColorText').textContent = '#ff6b6b';
+            selectedTagColor = '#ff6b6b';
+        }
+        function closeAddTagModal() {
+            document.getElementById('addTagModal').style.display = 'none';
+            closeAllColorDropdowns();
+        }
+        function confirmAddTag() {
+            const name = document.getElementById('modalTagName').value.trim();
+            if (!name) { alert('请输入标签名称'); return; }
+            const color = selectedTagColor || '#ff6b6b';
+            addTagFromModal(name, color);
+            closeAddTagModal();
+        }
+        function addTagFromModal(name, color) {
+            const id = 't_' + Date.now();
+            tags[id] = { id, name, color };
+            selectedTagColor = color;
+            updateTagList();
+        }
+
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.color-dropdown-btn') && !e.target.closest('.color-dropdown-panel')) {
+                document.querySelectorAll('.color-dropdown-panel').forEach(p => p.style.display = 'none');
+            }
+        });
 
         function initColorPickers() {
 
@@ -677,39 +1587,33 @@
 
             const tagColors = document.getElementById('tagColors');
 
-            
 
-            groupColors.innerHTML = colors.map(c => `<div class="color-option${c === selectedGroupColor ? ' selected' : ''}" data-color="${c}" style="background:${c};" onclick="selectGroupColor('${c}')"></div>`).join('');
 
-            tagColors.innerHTML = colors.map(c => `<div class="color-option${c === selectedTagColor ? ' selected' : ''}" data-color="${c}" style="background:${c};" onclick="selectTagColor('${c}')"></div>`).join('');
+            // Color pickers now use dropdowns - no need to populate color-options divs
 
         }
 
-        
+
 
         function selectGroupColor(color) {
-
             selectedGroupColor = color;
-
-            document.querySelectorAll('#groupColors .color-option').forEach(e => e.classList.remove('selected'));
-
-            document.querySelector(`#groupColors [data-color="${color}"]`).classList.add('selected');
-
+            document.getElementById('groupColorBtn').style.background = color;
+            document.getElementById('groupColorText').textContent = color;
+            document.getElementById('groupColorText').style.color = '#fff';
+            document.getElementById('groupColorDropdown').style.display = 'none';
         }
 
-        
+
 
         function selectTagColor(color) {
-
             selectedTagColor = color;
-
-            document.querySelectorAll('#tagColors .color-option').forEach(e => e.classList.remove('selected'));
-
-            document.querySelector(`#tagColors [data-color="${color}"]`).classList.add('selected');
-
+            document.getElementById('tagColorBtn').style.background = color;
+            document.getElementById('tagColorText').textContent = color;
+            document.getElementById('tagColorText').style.color = '#fff';
+            document.getElementById('tagColorDropdown').style.display = 'none';
         }
 
-        
+
 
         // ========== Tab 切换 ==========
 
@@ -757,7 +1661,7 @@
 
             const apiBase = (window.location.protocol === 'file:' || !window.location.hostname.includes('.')) ? 'https://netbloom.1tik.top' : window.location.origin;
 
-            fetch(`${apiBase}/api/graphs`)
+            return fetch(`${apiBase}/api/graphs`)
 
                 .then(r => r.json())
 
@@ -785,13 +1689,13 @@
 
                     });
 
-                    
+
 
                     select.innerHTML = sorted.map(g => `<option value="${g.id}">${g.name} (${g.node_count}人/${g.link_count}条)</option>`).join('');
 
                     select.value = defaultSelected;
 
-                    
+
 
                     if (defaultSelected) loadGraph();
 
@@ -807,7 +1711,7 @@
 
         }
 
-        
+
 
         // ========== 加载图谱数据 ==========
 
@@ -817,13 +1721,13 @@
 
             if (!graphId) return;
 
-            
+
 
             const apiBase = (window.location.protocol === 'file:' || !window.location.hostname.includes('.')) ? 'https://netbloom.1tik.top' : window.location.origin;
 
             currentGraphId = graphId;
 
-            
+
 
             const loadingHtml = '<div class="loading">加载中</div>';
 
@@ -835,7 +1739,7 @@
 
             document.getElementById('relList').innerHTML = loadingHtml;
 
-            
+
 
             fetch(`${apiBase}/api/graphs/${graphId}`)
 
@@ -845,7 +1749,7 @@
 
                     currentData = result.data || result;
 
-                    
+
 
                     // 初始化数据结构
 
@@ -865,7 +1769,7 @@
 
                     nextRelTypeId = currentData.nextRelTypeId || Object.keys(relationTypes).length + 1;
 
-                    
+
 
                     updateAllLists();
 
@@ -881,7 +1785,7 @@
 
                     _pageReady = true;
 
-            document.getElementById('previewBtn').style.display = 'inline-block';
+                    document.getElementById('previewBtn').style.display = 'inline-block';
 
                 })
 
@@ -893,7 +1797,7 @@
 
         }
 
-        
+
 
         // ========== 更新所有列表 ==========
 
@@ -909,7 +1813,7 @@
 
         }
 
-        
+
 
         // ========== 分组操作 ==========
 
@@ -921,7 +1825,7 @@
 
             if (Object.values(groups).some(g => g.name === name)) { showError('分组已存在'); return; }
 
-            
+
 
             groups[nextGroupId] = { name, color: selectedGroupColor };
 
@@ -935,7 +1839,7 @@
 
         }
 
-        
+
 
         function deleteGroup(id) {
 
@@ -953,7 +1857,7 @@
 
         }
 
-        
+
 
         function updateGroupList() {
 
@@ -969,7 +1873,9 @@
 
             }
 
-            list.innerHTML = arr.map(([id, g]) => `
+            // 按颜色排序
+            const sortedGroups = arr.sort((a, b) => a[1].color.localeCompare(b[1].color));
+            list.innerHTML = sortedGroups.map(([id, g]) => `
 
                 <div class="list-item">
 
@@ -987,8 +1893,8 @@
 
                     <div class="list-item-actions">
 
-                        <button class="btn btn-primary btn-sm" onclick="openEditGroupColor(${id})">改色</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteGroup(${id})">删除</button>
+                        <button class="btn btn-primary btn-sm" onclick="openEditGroupColor('${id}')">改色</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteGroup('${id}')">删除</button>
 
                     </div>
 
@@ -998,7 +1904,7 @@
 
         }
 
-        
+
 
         function updateGroupSelect() {
 
@@ -1010,7 +1916,7 @@
 
         }
 
-        
+
 
         function saveGroups() {
 
@@ -1024,7 +1930,7 @@
 
         }
 
-        
+
 
         // ========== 标签操作 ==========
 
@@ -1036,7 +1942,7 @@
 
             if (Object.values(tags).some(t => t.name === name)) { showError('标签已存在'); return; }
 
-            
+
 
             tags[nextTagId] = { name, color: selectedTagColor };
 
@@ -1050,7 +1956,7 @@
 
         }
 
-        
+
 
         function deleteTag(id) {
 
@@ -1070,13 +1976,29 @@
 
         }
 
-        
+
 
         function updateTagList() {
 
             const list = document.getElementById('tagList');
 
-            const arr = Object.entries(tags);
+            const arr = Object.entries(tags).sort((a, b) => {
+                const hexToHue = (hex) => {
+                    const r = parseInt(hex.slice(1,3),16)/255;
+                    const g = parseInt(hex.slice(3,5),16)/255;
+                    const b = parseInt(hex.slice(5,7),16)/255;
+                    const max = Math.max(r,g,b), min = Math.min(r,g,b);
+                    let h = 0;
+                    if (max !== min) {
+                        const d = max - min;
+                        if (max === r) h = ((g-b)/d + (g<b?6:0))/6;
+                        else if (max === g) h = ((b-r)/d + 2)/6;
+                        else h = ((r-g)/d + 4)/6;
+                    }
+                    return h;
+                };
+                return hexToHue(a[1].color) - hexToHue(b[1].color);
+            });
 
             if (arr.length === 0) {
 
@@ -1086,6 +2008,7 @@
 
             }
 
+            // Already sorted by hue above, use arr directly
             list.innerHTML = arr.map(([id, t]) => `
 
                 <div class="list-item">
@@ -1104,8 +2027,8 @@
 
                     <div class="list-item-actions">
 
-                        <button class="btn btn-primary btn-sm" onclick="openEditTagColor(${id})">改色</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteTag(${id})">删除</button>
+                        <button class="btn btn-primary btn-sm" onclick="openEditTagColor('${id}')">改色</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteTag('${id}')">删除</button>
 
                     </div>
 
@@ -1115,13 +2038,29 @@
 
         }
 
-        
+
 
         function updateTagSelect() {
 
             const container = document.getElementById('charTagSelect');
 
-            const arr = Object.entries(tags);
+            const arr = Object.entries(tags).sort((a, b) => {
+                const hexToHue = (hex) => {
+                    const r = parseInt(hex.slice(1,3),16)/255;
+                    const g = parseInt(hex.slice(3,5),16)/255;
+                    const bv = parseInt(hex.slice(5,7),16)/255;
+                    const max = Math.max(r,g,bv), min = Math.min(r,g,bv);
+                    let h = 0;
+                    if (max !== min) {
+                        const d = max - min;
+                        if (max === r) h = ((g-bv)/d + (g<bv?6:0))/6;
+                        else if (max === g) h = ((bv-r)/d + 2)/6;
+                        else h = ((r-g)/d + 4)/6;
+                    }
+                    return h;
+                };
+                return hexToHue(a[1].color) - hexToHue(b[1].color);
+            });
 
             if (arr.length === 0) {
 
@@ -1133,7 +2072,7 @@
 
             container.innerHTML = arr.map(([id, t]) => `
 
-                <div class="selected-tag ${selectedCharTags.includes(parseInt(id)) ? 'selected' : ''}" data-id="${id}" onclick="toggleCharTag(${id})">
+                <div class="selected-tag ${selectedCharTags.includes(parseInt(id)) ? 'selected' : ''}" data-id="${id}" onclick="toggleCharTag('${id}')">
 
                     <span style="width:8px;height:8px;border-radius:50%;background:${t.color};display:inline-block;"></span>
 
@@ -1145,7 +2084,7 @@
 
         }
 
-        
+
 
         function toggleCharTag(tagId) {
 
@@ -1165,7 +2104,7 @@
 
         }
 
-        
+
 
         function saveTags() {
 
@@ -1179,7 +2118,7 @@
 
         }
 
-        
+
 
         // ========== 人物操作 ==========
 
@@ -1191,31 +2130,32 @@
 
             const info = document.getElementById('charInfo').value.trim();
 
-            
+
 
             if (!name) { showError('请输入人物名称'); return; }
 
             if (characters.some(c => c.id === name)) { showError('该人物已存在'); return; }
 
-            
 
-            const char = { 
 
-                id: name, 
+            const char = {
 
-                groups: groupId ? [groupId] : [], 
+                id: name,
+
+                groups: groupId ? [groupId] : [],
 
                 tags: [...selectedCharTags],
 
-                info, 
+                info,
 
-                size: 12 
+                size: 12,
+                createdAt: Date.now()
 
             };
 
             characters.push(char);
 
-            
+
 
             document.getElementById('charName').value = '';
 
@@ -1231,7 +2171,7 @@
 
         }
 
-        
+
 
         function deleteCharacter(name) {
 
@@ -1249,7 +2189,7 @@
 
         }
 
-        
+
 
         function updateCharList() {
 
@@ -1263,7 +2203,17 @@
 
             }
 
-            list.innerHTML = characters.map(c => {
+            // 按时间倒序，男主角分组永远第一
+            const maleLeadGroup = Object.entries(groups).find(([id, g]) => g.name === '男主角');
+            const maleLeadGid = maleLeadGroup ? maleLeadGroup[0] : null;
+            const sortedChars = [...characters].sort((a, b) => {
+                const aInMale = maleLeadGid && a.groups && a.groups.includes(parseInt(maleLeadGid));
+                const bInMale = maleLeadGid && b.groups && b.groups.includes(parseInt(maleLeadGid));
+                if (aInMale && !bInMale) return -1;
+                if (!aInMale && bInMale) return 1;
+                return (b.createdAt || 0) - (a.createdAt || 0);
+            });
+            list.innerHTML = sortedChars.map(c => {
 
                 const groupNames = c.groups.map(gid => groups[gid] && groups[gid].name || '').filter(Boolean).join(', ');
 
@@ -1276,34 +2226,21 @@
                 }).join('');
 
                 return `
-
                     <div class="list-item">
-
                         <div class="list-item-info">
-
                             <div class="list-item-name">${c.id}</div>
-
                             ${tagHtml ? `<div class="tag-group">${tagHtml}</div>` : ''}
-
                         </div>
-
                         <div class="list-item-actions">
-
-                            <button class="btn btn-primary btn-sm" onclick="openEditCharModal('${c.id}')" style="width:auto;padding:8px 10px;">编辑</button>
-
+                            <button class="btn btn-primary btn-sm" onclick="openEditCharModal('${c.id}')">编辑</button> 
                             <button class="btn btn-danger btn-sm" onclick="deleteCharacter('${c.id}')">删除</button>
-
                         </div>
-
                     </div>
-
                 `;
-
             }).join('');
-
         }
 
-        
+
 
         function updateRelSelects() {
 
@@ -1319,7 +2256,7 @@
 
         }
 
-        
+
 
         function saveCharacters() {
 
@@ -1331,21 +2268,17 @@
 
         }
 
-        
+
 
         // ========== 关系操作 ==========
 
         function selectRelTypeColor(color) {
-
             selectedRelTypeColor = color;
-
-            document.querySelectorAll('#addRelTypeForm .color-option').forEach(e => e.classList.remove('selected'));
-
-            document.querySelector(`#addRelTypeForm [data-color="${color}"]`).classList.add('selected');
-
+            document.getElementById('relTypeColorBtn').style.background = color;
+            document.getElementById('relTypeColorDropdown').style.display = 'none';
         }
 
-        
+
 
         // ========== 关系类型操作 ==========
         function saveRelTypes() {
@@ -1364,7 +2297,7 @@
 
             if (Object.values(relationTypes).some(t => t.name === name)) { showError('类型已存在'); return; }
 
-            
+
 
             // 生成短ID
 
@@ -1382,7 +2315,7 @@
 
         }
 
-        
+
 
         function deleteRelType(id) {
 
@@ -1402,7 +2335,7 @@
 
         }
 
-        
+
 
         function updateRelTypeTags() {
 
@@ -1418,7 +2351,9 @@
 
             }
 
-            container.innerHTML = arr.map(([id, t]) => `
+            // 按颜色排序
+            const sortedTypes = arr.sort((a, b) => a[1].color.localeCompare(b[1].color));
+            container.innerHTML = sortedTypes.map(([id, t]) => `
 
                 <span class="tag" style="background:${t.color}40;cursor:pointer;" onclick="deleteRelType('${id}')" title="点击删除">
 
@@ -1432,7 +2367,7 @@
 
         }
 
-        
+
 
         function updateRelTypeSelect() {
 
@@ -1452,7 +2387,7 @@
 
         }
 
-        
+
 
         function addRelation() {
 
@@ -1464,7 +2399,7 @@
 
             const relation = document.getElementById('relDesc').value.trim();
 
-            
+
 
             if (!source) { showError('请选择人物 A'); return; }
 
@@ -1485,7 +2420,7 @@
                 showError(rtName + ' 关系已存在（两人同类型只能有一条）'); return;
             }
 
-            
+
 
             relations.push({ source, target, type, relation });
 
@@ -1495,7 +2430,7 @@
 
         }
 
-        
+
 
         function deleteRelation(idx) {
 
@@ -1507,7 +2442,7 @@
 
         }
 
-        
+
 
         function updateRelList() {
 
@@ -1521,36 +2456,29 @@
 
             }
 
-            list.innerHTML = relations.map((r, idx) => {
+            // 按时间倒序
+            const sortedRels = [...relations].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            list.innerHTML = sortedRels.map((r, idx) => {
 
                 const rt = relationTypes[r.type] || { name: r.type, color: '#fff' };
 
                 return `
-
                     <div class="list-item relation-item" style="border-color:${rt.color};">
-
                         <div class="list-item-info">
-
                             <div class="list-item-name">${typeof r.source === "object" ? (r.source.name || r.source.id) : r.source} → <span class="relation-type" style="background:${rt.color}40;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">${rt.name}</span>${r.relation ? "<span style='color:#aaa;font-size:11px;margin-left:8px;'>【" + r.relation + "】</span>" : ""} → ${typeof r.target === "object" ? (r.target.name || r.target.id) : r.target}</div>
-
                         </div>
-
                         <div class="list-item-actions">
-
                             <button class="btn btn-primary btn-sm" onclick="openEditRelationModal(${idx})">编辑</button>
                             <button class="btn btn-danger btn-sm" onclick="deleteRelation(${idx})">删除</button>
-
                         </div>
-
                     </div>
-
                 `;
-
             }).join('');
+
 
         }
 
-        
+
 
         function saveRelations() {
 
@@ -1566,7 +2494,7 @@
 
         }
 
-        
+
 
         // ========== 保存到服务器 ==========
 
@@ -1574,7 +2502,7 @@
 
             const apiBase = (window.location.protocol === 'file:' || !window.location.hostname.includes('.')) ? 'https://netbloom.1tik.top' : window.location.origin;
 
-            
+
 
             fetch(`${apiBase}/api/graphs/${currentGraphId}`, {
 
@@ -1592,23 +2520,23 @@
 
             })
 
-            .then(r => r.json())
+                .then(r => r.json())
 
-            .then(result => {
+                .then(result => {
 
-                showSuccess('✅ 保存成功！');
+                    showSuccess('✅ 保存成功！');
 
-            })
+                })
 
-            .catch(err => {
+                .catch(err => {
 
-                showError('保存失败: ' + err.message);
+                    showError('保存失败: ' + err.message);
 
-            });
+                });
 
         }
 
-        
+
 
         // ========== 消息提示 ==========
 
@@ -1628,7 +2556,7 @@
 
         }
 
-        
+
 
         // ========== 编辑人物弹窗 ==========
 
@@ -1652,13 +2580,31 @@
 
             document.getElementById('editCharInfo').value = ch.info || '';
 
-            
+
 
             // 标签
 
+            const hueSort = (a, b) => {
+                const hexToHue = (hex) => {
+                    const r = parseInt(hex.slice(1,3),16)/255;
+                    const g = parseInt(hex.slice(3,5),16)/255;
+                    const bv = parseInt(hex.slice(5,7),16)/255;
+                    const max = Math.max(r,g,bv), min = Math.min(r,g,bv);
+                    let h = 0;
+                    if (max !== min) {
+                        const d = max - min;
+                        if (max === r) h = ((g-bv)/d + (g<bv?6:0))/6;
+                        else if (max === g) h = ((bv-r)/d + 2)/6;
+                        else h = ((r-g)/d + 4)/6;
+                    }
+                    return h;
+                };
+                return hexToHue(a[1].color) - hexToHue(b[1].color);
+            };
+
             const tagWrap = document.getElementById('editCharTagWrap');
 
-            tagWrap.innerHTML = Object.entries(tags).map(([tid, t]) => {
+            tagWrap.innerHTML = Object.entries(tags).sort(hueSort).map(([tid, t]) => {
 
                 const isSelected = (ch.tags || []).findIndex(tid2 => tid2 == tid) >= 0;
 
@@ -1670,13 +2616,13 @@
 
             }).join('');
 
-            
+
 
             // 分组
 
             const groupWrap = document.getElementById('editCharGroupWrap');
 
-            groupWrap.innerHTML = Object.entries(groups).map(([gid, g]) => {
+            groupWrap.innerHTML = Object.entries(groups).sort(hueSort).map(([gid, g]) => {
 
                 const isSelected = (ch.groups || []).findIndex(gid2 => gid2 == gid) >= 0;
 
@@ -1688,7 +2634,7 @@
 
             }).join('');
 
-            
+
 
             document.getElementById('editCharModal').classList.add('active');
 
@@ -1703,33 +2649,6 @@
             editCharOriginalId = null;
 
         }
-
-        // 分组下拉展开/收起
-
-        
-
-
-
-        // 更新分组下拉选项
-
-        
-
-
-
-        // 复选框变化时同步显示文字
-
-        
-
-
-
-        // 更新显示文字
-
-        
-
-
-
-
-
 
         function openEditRelationModal(idx) {
             const r = relations[idx];
@@ -1845,7 +2764,7 @@
 
         // ========== 改颜色 ==========
         let editingColorTarget = null; // { type: 'tag'|'group', id }
-        const colorPresetPalette = ['#ff6b6b','#ff9f43','#ffd700','#a8e6cf','#4ecdc4','#45b7d1','#667eea','#764ba2','#e056fd','#f8b739','#6b5b95','#88d8b0','#ff69b4','#00ced1','#ffa07a','#98d8c8'];
+        const colorPresetPalette = COLOR_PALETTE;
 
         function openEditTagColor(tagId) {
             editingColorTarget = { type: 'tag', id: tagId };
@@ -1871,18 +2790,19 @@
 
         function renderColorPresets(selected) {
             const el = document.getElementById('colorPresets');
-            el.innerHTML = colorPresetPalette.map(c => `<button onclick="selectPresetColor('${c}')" style="width:32px;height:32px;border-radius:50%;background:${c};border:${c===selected?'3px solid #fff':'2px solid rgba(255,255,255,0.3)'};cursor:pointer;margin:4px;"></button>`).join('');
+            el.innerHTML = colorPresetPalette.map(c => `<button onclick="selectPresetColor('${c}')" style="width:32px;height:32px;border-radius:50%;background:${c};border:${c === selected ? '3px solid #fff' : '2px solid rgba(255,255,255,0.3)'};cursor:pointer;margin:4px;"></button>`).join('');
         }
 
         function selectPresetColor(color) {
             document.getElementById('colorPicker').value = color;
             document.getElementById('colorPreview').style.background = color;
+            document.getElementById('editColorBtn').style.background = color;
             renderColorPresets(color);
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const cp = document.getElementById('colorPicker');
-            if (cp) cp.addEventListener('input', function() {
+            if (cp) cp.addEventListener('input', function () {
                 document.getElementById('colorPreview').style.background = this.value;
                 renderColorPresets(this.value);
             });
@@ -1910,7 +2830,7 @@
 
 
         // ========== 关系类型改色 ==========
-        const relTypeColorPresetPalette = ['#ff6b6b','#ff9f43','#ffd700','#a8e6cf','#4ecdc4','#45b7d1','#667eea','#764ba2','#e056fd','#f8b739','#6b5b95','#88d8b0','#ff69b4','#00ced1','#ffa07a','#98d8c8'];
+        const relTypeColorPresetPalette = COLOR_PALETTE;
         let relTypeColorDrafts = {}; // id -> color
 
         function openEditRelTypeColorModal() {
@@ -1967,168 +2887,143 @@
 
 
 
-     </script>
 
-    <div id="editCharModal" class="modal-overlay" onclick="if(event.target===this)closeEditCharModal()">
 
-        <div class="modal-box">
+        // ========== 创建新图谱 ==========
+        function openCreateGraphModal() {
+            document.getElementById('newGraphName').value = '';
+            document.getElementById('createGraphModal').style.display = 'flex';
+        }
 
-            <div class="modal-title">编辑人物</div>
+        function closeCreateGraphModal() {
+            document.getElementById('createGraphModal').style.display = 'none';
+        }
 
-            <button class="modal-close" onclick="closeEditCharModal()">&times;</button>
+        function createNewGraph() {
+            const name = document.getElementById('newGraphName').value.trim();
+            if (!name) {
+                showError('请输入图谱名称');
+                return;
+            }
+            const apiBase = (window.location.protocol === 'file:' || !window.location.hostname.includes('.')) ? 'https://netbloom.1tik.top' : window.location.origin;
+            const id = 'g' + Date.now();
+            const newGraph = {
+                id,
+                name,
+                characters: [],
+                relationTypes: [],
+                relations: [],
+                groups: [],
+                tags: []
+            };
+            // Save to server
+            fetch(`${apiBase}/api/graphs`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, data: newGraph })
+            }).then(r => r.json()).then(result => {
+                if (result.error) throw new Error(result.error);
+                closeCreateGraphModal();
+                const newGraphId = result.id;
+                loadGraphList().then(() => {
+                    document.getElementById('graphSelect').value = newGraphId;
+                    loadGraph();
+                });
+                showSuccess('图谱创建成功');
+            }).catch(err => {
+                showError('创建失败: ' + err.message);
+            });
+        }
 
-            <div class="modal-row">
+        // ── 添加分组弹窗 ──
+        function openAddGroupModal() {
+            const modal = document.getElementById('addGroupModal');
+            modal.style.display = 'flex';
+            document.getElementById('modalGroupName').value = '';
+            document.getElementById('modalGroupColorBtn').style.background = '#ff6b6b';
+            document.getElementById('modalGroupColorText').textContent = '#ff6b6b';
+            selectedGroupColor = '#ff6b6b';
+        }
 
-                <label>人物名称</label>
+        function closeAddGroupModal() {
+            document.getElementById('addGroupModal').style.display = 'none';
+            closeAllColorDropdowns();
+        }
 
-                <input id="editCharName" type="text" placeholder="输入人物名称" />
+        function confirmAddGroup() {
+            const name = document.getElementById('modalGroupName').value.trim();
+            if (!name) { alert('请输入分组名称'); return; }
+            const color = selectedGroupColor || '#ff6b6b';
+            addGroupFromModal(name, color);
+            closeAddGroupModal();
+        }
 
+        function addGroupFromModal(name, color) {
+            const id = 'g_' + Date.now();
+            groups[id] = { id, name, color };
+            selectedGroupColor = color;
+            updateGroupList();
+        }
+
+
+    </script>
+
+
+
+
+
+    <div id="addTagModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:10000;align-items:center;justify-content:center;">
+        <div style="background:rgba(15,25,45,0.98);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:24px;width:90%;max-width:420px;box-shadow:0 8px 32px rgba(0,0,0,0.5);">
+            <div style="font-size:16px;font-weight:600;color:#fff;margin-bottom:20px;">➕ 添加标签</div>
+            <div style="display:flex;flex-direction:column;gap:16px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <label style="color:#ccc;font-size:13px;white-space:nowrap;width:60px;">标签名称</label>
+                    <input type="text" id="modalTagName" placeholder="请输入标签名称"
+                        style="flex:1;padding:9px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(0,0,0,0.4);color:#fff;font-size:13px;">
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;position:relative;">
+                    <label style="color:#ccc;font-size:13px;white-space:nowrap;width:60px;">颜色</label>
+                    <button class="color-dropdown-btn" id="modalTagColorBtn" data-dropdown="modalTagColorDropdown"
+                        style="background:#ff6b6b;width:36px;height:36px;border-radius:8px;border:none;cursor:pointer;"
+                        onclick="toggleColorDropdown('modalTagColorDropdown', 'modalTagColorBtn')"></button>
+                    <span id="modalTagColorText" style="color:#ffffff;font-size:13px;">#ff6b6b</span>
+                    <div class="color-dropdown-panel" id="modalTagColorDropdown"
+                        style="display:none;position:fixed;left:0;top:0;background:rgba(20,20,40,0.98);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+                        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:152px;">
+                            <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                                <div onclick='selectColor("modalTagColorDropdown","#ff6b6b","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#ff6b6b;cursor:pointer;border:2px solid transparent;'></div>
+                                <div onclick='selectColor("modalTagColorDropdown","#ff9f43","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#ff9f43;cursor:pointer;border:2px solid transparent;'></div>
+                                <div onclick='selectColor("modalTagColorDropdown","#ffd700","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#ffd700;cursor:pointer;border:2px solid transparent;'></div>
+                                <div onclick='selectColor("modalTagColorDropdown","#a8e6cf","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#a8e6cf;cursor:pointer;border:2px solid transparent;'></div>
+                            </div>
+                            <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                                <div onclick='selectColor("modalTagColorDropdown","#4ecdc4","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#4ecdc4;cursor:pointer;border:2px solid transparent;'></div>
+                                <div onclick='selectColor("modalTagColorDropdown","#45b7d1","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#45b7d1;cursor:pointer;border:2px solid transparent;'></div>
+                                <div onclick='selectColor("modalTagColorDropdown","#667eea","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#667eea;cursor:pointer;border:2px solid transparent;'></div>
+                                <div onclick='selectColor("modalTagColorDropdown","#764ba2","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#764ba2;cursor:pointer;border:2px solid transparent;'></div>
+                            </div>
+                            <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                                <div onclick='selectColor("modalTagColorDropdown","#e056fd","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#e056fd;cursor:pointer;border:2px solid transparent;'></div>
+                                <div onclick='selectColor("modalTagColorDropdown","#f8b739","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#f8b739;cursor:pointer;border:2px solid transparent;'></div>
+                                <div onclick='selectColor("modalTagColorDropdown","#6b5b95","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#6b5b95;cursor:pointer;border:2px solid transparent;'></div>
+                                <div onclick='selectColor("modalTagColorDropdown","#88d8b0","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#88d8b0;cursor:pointer;border:2px solid transparent;'></div>
+                            </div>
+                            <div style='display:flex;flex-wrap:wrap;gap:6px;'>
+                                <div onclick='selectColor("modalTagColorDropdown","#ff69b4","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#ff69b4;cursor:pointer;border:2px solid transparent;'></div>
+                                <div onclick='selectColor("modalTagColorDropdown","#00ced1","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#00ced1;cursor:pointer;border:2px solid transparent;'></div>
+                                <div onclick='selectColor("modalTagColorDropdown","#ffa07a","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#ffa07a;cursor:pointer;border:2px solid transparent;'></div>
+                                <div onclick='selectColor("modalTagColorDropdown","#98d8c8","","modalTagColorBtn")' style='width:32px;height:32px;border-radius:6px;background:#98d8c8;cursor:pointer;border:2px solid transparent;'></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="modal-row">
-
-                <label>简介</label>
-
-                <textarea id="editCharInfo" placeholder="输入人物简介"></textarea>
-
+            <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end;">
+                <button onclick="closeAddTagModal()" style="padding:9px 18px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:#aaa;font-size:13px;cursor:pointer;">取消</button>
+                <button onclick="confirmAddTag()" style="padding:9px 18px;border-radius:8px;border:none;background:rgba(100,100,200,0.6);color:#fff;font-size:13px;cursor:pointer;">添加</button>
             </div>
-
-            <div class="modal-row">
-
-                <label>标签</label>
-
-                <div id="editCharTagWrap" onclick="event.stopPropagation()"></div>
-
-            </div>
-
-                        <div class="modal-row">
-
-                <label>分组</label>
-
-                <div id="editCharGroupWrap" onclick="event.stopPropagation()"></div>
-
-            </div><div class="modal-actions">
-
-                <button class="btn btn-primary" onclick="saveEditChar()">保存</button>
-
-                <button class="btn" style="background:rgba(255,255,255,0.1);color:#fff;" onclick="closeEditCharModal()">取消</button>
-
-            </div>
-
         </div>
-
     </div>
-
-        <div id="editRelModal" class="modal-overlay" onclick="if(event.target===this)closeEditRelationModal()">
-
-            <div class="modal-box">
-
-                <div class="modal-title">编辑关系</div>
-
-                <button class="modal-close" onclick="closeEditRelationModal()">&times;</button>
-
-                <div class="modal-row">
-
-                    <label>人物 A</label>
-
-                    <select id="editRelSource"></select>
-
-                </div>
-
-                <div class="modal-row">
-
-                    <label>人物 B</label>
-
-                    <select id="editRelTarget"></select>
-
-                </div>
-
-                <div class="modal-row">
-
-                    <label>关系类型</label>
-
-                    <select id="editRelType"></select>
-
-                </div>
-
-                <div class="modal-row">
-
-                    <label>关系描述</label>
-
-                    <input id="editRelDesc" type="text" placeholder="输入关系描述（可选）" />
-
-                </div>
-
-                <div class="modal-actions">
-
-                    <button class="btn btn-success" onclick="saveEditRelation()">保存</button>
-
-                    <button class="btn" style="background:rgba(255,255,255,0.1);color:#fff;" onclick="closeEditRelationModal()">取消</button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-
-
-        <div id="editColorModal" class="modal-overlay" onclick="if(event.target===this)closeEditColorModal()">
-
-            <div class="modal-box">
-
-                <div class="modal-title" id="editColorTitle">更改颜色</div>
-
-                <button class="modal-close" onclick="closeEditColorModal()">&times;</button>
-
-                <div class="modal-row" style="text-align:center;">
-
-                    <input type="color" id="colorPicker" value="#ff6b6b" style="width:80px;height:40px;border:none;cursor:pointer;" />
-
-                    <div id="colorPreview" style="display:inline-block;width:24px;height:24px;border-radius:50%;background:#ff6b6b;margin-left:15px;vertical-align:middle;"></div>
-
-                </div>
-
-                <div class="modal-row" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;" id="colorPresets"></div>
-
-                <div class="modal-actions">
-
-                    <button class="btn btn-success" onclick="saveColorChange()">保存</button>
-
-                    <button class="btn" style="background:rgba(255,255,255,0.1);color:#fff;" onclick="closeEditColorModal()">取消</button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div id="editRelTypeColorModal" class="modal-overlay" onclick="if(event.target===this)closeEditRelTypeColorModal()">
-
-            <div class="modal-box" style="max-width:520px;">
-
-                <div class="modal-title">🎨 更改关系类型颜色</div>
-
-                <button class="modal-close" onclick="closeEditRelTypeColorModal()">&times;</button>
-
-                <div id="relTypeColorList" style="max-height:400px;overflow-y:auto;margin:15px 0;"></div>
-
-                <div class="modal-actions">
-
-                    <button class="btn btn-success" onclick="saveRelTypeColorChanges()">保存</button>
-
-                    <button class="btn" style="background:rgba(255,255,255,0.1);color:#fff;" onclick="closeEditRelTypeColorModal()">取消</button>
-
-                </div>
-
-            </div>
-
-        </div>
-
 </body>
 
 </html>
