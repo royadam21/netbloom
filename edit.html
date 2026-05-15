@@ -1566,6 +1566,14 @@
         <div class="modal-box" style="max-width:520px;">
 
             <div class="modal-title">🎨 更改关系类型颜色</div>
+            <style>
+.rel-type-color-item { display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1); }
+.rel-type-color-item .color-dot { width:16px;height:16px;border-radius:50%;flex-shrink:0; }
+.rel-type-color-item .type-name { flex:1;color:#fff;font-size:14px; }
+.rel-type-color-item .color-grid { display:grid;grid-template-columns:repeat(8,28px);gap:4px; }
+.rel-type-color-item .color-grid button { width:28px;height:28px;border-radius:50%;cursor:pointer;padding:0;transition:transform .1s; }
+.rel-type-color-item .color-grid button:hover { transform:scale(1.15); }
+</style>
 
             <button class="modal-close" onclick="closeEditRelTypeColorModal()">&times;</button>
 
@@ -3331,7 +3339,21 @@
 
 
         // ========== 关系类型改色 ==========
-        const relTypeColorPresetPalette = COLOR_PALETTE;
+        const hexToHue = (hex) => {
+            const r = parseInt(hex.slice(1, 3), 16) / 255;
+            const g = parseInt(hex.slice(3, 5), 16) / 255;
+            const bv = parseInt(hex.slice(5, 7), 16) / 255;
+            const max = Math.max(r, g, bv), min = Math.min(r, g, bv);
+            let h = 0;
+            if (max !== min) {
+                const d = max - min;
+                if (max === r) h = ((g - bv) / d + (g < bv ? 6 : 0)) / 6;
+                else if (max === g) h = ((bv - r) / d + 2) / 6;
+                else h = ((r - g) / d + 4) / 6;
+            }
+            return h;
+        };
+        const relTypeColorPresetPalette = COLOR_PALETTE.slice().sort((a, b) => hexToHue(a) - hexToHue(b));
         let relTypeColorDrafts = {}; // id -> color
 
         function openEditRelTypeColorModal() {
@@ -3348,20 +3370,33 @@
 
         function renderRelTypeColorList() {
             const container = document.getElementById('relTypeColorList');
-            const arr = Object.entries(relationTypes);
+            // 按色相排序（复用 hexToHue）
+            const hexToHue = (hex) => {
+                const r = parseInt(hex.slice(1, 3), 16) / 255;
+                const g = parseInt(hex.slice(3, 5), 16) / 255;
+                const b = parseInt(hex.slice(5, 7), 16) / 255;
+                const max = Math.max(r, g, b), min = Math.min(r, g, b);
+                let h = 0;
+                if (max !== min) {
+                    const d = max - min;
+                    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+                    else if (max === g) h = ((b - r) / d + 2) / 6;
+                    else h = ((r - g) / d + 4) / 6;
+                }
+                return h;
+            };
+            const arr = Object.entries(relationTypes).sort((a, b) => hexToHue(a[1].color) - hexToHue(b[1].color));
             if (arr.length === 0) {
                 container.innerHTML = '<div style="color:#666;text-align:center;padding:20px;">暂无关系类型</div>';
                 return;
             }
+            // 16色板：2行8列（直接在 map 里生成，不用额外变量）
             container.innerHTML = arr.map(([id, t]) => `
                 <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);">
                     <span style="display:inline-block;width:16px;height:16px;border-radius:50%;background:${relTypeColorDrafts[id] || t.color};flex-shrink:0;"></span>
                     <span style="flex:1;color:#fff;font-size:14px;">${t.name}</span>
-                    <input type="color" id="relTypeColor_${id}" value="${relTypeColorDrafts[id] || t.color}"
-                        oninput="relTypeColorDrafts['${id}'] = this.value; document.querySelector('#relTypeColorRow_${id} .color-dot').style.background = this.value;"
-                        style="width:36px;height:28px;border:none;cursor:pointer;background:transparent;" />
-                    <div style="display:flex;gap:4px;flex-wrap:wrap;max-width:180px;" id="relTypeColorRow_${id}">
-                        ${relTypeColorPresetPalette.map(c => `<button onclick="setRelTypePreset('${id}','${c}')" style="width:22px;height:22px;border-radius:50%;background:${c};border:2px solid ${(relTypeColorDrafts[id] || t.color) === c ? '#fff' : 'transparent'};cursor:pointer;padding:0;"></button>`).join('')}
+                    <div style="display:grid;grid-template-columns:repeat(8,28px);gap:4px;" id="relTypeColorRow_${id}">
+                        ${relTypeColorPresetPalette.map(c => `<button onclick="setRelTypePreset('${id}','${c}')" style="width:28px;height:28px;border-radius:50%;background:${c};border:2px solid ${(relTypeColorDrafts[id] || t.color) === c ? '#fff' : 'transparent'};cursor:pointer;padding:0;"></button>`).join('')}
                     </div>
                 </div>
             `).join('');
@@ -3369,7 +3404,6 @@
 
         function setRelTypePreset(id, color) {
             relTypeColorDrafts[id] = color;
-            document.getElementById('relTypeColor_' + id).value = color;
             renderRelTypeColorList();
         }
 
