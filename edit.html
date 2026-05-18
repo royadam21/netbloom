@@ -2891,10 +2891,8 @@
 
 
 
-            relations.push({ source, target, type, relation });
-
+            relations.push({ source, target, type, relation, createdAt: Date.now() });
             document.getElementById('relDesc').value = '';
-
             updateRelList();
 
         }
@@ -2988,18 +2986,26 @@
                 return;
             }
 
-            list.innerHTML = sortedRels.map((r, idx) => {
+            list.innerHTML = sortedRels.map((r, sortedIdx) => {
 
                 const rt = relationTypes[r.type] || { name: r.type, color: '#fff' };
-
+                // Find original index in relations array
+                const originalIdx = relations.findIndex(rel =>
+                    (rel.source === r.source || rel.source?.id === r.source || rel.source?.name === r.source) &&
+                    (rel.target === r.target || rel.target?.id === r.target || rel.target?.name === r.target) &&
+                    rel.type === r.type &&
+                    (rel.relation || '') === (r.relation || '')
+                );
+                const ts = r.createdAt ? new Date(r.createdAt).toLocaleString('zh-CN') : '无时间';
                 return `
                     <div class="list-item relation-item" style="border-color:${rt.color};">
                         <div class="list-item-info">
                             <div class="list-item-name">${typeof r.source === "object" ? (r.source.name || r.source.id) : r.source} → <span class="relation-type" style="background:${rt.color}40;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">${rt.name}</span>${r.relation ? "<span style='color:#aaa;font-size:11px;margin-left:8px;'>【" + r.relation + "】</span>" : ""} → ${typeof r.target === "object" ? (r.target.name || r.target.id) : r.target}</div>
+                            <div class="list-item-time" style="color:#888;font-size:10px;margin-top:2px;">${ts}</div>
                         </div>
                         <div class="list-item-actions">
-                            <button class="btn btn-primary btn-sm" onclick="openEditRelationModal(${idx})">编辑</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteRelation(${idx})">删除</button>
+                            <button class="btn btn-primary btn-sm" onclick="openEditRelationModal(${originalIdx})">编辑</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteRelation(${originalIdx})">删除</button>
                         </div>
                     </div>
                 `;
@@ -3224,7 +3230,7 @@
                 const rtName = (relationTypes[type] || {}).name || type;
                 showError(rtName + ' 关系已存在'); return;
             }
-            relations[editRelIdx] = { source, target, type, relation };
+            relations[editRelIdx] = { ...relations[editRelIdx], source, target, type, relation };
             closeEditRelationModal();
             updateRelList();
             saveRelations();
