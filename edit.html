@@ -738,6 +738,21 @@
             background: rgba(255, 255, 255, 0.08);
         }
     </style>
+    <style>
+        /* ========== 模糊搜索下拉 ========== */
+        .fuzzy-select-wrap { position: relative; width: 100%; }
+        .fuzzy-select-btn { width: 100%; padding: 12px 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; background: rgba(0,0,0,0.4); color: #fff; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; appearance: none; }
+        .fuzzy-select-btn:hover { border-color: rgba(255,255,255,0.4); }
+        .fuzzy-arrow { font-size: 10px; transition: transform .2s; }
+        .fuzzy-select-dropdown { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(10,15,35,0.98); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; margin-top: 4px; z-index: 1000; overflow: hidden; }
+        .fuzzy-select-dropdown.active { display: block; }
+        .fuzzy-select-search { width: 100%; padding: 10px 12px; border: none; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #fff; font-size: 14px; outline: none; box-sizing: border-box; }
+        .fuzzy-select-options { max-height: 200px; overflow-y: auto; }
+        .fuzzy-select-options .fuzzy-option { padding: 10px 14px; cursor: pointer; font-size: 14px; color: #ddd; }
+        .fuzzy-select-options .fuzzy-option:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .fuzzy-select-options .fuzzy-option.highlighted { background: rgba(78,205,196,0.2); color: #4ecdc4; }
+        .fuzzy-option-empty { padding: 10px 14px; color: #888; font-size: 13px; text-align: center; }
+    </style>
 
 </head>
 
@@ -1106,38 +1121,43 @@
 
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
                     <div class="form-group">
-
                         <label>人物 A</label>
-
-                        <select id="relA">
-
-                            <option value="">选择人物</option>
-
-                        </select>
-
+                        <div class="fuzzy-select-wrap" id="relAWrap">
+                            <button class="fuzzy-select-btn" id="relABtn" type="button" onclick="toggleFuzzySelect('relA')">
+                                <span id="relALabel">请选择</span><span class="fuzzy-arrow">▼</span>
+                            </button>
+                            <div class="fuzzy-select-dropdown" id="relADropdown">
+                                <input class="fuzzy-select-search" id="relASearch" placeholder="搜索人物名称..." oninput="filterFuzzySelect('relA')" onkeydown="fuzzySelectKeydown(event,'relA')">
+                                <div class="fuzzy-select-options" id="relAOptions"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
-
                         <label>人物 B</label>
-
-                        <select id="relB">
-
-                            <option value="">选择人物</option>
-
-                        </select>
-
+                        <div class="fuzzy-select-wrap" id="relBWrap">
+                            <button class="fuzzy-select-btn" id="relBBtn" type="button" onclick="toggleFuzzySelect('relB')">
+                                <span id="relBLabel">请选择</span><span class="fuzzy-arrow">▼</span>
+                            </button>
+                            <div class="fuzzy-select-dropdown" id="relBDropdown">
+                                <input class="fuzzy-select-search" id="relBSearch" placeholder="搜索人物名称..." oninput="filterFuzzySelect('relB')" onkeydown="fuzzySelectKeydown(event,'relB')">
+                                <div class="fuzzy-select-options" id="relBOptions"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
 
                         <label>关系类型</label>
-
-                        <select id="relType">
-
-                            <option value="">请先添加关系类型</option>
-
-                        </select>
+                        <div class="fuzzy-select-wrap" id="relTypeWrap">
+                            <button class="fuzzy-select-btn" id="relTypeBtn" type="button" onclick="toggleFuzzySelect('relType')">
+                                <span id="relTypeLabel">请选择</span><span class="fuzzy-arrow">▼</span>
+                            </button>
+                            <div class="fuzzy-select-dropdown" id="relTypeDropdown">
+                                <input class="fuzzy-select-search" id="relTypeSearch" placeholder="搜索关系类型..." oninput="filterFuzzySelect('relType')" onkeydown="fuzzySelectKeydown(event,'relType')">
+                                <div class="fuzzy-select-options" id="relTypeOptions"></div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -2712,34 +2732,9 @@
 
 
         function updateRelSelects() {
-
-            const selectA = document.getElementById('relA');
-
-            const selectB = document.getElementById('relB');
-
-            const opts = '<option value="">选择人物</option>' + characters.filter(c => c.id !== undefined && c.id !== null && c.id !== 'undefined' && c.id !== '').map(c => `<option value="${c.id}">${c.id}</option>`).join('');
-
-            selectA.innerHTML = opts;
-
-            selectB.innerHTML = opts;
-
+            // 模糊搜索下拉无需预填选项，选项在点击时由 filterFuzzySelect 动态渲染
         }
-
-
-
-        function saveCharacters() {
-
-            if (!currentGraphId) { showError('请先选择图谱'); return; }
-
-            currentData.nodes = characters;
-
-            saveToServer();
-
-        }
-
-
-
-        // ========== 关系操作 ==========
+// ========== 关系操作 ==========
 
         function selectRelTypeColor(color) {
             selectedRelTypeColor = color;
@@ -2839,32 +2834,15 @@
 
 
         function updateRelTypeSelect() {
-
-            const select = document.getElementById('relType');
-
-            const arr = Object.entries(relationTypes);
-
-            if (arr.length === 0) {
-
-                select.innerHTML = '<option value="">请先添加关系类型</option>';
-
-                return;
-
-            }
-
-            select.innerHTML = '<option value="">选择关系类型</option>' + arr.map(([id, t]) => `<option value="${id}">${t.name}</option>`).join('');
-
+            // 模糊搜索下拉，选项在点击时由 filterFuzzySelect 动态渲染
         }
+function addRelation() {
 
+            const source = (document.getElementById('relABtn') || {}).dataset.value || '';
 
+            const target = (document.getElementById('relBBtn') || {}).dataset.value || '';
 
-        function addRelation() {
-
-            const source = document.getElementById('relA').value;
-
-            const target = document.getElementById('relB').value;
-
-            const type = document.getElementById('relType').value;
+            const type = (document.getElementById('relTypeBtn') || {}).dataset.value || '';
 
             const relation = document.getElementById('relDesc').value.trim();
 
@@ -2979,7 +2957,7 @@
                     return true;
                 });
             }
-            console.log('DEBUG filter result: sortedRels.length =', sortedRels.length, 'input:', relNameSearchValue);
+       //     console.log('DEBUG filter result: sortedRels.length =', sortedRels.length, 'input:', relNameSearchValue);
             // 搜索结果为空
             if (sortedRels.length === 0) {
                 list.innerHTML = '<div class="empty-state">找不到你要搜的人哦~</div>';
@@ -3507,7 +3485,93 @@
         }
 
 
-    </script>
+    
+
+        // ========== 模糊搜索下拉 ==========
+        function toggleFuzzySelect(name) {
+            const dropdown = document.getElementById(name + 'Dropdown');
+            // Close if already open
+            if (dropdown.classList.contains('active')) {
+                dropdown.classList.remove('active');
+                return;
+            }
+            // Close all other fuzzy dropdowns
+            document.querySelectorAll('.fuzzy-select-dropdown').forEach(d => d.classList.remove('active'));
+            // Open this one
+            dropdown.classList.add('active');
+            // Render all options
+            filterFuzzySelect(name);
+            // Focus search input
+            document.getElementById(name + 'Search').focus();
+        }
+
+        function filterFuzzySelect(name) {
+    const searchInput = document.getElementById(name + 'Search');
+    const optionsDiv = document.getElementById(name + 'Options');
+    const query = searchInput.value.trim().toLowerCase();
+    let dataSource, emptyMsg;
+    if (name === 'relType') {
+        dataSource = Object.keys(relationTypes).map(k => ({ id: k, name: relationTypes[k].name || k }));
+        emptyMsg = '没有匹配的关系类型';
+    } else {
+        dataSource = characters;
+        emptyMsg = '没有匹配的人物';
+    }
+    const filtered = dataSource.filter(item => {
+        const displayName = item.name || item.id;
+        return displayName && displayName.toLowerCase().includes(query);
+    });
+    const currentVal = document.getElementById(name + 'Btn') ? document.getElementById(name + 'Btn').dataset.value || '' : '';
+    if (filtered.length === 0) {
+        optionsDiv.innerHTML = '<div class="fuzzy-option-empty">' + emptyMsg + '</div>';
+    } else {
+        optionsDiv.innerHTML = filtered.map(item => {
+            const displayName = item.name || item.id;
+            const isHighlighted = item.id === currentVal || displayName === currentVal;
+            return '<div class="fuzzy-option' + (isHighlighted ? ' highlighted' : '') + '" data-value="' + item.id.replace(/"/g, '&quot;') + '" onclick="selectFuzzyOption(\'' + name + '\',\'' + item.id.replace(/'/g, "\\'") + '\',\'' + displayName.replace(/'/g, "\\'") + '\')">' + displayName + '</div>';
+        }).join('');
+    }
+}
+
+
+function selectFuzzyOption(name, value, displayName) {
+            const btn = document.getElementById(name + 'Btn');
+            const label = document.getElementById(name + 'Label');
+            btn.dataset.value = value;
+            label.textContent = displayName || value;
+            document.getElementById(name + 'Dropdown').classList.remove('active');
+            document.getElementById(name + 'Search').value = '';
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.fuzzy-select-wrap')) {
+                document.querySelectorAll('.fuzzy-select-dropdown.active').forEach(d => d.classList.remove('active'));
+            }
+        });
+
+        function fuzzySelectKeydown(e, name) {
+            if (e.key === 'ArrowDown') { e.preventDefault(); moveHighlight(name, 1); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); moveHighlight(name, -1); }
+            else if (e.key === 'Enter') { e.preventDefault(); selectHighlighted(name); }
+            else if (e.key === 'Escape') { document.getElementById(name + 'Dropdown').classList.remove('active'); }
+        }
+
+        function moveHighlight(name, dir) {
+            const options = document.querySelectorAll('#' + name + 'Options .fuzzy-option');
+            if (!options.length) return;
+            let idx = Array.from(options).findIndex(o => o.classList.contains('highlighted'));
+            options.forEach(o => o.classList.remove('highlighted'));
+            idx = (idx + dir + options.length) % options.length;
+            options[idx].classList.add('highlighted');
+            options[idx].scrollIntoView({ block: 'nearest' });
+        }
+
+        function selectHighlighted(name) {
+            const highlighted = document.querySelector('#' + name + 'Options .fuzzy-option.highlighted');
+            if (highlighted) selectFuzzyOption(name, highlighted.dataset.value);
+        }
+
+</script>
 </body>
 
 </html>
