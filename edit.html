@@ -2042,14 +2042,77 @@
 
         function switchTab(tab) {
 
+            // 保存当前 tab 的修改（只保存当前 tab 的字段）
+            saveCurrentTab();
+
+            // 切换 tab 样式
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
             document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
-
             document.getElementById(`tab-${tab}`).classList.add('active');
 
+            // 重新从服务器加载当前 tab 数据
+            reloadCurrentTab(tab);
+        }
+
+        function saveCurrentTab() {
+            if (!currentGraphId) return;
+            const activeTab = document.querySelector('.tab.active');
+            if (!activeTab) return;
+            const tabName = activeTab.getAttribute('data-tab');
+            if (tabName === 'groups') {
+                currentData.groups = groups;
+                currentData.nextGroupId = nextGroupId;
+            } else if (tabName === 'tags') {
+                currentData.tags = tags;
+                currentData.nextTagId = nextTagId;
+            } else if (tabName === 'rels') {
+                currentData.links = relations;
+                currentData.relationTypes = relationTypes;
+                currentData.nextRelTypeId = nextRelTypeId;
+            }
+            // chars tab 不单独保存（和 rels 一起）
+        }
+
+        function reloadCurrentTab(tab) {
+            if (!currentGraphId) return;
+            const apiBase = (window.location.protocol === 'file:' || !window.location.hostname.includes('.')) ? 'https://netbloom.1tik.top' : window.location.origin;
+            fetch(`${apiBase}/api/graphs/${currentGraphId}`)
+                .then(r => r.json())
+                .then(result => {
+                    const fresh = result.data || result;
+                    if (tab === 'groups') {
+                        groups = fresh.groups || {};
+                        nextGroupId = fresh.nextGroupId || Object.keys(groups).length + 1;
+                        currentData.groups = groups;
+                        currentData.nextGroupId = nextGroupId;
+                        updateGroupList();
+                        updateGroupSelect();
+                    } else if (tab === 'tags') {
+                        tags = fresh.tags || {};
+                        nextTagId = fresh.nextTagId || Object.keys(tags).length + 1;
+                        currentData.tags = tags;
+                        currentData.nextTagId = nextTagId;
+                        updateTagList();
+                    } else if (tab === 'chars') {
+                        characters = fresh.nodes || [];
+                        currentData.nodes = characters;
+                        updateCharList();
+                    } else if (tab === 'rels') {
+                        relations = fresh.links || [];
+                        relationTypes = fresh.relationTypes || JSON.parse(JSON.stringify(defaultRelationTypes));
+                        nextRelTypeId = fresh.nextRelTypeId || Object.keys(relationTypes).length + 1;
+                        currentData.links = relations;
+                        currentData.relationTypes = relationTypes;
+                        currentData.nextRelTypeId = nextRelTypeId;
+                        updateRelList();
+                        updateRelTypeTags();
+                        updateRelSelects();
+                    }
+                })
+                .catch(err => {
+                    console.error('reloadCurrentTab error:', err);
+                });
         }
 
 
@@ -2342,15 +2405,10 @@
 
 
         function saveGroups() {
-
             if (!currentGraphId) { showError('请先选择图谱'); return; }
-
             currentData.groups = groups;
-
             currentData.nextGroupId = nextGroupId;
-
             saveToServer();
-
         }
 
 
@@ -2541,15 +2599,10 @@
 
 
         function saveTags() {
-
             if (!currentGraphId) { showError('请先选择图谱'); return; }
-
             currentData.tags = tags;
-
             currentData.nextTagId = nextTagId;
-
             saveToServer();
-
         }
 
 
@@ -2995,17 +3048,9 @@ function addRelation() {
 
 
         function saveRelations() {
-
             if (!currentGraphId) { showError('请先选择图谱'); return; }
-
             currentData.links = relations;
-
-            currentData.relationTypes = relationTypes;
-
-            currentData.nextRelTypeId = nextRelTypeId;
-
             saveToServer();
-
         }
 
 
@@ -3312,11 +3357,15 @@ function addRelation() {
             if (editingColorTarget.type === 'tag') {
                 if (tags[editingColorTarget.id]) tags[editingColorTarget.id].color = color;
                 updateTagList();
-                saveTags();
+                // 只更新 tags 字段
+                currentData.tags = tags;
+                saveToServer();
             } else {
                 if (groups[editingColorTarget.id]) groups[editingColorTarget.id].color = color;
                 updateGroupList();
-                saveGroups();
+                // 只更新 groups 字段
+                currentData.groups = groups;
+                saveToServer();
             }
             closeEditColorModal();
         }
