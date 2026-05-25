@@ -2098,6 +2098,7 @@
                         characters = fresh.nodes || [];
                         currentData.nodes = characters;
                         updateCharList();
+                        updateCharSelect();
                     } else if (tab === 'rels') {
                         relations = fresh.links || [];
                         relationTypes = fresh.relationTypes || JSON.parse(JSON.stringify(defaultRelationTypes));
@@ -3290,6 +3291,12 @@ function addRelation() {
             updateRelList();
             updateRelSelects();
 
+            if (!currentGraphId) { showError('请先选择图谱'); return; }
+            currentData.nodes = characters;
+            saveChars();
+        }
+
+        function saveChars() {
             if (!currentGraphId) { showError('请先选择图谱'); return; }
             currentData.nodes = characters;
             saveToServer();
