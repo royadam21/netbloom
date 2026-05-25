@@ -3307,6 +3307,8 @@ function addRelation() {
             currentData.nodes = characters;
             saveToServer();
         }
+        // 别名，HTML按钮绑定的是这个名
+        const saveCharacters = saveChars;
 
         function openEditTagColor(tagId) {
             editingColorTarget = { type: 'tag', id: tagId };
