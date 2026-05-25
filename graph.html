@@ -1305,7 +1305,7 @@
             let contextMenuTarget = null;
             let saveTimer = null;
             let zoomLevel = 1;
-            const relationColors = { 'brother': '#ff6b6b', 'teacher': '#f7dc6f', 'master': '#4ecdc4', 'friend': '#45b7d1', 'enemy': '#dda0dd', 'family': '#ff6b6b', 'lover': '#ffd700', 'rival': '#bb8fce', 'default': '#ffffff' };
+            const relationColors = {};
             const relationNames = { 'brother': '结义兄弟', 'teacher': '师徒', 'master': '主仆', 'friend': '朋友', 'enemy': '敌对', 'family': '亲人', 'lover': '恋人', 'rival': '竞争' };
             const API_BASE = 'https://netbloom.1tik.top/api';
             let svg, g, simulation, currentZoom, container;
@@ -1662,6 +1662,13 @@
                 simulation = d3.forceSimulation().force('link', d3.forceLink().id(d => d.id).distance(80)).force('charge', d3.forceManyBody().strength(-800)).force('center', d3.forceCenter(container.clientWidth / 2, container.clientHeight / 2)).force('collision', d3.forceCollide().radius(30));
             }
             function updateGraph() {
+                // 动态构建关系类型颜色表（每次updateGraph时从data读取）
+                relationColors = { default: '#ffffff' };
+                if (data.relationTypes) {
+                    Object.entries(data.relationTypes).forEach(([k, v]) => {
+                        if (v && v.color) relationColors[k] = v.color;
+                    });
+                }
                 // 规范化 links
                 const nodeMap = {};
                 data.nodes.forEach(n => nodeMap[n.id] = n);
