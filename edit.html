@@ -2081,31 +2081,37 @@
                 .then(r => r.json())
                 .then(result => {
                     const fresh = result.data || result;
+                    // 同步全部字段到 currentData，防止其他 tab 的数据被旧缓存覆盖
+                    currentData.groups = fresh.groups || {};
+                    currentData.tags = fresh.tags || {};
+                    currentData.nodes = fresh.nodes || [];
+                    currentData.links = fresh.links || [];
+                    currentData.relationTypes = fresh.relationTypes || JSON.parse(JSON.stringify(defaultRelationTypes));
+                    currentData.nextGroupId = fresh.nextGroupId || Object.keys(currentData.groups).length + 1;
+                    currentData.nextTagId = fresh.nextTagId || Object.keys(currentData.tags).length + 1;
+                    currentData.nextRelTypeId = fresh.nextRelTypeId || Object.keys(currentData.relationTypes).length + 1;
+                    currentData.graphName = fresh.graphName || currentData.graphName;
+
+                    // 更新内存中的局部变量
+                    groups = currentData.groups;
+                    tags = currentData.tags;
+                    characters = currentData.nodes;
+                    relations = currentData.links;
+                    relationTypes = currentData.relationTypes;
+                    nextGroupId = currentData.nextGroupId;
+                    nextTagId = currentData.nextTagId;
+                    nextRelTypeId = currentData.nextRelTypeId;
+
+                    // 更新当前 tab 的 UI
                     if (tab === 'groups') {
-                        groups = fresh.groups || {};
-                        nextGroupId = fresh.nextGroupId || Object.keys(groups).length + 1;
-                        currentData.groups = groups;
-                        currentData.nextGroupId = nextGroupId;
                         updateGroupList();
                         updateGroupSelect();
                     } else if (tab === 'tags') {
-                        tags = fresh.tags || {};
-                        nextTagId = fresh.nextTagId || Object.keys(tags).length + 1;
-                        currentData.tags = tags;
-                        currentData.nextTagId = nextTagId;
                         updateTagList();
                     } else if (tab === 'chars') {
-                        characters = fresh.nodes || [];
-                        currentData.nodes = characters;
                         updateCharList();
                         updateCharSelect();
                     } else if (tab === 'rels') {
-                        relations = fresh.links || [];
-                        relationTypes = fresh.relationTypes || JSON.parse(JSON.stringify(defaultRelationTypes));
-                        nextRelTypeId = fresh.nextRelTypeId || Object.keys(relationTypes).length + 1;
-                        currentData.links = relations;
-                        currentData.relationTypes = relationTypes;
-                        currentData.nextRelTypeId = nextRelTypeId;
                         updateRelList();
                         updateRelTypeTags();
                         updateRelSelects();
